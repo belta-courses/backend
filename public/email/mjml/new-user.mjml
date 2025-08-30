@@ -1,0 +1,50 @@
+<mjml>
+  <mj-head>
+
+    <mj-html-attributes>
+      <mj-html-attribute class="easy-email" multiple-attributes="false" attribute-name="text-color" text-color="#000000"></mj-html-attribute>
+      <mj-html-attribute class="easy-email" multiple-attributes="false" attribute-name="font-family" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans','Helvetica Neue', sans-serif"></mj-html-attribute>
+      <mj-html-attribute class="easy-email" multiple-attributes="false" attribute-name="font-size" font-size="14px"></mj-html-attribute>
+      <mj-html-attribute class="easy-email" multiple-attributes="false" attribute-name="line-height" line-height="1.7"></mj-html-attribute>
+      <mj-html-attribute class="easy-email" multiple-attributes="false" attribute-name="font-weight" font-weight="400"></mj-html-attribute>
+      <mj-html-attribute class="easy-email" multiple-attributes="false" attribute-name="responsive" responsive="true"></mj-html-attribute>
+
+    </mj-html-attributes>
+
+    <mj-breakpoint width="480px" />
+
+    <mj-attributes>
+      <mj-text font-size="14px" />
+      <mj-text line-height="1.7" />
+      <mj-text font-weight="400" />
+      <mj-all font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans','Helvetica Neue', sans-serif" />
+      <mj-text font-size="14px" />
+      <mj-text color="#000000" />
+      <mj-text line-height="1.7" />
+      <mj-text font-weight="400" />
+
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#efeeea" width="600px">
+    <mj-wrapper padding="20px 0px 20px 0px" border="none" direction="ltr" text-align="center">
+      <mj-section background-repeat="repeat" background-size="auto" background-position="top center" border="none" direction="ltr" text-align="left" padding="0px 0px 0px 0px">
+        <mj-column border="none" vertical-align="top" padding="0px 0px 0px 0px">
+          <mj-image align="center" height="auto" src="https://course-api.imbeltagy.tech/images/logo/logo-lg-900.png" padding="0px 0px 0px 0px"></mj-image>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+    <mj-section background-repeat="repeat" background-size="auto" background-position="top center" border="none" direction="ltr" text-align="left" padding="0px 0px 0px 0px">
+      <mj-column border="none" vertical-align="top" padding="0px 0px 0px 0px">
+        <mj-text align="left" padding="10px 25px 10px 25px">
+          <p data-start="170" data-end="204">Hello {{name}},</p>
+          <p data-start="206" data-end="324">Thank you for signing up for <strong data-start="235" data-end="250">BeltaCourse</strong>!<br data-start="251" data-end="254">
+            Please confirm your email address to continue creating your account.</p>
+          <p data-start="326" data-end="349">👉 <a href="{{confirmUrl}}">Confirm My Email</a></p>
+          <p data-start="351" data-end="425">If you didn’t sign up for BeltaCourse, you can safely ignore this email.</p>
+          <p data-start="427" data-end="465">Best regards,<br data-start="440" data-end="443">
+            The BeltaCourse Team</p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
