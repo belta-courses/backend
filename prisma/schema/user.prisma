@@ -1,0 +1,33 @@
+model User {
+  email      String   @unique
+  name       String
+  role       Role     @default(student)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Employee
+  gender        Gender?
+  date_of_birth String?
+
+  // Teacher
+  is_mentor     Boolean?
+  session_price Float?
+
+  // Student
+  is_new Boolean?
+
+  @@index([email])
+  @@map("users")
+}
+
+enum Role {
+  admin
+  employee
+  teacher
+  student
+}
+
+enum Gender {
+  male
+  female
+}
