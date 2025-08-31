@@ -26,8 +26,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Generate Prisma Client
-        run: pnpm prisma generate --no-engine
+      # Prisma is generated in the postinstall script
+      # - name: Generate Prisma Client
+      #   run: pnpm prisma generate --no-engine
 
       - name: Run Eslint
         run: pnpm lint
@@ -35,8 +36,9 @@ jobs:
       - name: Run Coverage Tests
         run: pnpm test:cov
 
-      - name: Build the Project
-        run: pnpm build
+      # Build will be done in heroku deployment
+      # - name: Build the Project
+      #   run: pnpm build
 
       - name: Install Heroku CLI
         run: |
