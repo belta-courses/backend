@@ -17,7 +17,7 @@ describe('AppController', () => {
   describe('root', () => {
     it('should return "Hello Message!"', () => {
       expect(appController.getHello()).toBe(
-        'Belta-Course server is working well! Thanks for checking❤️',
+        'Belta-Course server is not working well! Thanks for checking❤️',
       );
     });
   });
