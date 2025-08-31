@@ -27,7 +27,7 @@ jobs:
         run: pnpm install
 
       - name: Generate Prisma Client
-        run: pnpm prisma generate
+        run: pnpm prisma generate --no-engine
 
       - name: Run Eslint
         run: pnpm lint
