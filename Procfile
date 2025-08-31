@@ -1,1 +1,1 @@
-web: pnpm build
+web: pnpm start:prod
