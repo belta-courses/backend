@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - demo
+      - actions-demo
   pull_request:
     branches:
-      - demo
+      - actions-demo
 
 jobs:
   cache-and-install:
