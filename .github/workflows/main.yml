@@ -2,9 +2,6 @@ on:
   push:
     branches:
       - actions-demo
-  pull_request:
-    branches:
-      - actions-demo
 
 jobs:
   test-and-build:
