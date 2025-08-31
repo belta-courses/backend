@@ -29,7 +29,7 @@
     <mj-wrapper padding="20px 0px 20px 0px" border="none" direction="ltr" text-align="center">
       <mj-section background-repeat="repeat" background-size="auto" background-position="top center" border="none" direction="ltr" text-align="left" padding="0px 0px 0px 0px">
         <mj-column border="none" vertical-align="top" padding="0px 0px 0px 0px">
-          <mj-image align="center" height="auto" src="https://course-api.imbeltagy.tech/images/logo/logo-lg-900.png" padding="0px 0px 0px 0px"></mj-image>
+          <mj-image align="center" height="auto" src="{{logoLarge}}" padding="0px 0px 0px 0px"></mj-image>
         </mj-column>
       </mj-section>
     </mj-wrapper>

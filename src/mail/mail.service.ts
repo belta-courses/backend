@@ -3,6 +3,9 @@ import { createTransport, SendMailOptions, Transporter } from 'nodemailer';
 import { mailTemplatesPath } from 'src/lib/utils/path';
 import nodemailerMjmlPlugin from 'nodemailer-mjml';
 
+const HOST_URL =
+  process.env.HOST_URL || `http://localhost:${process.env.PORT || '3000'}`;
+
 @Injectable()
 export class MailService implements OnModuleInit {
   private transporter: Transporter;
@@ -46,7 +49,7 @@ export class MailService implements OnModuleInit {
       from: this.senderEmail,
       subject: emailSubjects[name],
       templateName: name,
-      templateData: data,
+      templateData: { ...templateStaticData[name], ...data },
       ...options,
     });
   }
@@ -78,3 +81,12 @@ type TemplateData =
         expirIn: string;
       };
     };
+
+const templateStaticData: Record<TemplateName, Record<string, string>> = {
+  'new-user': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+  'confirm-login': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+};
