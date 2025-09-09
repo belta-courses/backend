@@ -5,9 +5,11 @@ import { UsersModule } from './users/users.module';
 import { MailService } from './mail/mail.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { publicPath } from './lib/utils/path';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: publicPath,
     }),
