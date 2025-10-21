@@ -2,9 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { createTransport, SendMailOptions, Transporter } from 'nodemailer';
 import { mailTemplatesPath } from 'src/lib/utils/path';
 import nodemailerMjmlPlugin from 'nodemailer-mjml';
-
-const HOST_URL =
-  process.env.HOST_URL || `http://localhost:${process.env.PORT || '3000'}`;
+import { HOST_URL } from 'src/lib/config/constants';
 
 @Injectable()
 export class MailService implements OnModuleInit {

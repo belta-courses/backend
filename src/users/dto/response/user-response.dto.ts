@@ -10,6 +10,9 @@ export class UserResponseDto {
 
   @Expose()
   role: Role;
+
+  @Expose()
+  accessToken: string;
 }
 
 export class AdminUserResponseDto extends UserResponseDto {}

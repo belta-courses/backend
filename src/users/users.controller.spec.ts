@@ -5,12 +5,14 @@ import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { Gender, Role } from '@prisma/client';
 import { MailService } from 'src/mail/mail.service';
+import { JwtModule } from '@nestjs/jwt';
 
 describe('UsersController', () => {
   let controller: UsersController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [JwtModule],
       controllers: [UsersController],
       providers: [
         { provide: PrismaService, useValue: {} },
@@ -44,12 +46,21 @@ describe('UsersController', () => {
         date_of_birth: '1990-01-01',
       };
 
-      const user = await controller.create({
-        ...employeeDto,
-        is_mentor: true,
-        session_price: 100,
-        is_new: false,
-      });
+      const user = await controller.create(
+        {
+          ...employeeDto,
+          is_mentor: true,
+          session_price: 100,
+          is_new: false,
+        },
+        {
+          user: {
+            sub: employeeDto.email,
+            role: Role.employee,
+            purpose: 'register',
+          },
+        },
+      );
       expect(user).not.toHaveProperty('is_mentor');
       expect(user).not.toHaveProperty('session_price');
       expect(user).not.toHaveProperty('is_new');
@@ -64,12 +75,21 @@ describe('UsersController', () => {
         session_price: 100,
       };
 
-      const user = await controller.create({
-        ...teacherDto,
-        gender: Gender.male,
-        date_of_birth: '1990-01-01',
-        is_new: false,
-      });
+      const user = await controller.create(
+        {
+          ...teacherDto,
+          gender: Gender.male,
+          date_of_birth: '1990-01-01',
+          is_new: false,
+        },
+        {
+          user: {
+            sub: teacherDto.email,
+            role: Role.teacher,
+            purpose: 'register',
+          },
+        },
+      );
       expect(user).not.toHaveProperty('gender');
       expect(user).not.toHaveProperty('date_of_birth');
       expect(user).not.toHaveProperty('is_new');
@@ -83,13 +103,22 @@ describe('UsersController', () => {
         is_new: true,
       };
 
-      const user = await controller.create({
-        ...studentDto,
-        is_mentor: true,
-        session_price: 100,
-        gender: Gender.male,
-        date_of_birth: '1990-01-01',
-      });
+      const user = await controller.create(
+        {
+          ...studentDto,
+          is_mentor: true,
+          session_price: 100,
+          gender: Gender.male,
+          date_of_birth: '1990-01-01',
+        },
+        {
+          user: {
+            sub: studentDto.email,
+            role: Role.student,
+            purpose: 'register',
+          },
+        },
+      );
       expect(user).not.toHaveProperty('is_mentor');
       expect(user).not.toHaveProperty('session_price');
       expect(user).not.toHaveProperty('gender');
