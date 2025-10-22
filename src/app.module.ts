@@ -6,6 +6,7 @@ import { MailService } from './mail/mail.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { publicPath } from './lib/utils/path';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
       rootPath: publicPath,
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

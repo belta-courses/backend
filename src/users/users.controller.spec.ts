@@ -55,9 +55,9 @@ describe('UsersController', () => {
         },
         {
           user: {
-            sub: employeeDto.email,
-            role: Role.employee,
-            purpose: 'register',
+            sub: 'admin@example.com',
+            role: Role.admin,
+            purpose: null,
           },
         },
       );
@@ -84,9 +84,9 @@ describe('UsersController', () => {
         },
         {
           user: {
-            sub: teacherDto.email,
-            role: Role.teacher,
-            purpose: 'register',
+            sub: 'admin@example.com',
+            role: Role.admin,
+            purpose: null,
           },
         },
       );
@@ -113,9 +113,9 @@ describe('UsersController', () => {
         },
         {
           user: {
-            sub: studentDto.email,
-            role: Role.student,
-            purpose: 'register',
+            sub: 'admin@example.com',
+            role: Role.admin,
+            purpose: null,
           },
         },
       );

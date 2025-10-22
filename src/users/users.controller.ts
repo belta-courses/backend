@@ -7,8 +7,6 @@ import {
   Param,
   Delete,
   ValidationPipe,
-  HttpCode,
-  HttpStatus,
   UseGuards,
   Request,
   UnauthorizedException,
@@ -19,10 +17,9 @@ import { UpdateUserDto } from './dto/request/update-user.dto';
 import { CreateUserValidationPipe } from './pipes/create-user-validation.pipe';
 import { userResponseDtoMap } from './dto/response/user-response.dto';
 import { plainToInstance } from 'class-transformer';
-import { SignInDto } from './dto/request/sign-in.dto';
-import { AuthGuard } from 'src/lib/guards/auth.guard';
 import { JwtPayload } from './types';
 import { Role } from '@prisma/client';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -37,12 +34,8 @@ export class UsersController {
   ) {
     const userPayload = request['user'];
 
-    if (
-      (userPayload.purpose !== 'register' ||
-        userPayload.sub !== createUserDto.email) &&
-      userPayload.role !== Role.admin
-    )
-      throw new UnauthorizedException();
+    if (userPayload.role !== Role.admin)
+      throw new UnauthorizedException('Only admin can create users');
 
     const newUser = await this.usersService.create(createUserDto);
     return plainToInstance(userResponseDtoMap[newUser.role], newUser, {
@@ -50,26 +43,9 @@ export class UsersController {
     });
   }
 
-  @Post('/sign-in')
-  @HttpCode(HttpStatus.OK)
-  async signIn(@Body() signInDto: SignInDto) {
-    return this.usersService.signIn(signInDto);
-  }
-
   @Get()
   findAll() {
     return this.usersService.findAll();
-  }
-
-  @UseGuards(AuthGuard)
-  @Get('/me')
-  async getMe(@Request() request: { user: JwtPayload }) {
-    const userPayload = request['user'];
-    const user = await this.usersService.findOne(userPayload.sub);
-
-    return plainToInstance(userResponseDtoMap[user.role], user, {
-      excludeExtraneousValues: true,
-    });
   }
 
   @UseGuards(AuthGuard)
