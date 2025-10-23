@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { PrismaService } from 'src/prisma.service';
-import { MailService } from 'src/mail/mail.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/lib/config/constants';
 
 @Module({
@@ -14,6 +13,7 @@ import { jwtConstants } from 'src/lib/config/constants';
     }),
   ],
   controllers: [UsersController],
-  providers: [PrismaService, JwtService, MailService, UsersService],
+  providers: [PrismaService, UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
