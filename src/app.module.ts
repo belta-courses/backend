@@ -7,6 +7,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { publicPath } from './lib/utils/path';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { StorageController } from './storage/storage.controller';
+import { StorageService } from './storage/storage.service';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -16,8 +19,9 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    StorageModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, MailService],
+  controllers: [AppController, StorageController],
+  providers: [AppService, MailService, StorageService],
 })
 export class AppModule {}
