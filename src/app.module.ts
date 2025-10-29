@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { StorageController } from './storage/storage.controller';
 import { StorageService } from './storage/storage.service';
 import { StorageModule } from './storage/storage.module';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -22,6 +23,6 @@ import { StorageModule } from './storage/storage.module';
     StorageModule,
   ],
   controllers: [AppController, StorageController],
-  providers: [AppService, MailService, StorageService],
+  providers: [AppService, MailService, PrismaService, StorageService],
 })
 export class AppModule {}
