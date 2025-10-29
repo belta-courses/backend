@@ -1,19 +1,31 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { AllConfig } from 'src/config/config.type';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class StorageService {
-  client = new S3Client({
-    region: process.env.S3_REGION,
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-    },
-  });
-  bucket = process.env.S3_BUCKET!;
+  client: S3Client;
+  bucket: string;
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService<AllConfig>,
+  ) {
+    this.client = new S3Client({
+      region: '123',
+      credentials: {
+        accessKeyId: this.configService.getOrThrow('s3.accessKeyId', {
+          infer: true,
+        }),
+        secretAccessKey: this.configService.getOrThrow('s3.secretAccessKey', {
+          infer: true,
+        }),
+      },
+    });
+    this.bucket = this.configService.getOrThrow('s3.bucket', { infer: true });
+  }
 
   async uploadFile(file: Express.Multer.File) {
     try {

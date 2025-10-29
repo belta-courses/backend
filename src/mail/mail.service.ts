@@ -1,37 +1,34 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { createTransport, SendMailOptions, Transporter } from 'nodemailer';
-import { mailTemplatesPath } from 'src/lib/utils/path';
 import nodemailerMjmlPlugin from 'nodemailer-mjml';
-import { HOST_URL } from 'src/lib/config/constants';
+import { HOST_URL, mailTemplatesPath } from 'src/config/constants.config';
+import { ConfigService } from '@nestjs/config';
+import { AllConfig } from 'src/config/config.type';
 
 @Injectable()
-export class MailService implements OnModuleInit {
+export class MailService {
   private transporter: Transporter;
   private senderEmail: string;
 
-  onModuleInit() {
-    const { NODEMAILER_USER, NODEMAILER_PASS, NODEMAILER_SENDER_EMAIL } =
-      process.env;
-
-    if (!NODEMAILER_USER) throw new Error('NODEMAILER_USER is not set');
-    if (!NODEMAILER_PASS) throw new Error('NODEMAILER_PASS is not set');
-    if (!NODEMAILER_SENDER_EMAIL)
-      throw new Error('NODEMAILER_SENDER_EMAIL is not set');
-
+  constructor(private readonly configService: ConfigService<AllConfig>) {
     const transporter = createTransport({
       service: 'gmail',
       auth: {
-        user: NODEMAILER_USER,
-        pass: NODEMAILER_PASS,
+        user: this.configService.getOrThrow('mail.user', { infer: true }),
+        pass: this.configService.getOrThrow('mail.pass', { infer: true }),
       },
     });
     transporter.use(
       'compile',
-      nodemailerMjmlPlugin({ templateFolder: mailTemplatesPath }),
+      nodemailerMjmlPlugin({
+        templateFolder: mailTemplatesPath,
+      }),
     );
 
     this.transporter = transporter;
-    this.senderEmail = NODEMAILER_SENDER_EMAIL;
+    this.senderEmail = this.configService.getOrThrow('mail.senderEmail', {
+      infer: true,
+    });
   }
 
   async sendTemplate({

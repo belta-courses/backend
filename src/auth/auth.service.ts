@@ -4,8 +4,10 @@ import { UsersService } from 'src/users/users.service';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/users/types';
-import { devEmails } from 'src/lib/config/dev-vars';
 import { CreateUserDto } from 'src/users/dto/request/create-user.dto';
+import { ConfigService } from '@nestjs/config';
+import { AllConfig } from 'src/config/config.type';
+import { devEmails } from 'src/config/constants.config';
 
 @Injectable()
 export class AuthService {
@@ -13,9 +15,14 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly mail: MailService,
+    private readonly configService: ConfigService<AllConfig>,
   ) {}
 
   async signIn(signInDto: SignInDto) {
+    const nodeEnv = this.configService.get('app.nodeEnv', {
+      infer: true,
+    });
+
     try {
       const user = await this.usersService.findOne(signInDto.email);
       const payload: JwtPayload = {
@@ -25,10 +32,7 @@ export class AuthService {
       };
       const accessToken = await this.jwtService.signAsync(payload);
 
-      if (
-        process.env.NODE_ENV !== 'production' &&
-        devEmails.includes(signInDto.email)
-      ) {
+      if (nodeEnv !== 'production' && devEmails.includes(signInDto.email)) {
         return { accessToken };
       } else {
         await this.mail.sendTemplate({
@@ -50,10 +54,7 @@ export class AuthService {
         };
         const oneTimeToken = await this.jwtService.signAsync(payload);
 
-        if (
-          process.env.NODE_ENV !== 'production' &&
-          devEmails.includes(signInDto.email)
-        ) {
+        if (nodeEnv !== 'production' && devEmails.includes(signInDto.email)) {
           return { oneTimeToken };
         } else {
           await this.mail.sendTemplate({
