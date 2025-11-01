@@ -14,7 +14,9 @@ export class StorageService {
     private readonly configService: ConfigService<AllConfig>,
   ) {
     this.client = new S3Client({
-      region: '123',
+      region: this.configService.getOrThrow('s3.region', {
+        infer: true,
+      }),
       credentials: {
         accessKeyId: this.configService.getOrThrow('s3.accessKeyId', {
           infer: true,
