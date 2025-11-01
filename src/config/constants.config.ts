@@ -16,3 +16,5 @@ export const devEmails = [
   'teacher@beltacourses.com',
   'admin@beltacourses.com',
 ];
+
+export const jwtAuthName = 'JWT-auth';
