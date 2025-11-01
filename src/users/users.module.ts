@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from 'src/lib/config/constants';
+import { jwtConstants } from 'src/config/constants.config';
 
 @Module({
   imports: [

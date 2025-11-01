@@ -1,25 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MailService } from './mail.service';
+import { StorageService } from './storage.service';
+import { PrismaService } from 'src/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/config/config.type';
 
-describe('MailService', () => {
-  let service: MailService;
+describe('StorageService', () => {
+  let service: StorageService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        MailService,
+        { provide: PrismaService, useValue: {} },
         {
           provide: ConfigService<AllConfig>,
           useValue: {
             getOrThrow: jest.fn(),
           },
         },
+        StorageService,
       ],
     }).compile();
 
-    service = module.get<MailService>(MailService);
+    service = module.get<StorageService>(StorageService);
   });
 
   it('should be defined', () => {
