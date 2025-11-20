@@ -1,22 +1,62 @@
 model User {
-  email      String   @id
-  name       String
-  role       Role     @default(student)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id      String  @id @default(uuid())
+  email   String
+  name    String
+  coverId String?
+  cover   File?   @relation(fields: [coverId], references: [id])
+  role    Role    @default(student)
+
+  // Teacher
+  bio String?
 
   // Employee
   gender        Gender?
   date_of_birth String?
+  accessGroupId String?
+  accessGroup   AccessGroup? @relation(fields: [accessGroupId], references: [id])
 
-  // Teacher
-  is_mentor     Boolean?
-  session_price Float?
+  created_at          DateTime           @default(now())
+  updated_at          DateTime           @updatedAt
+  mentorships         Mentorship[]
+  saveLists           SaveList[]
+  ownedLists          OwnedList[]
+  completedLectures   CompletedLecture[]
+  wallets             Wallet[]
+  withdraws           Withdraw[]
+  offers              Offer[]
+  refunds             Refund[]
+  spendingTransactions Transaction[]      @relation("StudentTransactions")
+  gettingTransactions Transaction[]      @relation("TeacherTransactions")
+  courses             Course[]
 
-  // Student
-  is_new Boolean?
-
+  @@index(email)
   @@map("users")
+}
+
+model AccessGroup {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+  permissions Permission[]
+  users       User[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("access_groups")
+}
+
+model Permission {
+  id            String      @id @default(uuid())
+  key           String
+  accessGroupId String
+  accessGroup   AccessGroup @relation(fields: [accessGroupId], references: [id])
+
+  created_at DateTime @default(now())
+
+  @@unique([key, accessGroupId])
+  @@index(accessGroupId)
+  @@map("permissions")
 }
 
 enum Role {

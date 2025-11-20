@@ -1,14 +1,18 @@
 model File {
-  id String @id @default(uuid())
-  key String
-  url String
-  name String
-  size Int
+  id        String @id @default(uuid())
+  key       String
+  url       String
+  name      String
+  size      Int
   mime_type String
-  bucket String
-  created_at DateTime @default(now())
-  deleted_at DateTime?
-  deleted Boolean @default(false)
+  bucket    String
+
+  created_at        DateTime  @default(now())
+  deleted_at        DateTime?
+  users             User[]
+  coverCourses      Course[]  @relation("coverFile")
+  introVideoCourses Course[]  @relation("introVideoFile")
+  lectures          Lecture[]
 
   @@map("files")
 }
