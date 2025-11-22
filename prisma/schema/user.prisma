@@ -1,6 +1,6 @@
 model User {
   id      String  @id @default(uuid())
-  email   String
+  email   String  @unique
   name    String
   coverId String?
   cover   File?   @relation(fields: [coverId], references: [id])
@@ -15,21 +15,20 @@ model User {
   accessGroupId String?
   accessGroup   AccessGroup? @relation(fields: [accessGroupId], references: [id])
 
-  created_at          DateTime           @default(now())
-  updated_at          DateTime           @updatedAt
-  mentorships         Mentorship[]
-  saveLists           SaveList[]
-  ownedLists          OwnedList[]
-  completedLectures   CompletedLecture[]
-  wallets             Wallet[]
-  withdraws           Withdraw[]
-  offers              Offer[]
-  refunds             Refund[]
+  created_at           DateTime           @default(now())
+  updated_at           DateTime           @updatedAt
+  mentorships          Mentorship[]
+  saveLists            SaveList[]
+  ownedLists           OwnedList[]
+  completedLectures    CompletedLecture[]
+  wallets              Wallet[]
+  withdraws            Withdraw[]
+  offers               Offer[]
+  refunds              Refund[]
   spendingTransactions Transaction[]      @relation("StudentTransactions")
-  gettingTransactions Transaction[]      @relation("TeacherTransactions")
-  courses             Course[]
+  gettingTransactions  Transaction[]      @relation("TeacherTransactions")
+  courses              Course[]
 
-  @@index(email)
   @@map("users")
 }
 

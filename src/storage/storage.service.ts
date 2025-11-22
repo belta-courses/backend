@@ -71,7 +71,7 @@ export class StorageService {
   async deleteFile(id: string) {
     const metadata = await this.prisma.file.update({
       where: { id },
-      data: { deleted_at: new Date(), deleted: true },
+      data: { deleted_at: new Date() },
     });
     return metadata;
   }
