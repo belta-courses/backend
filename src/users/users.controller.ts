@@ -32,7 +32,7 @@ import {
 import { jwtAuthName } from 'src/config/constants.config';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
-import { JwtPayload } from './types';
+import { JwtPayload } from './users.types';
 import { PermissionsGuard } from 'src/auth/permissions.guard';
 import { Permission } from 'src/config/permissions.config';
 import { AccessedBy } from 'src/auth/permissions.decorator';
@@ -78,7 +78,7 @@ export class UsersController {
   @Get('/me')
   async getMe(@Request() request: { user: JwtPayload }) {
     const userPayload = request['user'];
-    const user = await this.usersService.findOne(userPayload.sub);
+    const user = await this.usersService.findOne(userPayload.email);
 
     return plainToInstance(userResponseDtoMap[user.role], user, {
       excludeExtraneousValues: true,
@@ -98,7 +98,7 @@ export class UsersController {
     updateUserDto: UpdateUserDto,
     @Request() request: { user: JwtPayload },
   ) {
-    const { sub: email } = request['user'];
+    const { email } = request['user'];
     const oldUser = await this.usersService.findOne(email);
 
     const user = await this.usersService.update(

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AccessGroup, Role } from '@prisma/client';
-import { JwtPayload } from 'src/users/types';
+import { JwtPayload } from 'src/users/users.types';
 import { PermissionsGuard } from './permissions.guard';
 import { PrismaService } from 'src/prisma.service';
 import { UsersService } from 'src/users/users.service';
@@ -107,7 +107,8 @@ describe('PermissionsGuard', () => {
   describe('canActivate', () => {
     it('should return true when no permissions are required', async () => {
       const context = mockExecutionContext({
-        sub: 'test@example.com',
+        sub: '1',
+        email: 'test@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -125,7 +126,8 @@ describe('PermissionsGuard', () => {
 
     it('should return true for admin users regardless of permissions', async () => {
       const context = mockExecutionContext({
-        sub: 'admin@example.com',
+        sub: '1',
+        email: 'admin@example.com',
         role: Role.admin,
         purpose: null,
       });
@@ -142,7 +144,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false for student users when permissions are required', async () => {
       const context = mockExecutionContext({
-        sub: 'student@example.com',
+        sub: '1',
+        email: 'student@example.com',
         role: Role.student,
         purpose: null,
       });
@@ -159,7 +162,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false for teacher users when permissions are required', async () => {
       const context = mockExecutionContext({
-        sub: 'teacher@example.com',
+        sub: '1',
+        email: 'teacher@example.com',
         role: Role.teacher,
         purpose: null,
       });
@@ -176,7 +180,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false for employee without access group', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -199,7 +204,8 @@ describe('PermissionsGuard', () => {
 
     it('should return true for employee with matching permission', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -226,7 +232,8 @@ describe('PermissionsGuard', () => {
 
     it('should return true for employee with at least one matching permission', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -252,7 +259,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false for employee without matching permissions', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -274,7 +282,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false when access group does not exist', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -296,7 +305,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false when access group has no permissions', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -319,7 +329,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false when user service throws an error', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });
@@ -339,7 +350,8 @@ describe('PermissionsGuard', () => {
 
     it('should return false when prisma service throws an error', async () => {
       const context = mockExecutionContext({
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       });

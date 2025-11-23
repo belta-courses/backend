@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Permission, Role } from '@prisma/client';
-import { JwtPayload } from 'src/users/types';
+import { JwtPayload } from 'src/users/users.types';
 import { PERMISSIONS_KEY } from './permissions.decorator';
 import { PrismaService } from 'src/prisma.service';
 import { UsersService } from 'src/users/users.service';
@@ -23,7 +23,7 @@ export class PermissionsGuard implements CanActivate {
       return true;
     }
     const {
-      user: { role, sub: email },
+      user: { role, email },
     } = context.switchToHttp().getRequest<{ user: JwtPayload }>();
 
     if (role === Role.admin) return true;

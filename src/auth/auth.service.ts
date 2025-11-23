@@ -7,15 +7,15 @@ import { SignInDto } from 'src/users/dto/request/sign-in.dto';
 import { UsersService } from 'src/users/users.service';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload, JwtPurpose } from 'src/users/types';
+import { JwtPayload, JwtPurpose } from 'src/users/users.types';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/config/config.type';
 import { devEmails } from 'src/config/constants.config';
-import { RegisterDto } from './dto/request/register.dto';
 import { PrismaService } from 'src/prisma.service';
 import { CreateAccessGroupDto } from './dto/request/create-access-group.dto';
 import { UpdateAccessGroupDto } from './dto/request/update-access-group.dto';
 import { Role } from '@prisma/client';
+import { CreateUserDto } from 'src/users/dto/request/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +35,8 @@ export class AuthService {
     try {
       const user = await this.usersService.findOne(signInDto.email);
       const payload: JwtPayload = {
-        sub: user.email,
+        sub: user.id,
+        email: user.email,
         role: user.role,
         purpose: null,
       };
@@ -57,7 +58,8 @@ export class AuthService {
     } catch (error) {
       if (error instanceof NotFoundException) {
         const payload: JwtPayload = {
-          sub: signInDto.email,
+          sub: 'new-user',
+          email: signInDto.email,
           role: null,
           purpose: JwtPurpose.Register,
         };
@@ -83,7 +85,7 @@ export class AuthService {
     }
   }
 
-  async register(createUserDto: RegisterDto) {
+  async register(createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 

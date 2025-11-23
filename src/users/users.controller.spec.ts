@@ -8,7 +8,7 @@ import { MailService } from 'src/mail/mail.service';
 import { JwtModule } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
-import { JwtPayload } from './types';
+import { JwtPayload } from './users.types';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -113,7 +113,8 @@ describe('UsersController', () => {
   describe('getMe', () => {
     it('should return the current user profile', async () => {
       const userPayload: JwtPayload = {
-        sub: 'student@example.com',
+        sub: '1',
+        email: 'student@example.com',
         role: Role.student,
         purpose: null,
       };
@@ -142,7 +143,8 @@ describe('UsersController', () => {
   describe('updateMe', () => {
     it('should update the current user profile', async () => {
       const userPayload: JwtPayload = {
-        sub: 'student@example.com',
+        sub: '1',
+        email: 'student@example.com',
         role: Role.student,
         purpose: null,
       };
@@ -203,7 +205,8 @@ describe('UsersController', () => {
   describe('update', () => {
     it('should update a user by email (admin updating student)', async () => {
       const adminPayload: JwtPayload = {
-        sub: 'admin@example.com',
+        sub: '1',
+        email: 'admin@example.com',
         role: Role.admin,
         purpose: null,
       };
@@ -246,7 +249,8 @@ describe('UsersController', () => {
 
     it('should throw ForbiddenException when non-admin tries to update admin', async () => {
       const employeePayload: JwtPayload = {
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       };
@@ -278,7 +282,8 @@ describe('UsersController', () => {
 
     it('should allow employee to update student', async () => {
       const employeePayload: JwtPayload = {
-        sub: 'employee@example.com',
+        sub: '1',
+        email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
       };
@@ -320,7 +325,8 @@ describe('UsersController', () => {
 
     it('should allow admin to update another admin', async () => {
       const adminPayload: JwtPayload = {
-        sub: 'admin1@example.com',
+        sub: '1',
+        email: 'admin1@example.com',
         role: Role.admin,
         purpose: null,
       };

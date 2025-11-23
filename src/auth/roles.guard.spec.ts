@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
 import { RolesGuard } from './roles.guard';
 import { ROLES_KEY } from './roles.decorator';
-import { JwtPayload, JwtPurpose } from 'src/users/types';
+import { JwtPayload, JwtPurpose } from 'src/users/users.types';
 
 describe('RolesGuard', () => {
   let guard: RolesGuard;
@@ -47,6 +47,7 @@ describe('RolesGuard', () => {
     it('should return true when no roles are required (decorator not set)', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.student,
         purpose: null,
       };
@@ -68,6 +69,7 @@ describe('RolesGuard', () => {
     it('should return true when user role matches required role', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.admin,
         purpose: null,
       };
@@ -83,6 +85,7 @@ describe('RolesGuard', () => {
     it('should return true when user role matches one of multiple required roles', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.teacher,
         purpose: null,
       };
@@ -100,6 +103,7 @@ describe('RolesGuard', () => {
     it('should return false when user role does not match required role', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.student,
         purpose: null,
       };
@@ -115,6 +119,7 @@ describe('RolesGuard', () => {
     it('should return false when user role is null and role is required', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: null,
         purpose: JwtPurpose.Register,
       };

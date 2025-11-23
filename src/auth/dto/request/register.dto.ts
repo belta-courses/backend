@@ -3,7 +3,7 @@ import { Role } from '@prisma/client';
 import { IsEnum } from 'class-validator';
 import { CreateUserDto } from 'src/users/dto/request/create-user.dto';
 
-export class RegisterDto extends OmitType(CreateUserDto, ['role']) {
+export class RegisterDto extends OmitType(CreateUserDto, ['role', 'email']) {
   @ApiProperty({
     description: 'The role of the user, only student or teacher',
     example: Role.student,

@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { JwtPurpose } from 'src/users/types';
+import { JwtPurpose } from 'src/users/users.types';
 
 export const JWT_PURPOSE_KEY = 'jwt_purpose';
 export const JWTPurpose = (...purposes: JwtPurpose[]) =>

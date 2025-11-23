@@ -7,7 +7,7 @@ import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from './types';
+import { JwtPayload } from './users.types';
 import { StorageService } from 'src/storage/storage.service';
 
 @Injectable()
@@ -35,7 +35,8 @@ export class UsersService {
 
     const newUser = await this.prisma.user.create({ data: createUserDto });
     const payload: JwtPayload = {
-      sub: newUser.email,
+      sub: newUser.id,
+      email: newUser.email,
       role: newUser.role,
       purpose: null,
     };

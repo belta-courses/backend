@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtPayload, JwtPurpose } from 'src/users/types';
+import { JwtPayload, JwtPurpose } from 'src/users/users.types';
 import { JWT_PURPOSE_KEY } from './jwt-purpose.decorator';
 
 @Injectable()

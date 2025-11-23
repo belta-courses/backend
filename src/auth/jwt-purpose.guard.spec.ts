@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JWTPurposeGuard } from './jwt-purpose.guard';
-import { JwtPayload, JwtPurpose } from 'src/users/types';
+import { JwtPayload, JwtPurpose } from 'src/users/users.types';
 import { JWT_PURPOSE_KEY } from './jwt-purpose.decorator';
 import { Role } from '@prisma/client';
 
@@ -47,6 +47,7 @@ describe('JWTPurposeGuard', () => {
     it('should return true when no purpose is required (decorator not set)', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.student,
         purpose: JwtPurpose.Register,
       };
@@ -68,6 +69,7 @@ describe('JWTPurposeGuard', () => {
     it('should return true when user purpose matches one of multiple required purposes', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.student,
         purpose: JwtPurpose.Register,
       };
@@ -86,6 +88,7 @@ describe('JWTPurposeGuard', () => {
     it('should return false when user purpose does not match required purpose', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.student,
         purpose: null,
       };
@@ -103,6 +106,7 @@ describe('JWTPurposeGuard', () => {
     it('should return false when user purpose is null and purpose is required', () => {
       const user: JwtPayload = {
         sub: '123',
+        email: 'test@example.com',
         role: Role.admin,
         purpose: null,
       };

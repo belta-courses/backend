@@ -6,7 +6,6 @@ import {
   HttpStatus,
   UseGuards,
   Request,
-  BadRequestException,
   Get,
   Param,
   Patch,
@@ -15,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { JwtPayload, JwtPurpose } from 'src/users/types';
+import { JwtPayload, JwtPurpose } from 'src/users/users.types';
 import { SignInDto } from 'src/users/dto/request/sign-in.dto';
 import { plainToInstance } from 'class-transformer';
 import { userResponseDtoMap } from 'src/users/dto/response/user-response.dto';
@@ -32,6 +31,7 @@ import { UsersService } from 'src/users/users.service';
 import { PermissionsGuard } from './permissions.guard';
 import { AccessedBy } from './permissions.decorator';
 import { AccessGroupDto } from './dto/response/access-group.dto';
+import { Role } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
@@ -56,15 +56,15 @@ export class AuthController {
   @JWTPurpose(JwtPurpose.Register)
   @Post('/register')
   async register(
-    @Body(ValidationPipe) createUserDto: RegisterDto,
+    @Body(ValidationPipe) registerDto: RegisterDto,
     @Request() request: { user: JwtPayload },
   ) {
-    const userPayload = request['user'];
-
-    if (userPayload.sub !== createUserDto.email)
-      throw new BadRequestException('Email mismatch');
-
-    const newUser = await this.authService.register(createUserDto);
+    const { email, role } = request['user'];
+    const newUser = await this.authService.register({
+      ...registerDto,
+      email,
+      role: role || Role.student,
+    });
     return plainToInstance(userResponseDtoMap[newUser.role], newUser, {
       excludeExtraneousValues: true,
     });
