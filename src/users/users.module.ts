@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/config/constants.config';
 import { StorageService } from 'src/storage/storage.service';
+import { StorageModule } from 'src/storage/storage.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { StorageService } from 'src/storage/storage.service';
       global: true,
       secret: jwtConstants.secret,
     }),
+    StorageModule,
   ],
   controllers: [UsersController],
   providers: [PrismaService, UsersService, StorageService],

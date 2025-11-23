@@ -59,12 +59,22 @@ export class UsersService {
   }
 
   async update(email: string, updateUserDto: UpdateUserDto) {
+    const oldUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    if (!oldUser) {
+      throw new NotFoundException('User not found');
+    }
     const user = await this.prisma.user.update({
       where: { email },
       data: updateUserDto,
     });
 
-    // TODO: if coverId changed schedule a job to delete the old cover
+    // Delete old cover file
+    if (oldUser.coverId && oldUser.coverId !== user.coverId) {
+      await this.storageService.deleteFile(oldUser.coverId);
+    }
+
     return user;
   }
 

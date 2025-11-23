@@ -6,8 +6,6 @@ import { MailService } from './mail/mail.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { StorageController } from './storage/storage.controller';
-import { StorageService } from './storage/storage.service';
 import { StorageModule } from './storage/storage.module';
 import { PrismaService } from './prisma.service';
 import appConfig from './config/app.config';
@@ -17,6 +15,9 @@ import s3Config from './config/s3.config';
 import jwtConfig from './config/jwt.config';
 import mailConfig from './config/mail.config';
 import { joiSchema } from './config/joi.schema';
+import { BullModule } from '@nestjs/bullmq';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { ExpressAdapter } from '@bull-board/express';
 
 @Module({
   imports: [
@@ -28,11 +29,22 @@ import { joiSchema } from './config/joi.schema';
     ServeStaticModule.forRoot({
       rootPath: publicPath,
     }),
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
+    BullBoardModule.forRoot({
+      route: '/queues',
+      adapter: ExpressAdapter,
+    }),
+
     UsersModule,
     AuthModule,
     StorageModule,
   ],
-  controllers: [AppController, StorageController],
-  providers: [AppService, MailService, PrismaService, StorageService],
+  controllers: [AppController],
+  providers: [AppService, MailService, PrismaService],
 })
 export class AppModule {}

@@ -17,6 +17,12 @@ describe('StorageService', () => {
             getOrThrow: jest.fn(),
           },
         },
+        {
+          provide: 'BullQueue_storage',
+          useValue: {
+            add: jest.fn(),
+          },
+        },
         StorageService,
       ],
     }).compile();
