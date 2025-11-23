@@ -30,8 +30,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { jwtAuthName } from 'src/config/constants.config';
-import { RolesGuard } from 'src/auth/roles.guard';
-import { Roles } from 'src/auth/roles.decorator';
 import { JwtPayload } from './users.types';
 import { PermissionsGuard } from 'src/auth/permissions.guard';
 import { Permission } from 'src/config/permissions.config';
@@ -43,15 +41,14 @@ import { AccessedBy } from 'src/auth/permissions.decorator';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
-  @Roles(Role.admin, Role.employee)
-  @AccessedBy(Permission.USERS_CREATE, Permission.USERS_FULL_ACCESS)
   @ApiOperation({ summary: 'Create a new user (by Admins only)' })
   @ApiResponse({
     status: 201,
     description: 'The user has been successfully created',
     type: StudentUserResponseDto,
   })
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @AccessedBy(Permission.USERS_CREATE, Permission.USERS_FULL_ACCESS)
   @Post()
   async create(
     @Body(ValidationPipe, CreateUserValidationPipe)
@@ -68,13 +65,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get my profile' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The user has been successfully retrieved',
     type: StudentUserResponseDto,
   })
+  @UseGuards(AuthGuard)
   @Get('/me')
   async getMe(@Request() request: { user: JwtPayload }) {
     const userPayload = request['user'];
@@ -85,13 +82,13 @@ export class UsersController {
     });
   }
 
-  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Update my profile' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The profile has been successfully updated',
     type: StudentUserResponseDto,
   })
+  @UseGuards(AuthGuard)
   @Patch('/me')
   async updateMe(
     @Body(ValidationPipe, CreateUserValidationPipe)
@@ -115,9 +112,6 @@ export class UsersController {
     });
   }
 
-  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
-  @Roles(Role.admin, Role.employee)
-  @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @ApiOperation({ summary: 'Get a user by email (by Staffs only)' })
   @ApiResponse({
     status: 200,
@@ -128,20 +122,21 @@ export class UsersController {
     name: 'email',
     example: 'student@beltacourses.com',
   })
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @Get('/:email')
   findOne(@Param('email') email: string) {
     return this.usersService.findOne(email);
   }
 
-  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
-  @Roles(Role.admin, Role.employee)
-  @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
   @ApiOperation({ summary: 'Update a user by email (by Staffs only)' })
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully updated',
     type: StudentUserResponseDto,
   })
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
   @Patch('/:email')
   async update(
     @Param('email') email: string,

@@ -15,8 +15,6 @@ import { plainToInstance } from 'class-transformer';
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
-  @Post('upload-file')
-  @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -31,6 +29,8 @@ export class StorageController {
     description: 'The file has been successfully uploaded',
     type: UploadResponseDto,
   })
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('upload-file')
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     const metadata = await this.storageService.uploadFile(file);
 
