@@ -33,6 +33,9 @@ import { jwtAuthName } from 'src/config/constants.config';
 import { RolesGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { JwtPayload } from './types';
+import { PermissionsGuard } from 'src/auth/permissions.guard';
+import { Permission } from 'src/config/permissions.config';
+import { AccessedBy } from 'src/auth/permissions.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth(jwtAuthName)
@@ -40,8 +43,9 @@ import { JwtPayload } from './types';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.admin)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
+  @AccessedBy(Permission.USERS_CREATE, Permission.USERS_FULL_ACCESS)
   @ApiOperation({ summary: 'Create a new user (by Admins only)' })
   @ApiResponse({
     status: 201,
@@ -111,8 +115,9 @@ export class UsersController {
     });
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
+  @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @ApiOperation({ summary: 'Get a user by email (by Staffs only)' })
   @ApiResponse({
     status: 200,
@@ -128,8 +133,9 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
+  @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
   @ApiOperation({ summary: 'Update a user by email (by Staffs only)' })
   @ApiResponse({
     status: 200,

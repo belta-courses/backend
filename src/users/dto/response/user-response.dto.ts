@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Gender, Role } from '@prisma/client';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { AccessGroupDto } from 'src/auth/dto/response/access-group.dto';
 
 export class UserResponseDto {
   @ApiProperty({
@@ -32,6 +33,9 @@ export class UserResponseDto {
   @Expose()
   cover: string;
 
+  @ApiProperty({
+    description: 'The access token of the user',
+  })
   @Expose()
   accessToken: string;
 }
@@ -53,6 +57,13 @@ export class EmployeeUserResponseDto extends UserResponseDto {
   })
   @Expose()
   date_of_birth: string;
+
+  @ApiProperty({
+    description: 'The access group of the user',
+  })
+  @Expose()
+  @Type(() => AccessGroupDto)
+  accessGroup: AccessGroupDto;
 }
 
 export class TeacherUserResponseDto extends UserResponseDto {
