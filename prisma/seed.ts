@@ -10,8 +10,8 @@ async function main() {
   await prisma.saveList.deleteMany();
   await prisma.ownedList.deleteMany();
   await prisma.withdraw.deleteMany();
-  await prisma.transaction.deleteMany();
   await prisma.refund.deleteMany();
+  await prisma.transaction.deleteMany();
   await prisma.mentorship.deleteMany();
   await prisma.lecture.deleteMany();
   await prisma.module.deleteMany();
@@ -143,7 +143,7 @@ async function main() {
   // 4. Create Users
   const adminUser = await prisma.user.create({
     data: {
-      email: 'admin@belta-courses.com',
+      email: 'admin@beltacourses.com',
       name: 'Admin User',
       role: 'admin',
       coverId: files[0].id,

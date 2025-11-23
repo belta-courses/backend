@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
+import { PrismaService } from 'src/prisma.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -18,6 +19,7 @@ describe('AuthController', () => {
         { provide: UsersService, useValue: {} },
         { provide: JwtService, useValue: {} },
         { provide: MailService, useValue: {} },
+        { provide: PrismaService, useValue: {} },
         {
           provide: ConfigService<AllConfig>,
           useValue: {

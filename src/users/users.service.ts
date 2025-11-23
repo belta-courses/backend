@@ -8,12 +8,14 @@ import { UpdateUserDto } from './dto/request/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './types';
+import { StorageService } from 'src/storage/storage.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly storageService: StorageService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -22,6 +24,13 @@ export class UsersService {
     });
     if (user) {
       throw new BadRequestException('User already exists');
+    }
+    const cover = createUserDto.coverId
+      ? await this.storageService.getFile(createUserDto.coverId)
+      : null;
+
+    if (createUserDto.coverId && !cover) {
+      throw new NotFoundException('Cover not found');
     }
 
     const newUser = await this.prisma.user.create({ data: createUserDto });
@@ -32,7 +41,7 @@ export class UsersService {
     };
     const accessToken = await this.jwtService.signAsync(payload);
 
-    return { ...newUser, accessToken };
+    return { ...newUser, accessToken, coverId: undefined, cover: cover?.url };
   }
 
   findAll() {
@@ -49,8 +58,14 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return console.log(id, updateUserDto);
+  async update(email: string, updateUserDto: UpdateUserDto) {
+    const user = await this.prisma.user.update({
+      where: { email },
+      data: updateUserDto,
+    });
+
+    // TODO: if coverId changed schedule a job to delete the old cover
+    return user;
   }
 
   remove(id: number) {

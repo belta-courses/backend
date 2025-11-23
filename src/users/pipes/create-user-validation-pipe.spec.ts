@@ -14,11 +14,7 @@ describe('CreateUserValidationPipe', () => {
     date_of_birth: '1990-01-01',
   };
   const teacherFields = {
-    is_mentor: true,
-    session_price: 100,
-  };
-  const studentFields = {
-    is_new: true,
+    bio: 'Experienced software engineer with 10+ years in web development. Passionate about teaching and helping students achieve their goals.',
   };
 
   beforeEach(() => {
@@ -39,11 +35,6 @@ describe('CreateUserValidationPipe', () => {
       const userDto = { ...baseUserDto, role: Role.employee };
       expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
     });
-
-    it('should throw BadRequestException when [role: teacher, is_mentor: true] and missing session_price', () => {
-      const userDto = { ...baseUserDto, role: Role.teacher, is_mentor: true };
-      expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
-    });
   });
 
   describe('extra fields', () => {
@@ -52,7 +43,6 @@ describe('CreateUserValidationPipe', () => {
         ...baseUserDto,
         role: Role.employee,
         ...teacherFields,
-        ...studentFields,
       };
       expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
     });
@@ -62,7 +52,6 @@ describe('CreateUserValidationPipe', () => {
         ...baseUserDto,
         role: Role.teacher,
         ...employeeFields,
-        ...studentFields,
       };
       expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
     });
@@ -75,26 +64,6 @@ describe('CreateUserValidationPipe', () => {
         ...teacherFields,
       };
       expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
-    });
-  });
-
-  describe('data transformation', () => {
-    it('should add default [is_new: true] when [role: student]', () => {
-      const userDto = { ...baseUserDto, role: Role.student };
-      expect(pipe.transform(userDto)).toEqual({ ...userDto, is_new: true });
-    });
-    it('should accept [is_new: false] when [role: student]', () => {
-      const userDto = { ...baseUserDto, role: Role.student, is_new: false };
-      expect(pipe.transform(userDto)).toEqual(userDto);
-    });
-
-    it('should add default [is_mentor: false] when [role: teacher]', () => {
-      const userDto = { ...baseUserDto, role: Role.teacher };
-      expect(pipe.transform(userDto)).toEqual({
-        ...userDto,
-        is_mentor: false,
-        session_price: null,
-      });
     });
   });
 });

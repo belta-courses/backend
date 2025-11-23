@@ -1,13 +1,12 @@
 import {
-  IsBoolean,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsString,
   IsOptional,
   IsDateString,
+  IsEmail,
+  IsUUID,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import { Role, Gender } from '@prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -18,6 +17,7 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsString()
+  @IsEmail({}, { message: 'Invalid email' })
   email: string;
 
   @ApiProperty({
@@ -28,12 +28,22 @@ export class CreateUserDto {
   @IsString()
   name: string;
 
+  @ApiPropertyOptional({
+    description: 'The cover image of the user',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @IsOptional()
+  @IsUUID()
+  coverId?: string;
+
   @ApiProperty({
     description: "The role of the user, while you can't create admin user",
     example: 'student',
-    enum: Role,
+    enum: [Role.employee, Role.teacher, Role.student],
   })
-  @IsEnum(Role)
+  @IsEnum([Role.employee, Role.teacher, Role.student], {
+    message: 'Invalid role, must be employee, teacher, or student',
+  })
   role: Role;
 
   @ApiPropertyOptional({
@@ -57,30 +67,11 @@ export class CreateUserDto {
 
   @ApiPropertyOptional({
     description:
-      'Whether the teacher provides mentorship, required for teacher role, throw error for other roles',
-    example: true,
+      'The bio of the teacher, required for teacher role, throw error for other roles',
+    example:
+      'Experienced software engineer with 10+ years in web development. Passionate about teaching and helping students achieve their goals.',
   })
   @IsOptional()
-  @IsBoolean()
-  is_mentor?: boolean;
-
-  @ApiPropertyOptional({
-    description:
-      "The session price of teacher's mentorship session (if is_mentor is true), throw error for other roles",
-    example: 100,
-  })
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  session_price?: number | null;
-
-  @ApiPropertyOptional({
-    description:
-      'Whether the student is new (can take discount), default true, throw error for other roles',
-    example: true,
-    default: true,
-  })
-  @IsOptional()
-  @IsBoolean()
-  is_new?: boolean;
+  @IsString()
+  bio?: string;
 }

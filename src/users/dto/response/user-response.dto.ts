@@ -25,6 +25,13 @@ export class UserResponseDto {
   @Expose()
   role: Role;
 
+  @ApiProperty({
+    description: 'The cover image of the user',
+    example: 'https://example.com/cover.jpg',
+  })
+  @Expose()
+  cover: string;
+
   @Expose()
   accessToken: string;
 }
@@ -50,31 +57,15 @@ export class EmployeeUserResponseDto extends UserResponseDto {
 
 export class TeacherUserResponseDto extends UserResponseDto {
   @ApiProperty({
-    description:
-      'Whether the teacher provides mentorship, for teacher role only',
-    example: true,
+    description: 'The bio of the teacher, for teacher role only',
+    example:
+      'Experienced software engineer with 10+ years in web development. Passionate about teaching and helping students achieve their goals.',
   })
   @Expose()
-  is_mentor: boolean;
-
-  @ApiProperty({
-    description:
-      "The session price of teacher's mentorship session (if is_mentor is true), for teacher role only",
-    example: 100,
-  })
-  @Expose()
-  session_price: number | null;
+  bio: string;
 }
 
-export class StudentUserResponseDto extends UserResponseDto {
-  @ApiProperty({
-    description:
-      'Whether the student is new (can take discount), for student role only',
-    example: true,
-  })
-  @Expose()
-  is_new: boolean;
-}
+export class StudentUserResponseDto extends UserResponseDto {}
 
 export const userResponseDtoMap = {
   [Role.admin]: AdminUserResponseDto,

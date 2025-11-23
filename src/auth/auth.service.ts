@@ -4,10 +4,10 @@ import { UsersService } from 'src/users/users.service';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/users/types';
-import { CreateUserDto } from 'src/users/dto/request/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/config/config.type';
 import { devEmails } from 'src/config/constants.config';
+import { RegisterDto } from './dto/request/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -74,11 +74,7 @@ export class AuthService {
     }
   }
 
-  async register(createUserDto: CreateUserDto) {
+  async register(createUserDto: RegisterDto) {
     return this.usersService.create(createUserDto);
-  }
-
-  async getMe(email: string) {
-    return this.usersService.findOne(email);
   }
 }

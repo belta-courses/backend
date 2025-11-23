@@ -29,6 +29,13 @@ export class StorageService {
     this.bucket = this.configService.getOrThrow('s3.bucket', { infer: true });
   }
 
+  async getFile(id: string) {
+    const metadata = await this.prisma.file.findUnique({
+      where: { id },
+    });
+    return metadata;
+  }
+
   async uploadFile(file: Express.Multer.File) {
     try {
       const key = `${Date.now()}-${file.originalname}`;
@@ -36,7 +43,7 @@ export class StorageService {
 
       await this.s3Upload(key, file);
       const metadata = await this.createMetaData(key, file, url);
-      return { id: metadata.id, url };
+      return metadata;
     } catch (ignore) {
       throw new InternalServerErrorException('Failed to upload file');
     }

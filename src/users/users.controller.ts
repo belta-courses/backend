@@ -5,10 +5,11 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   ValidationPipe,
   UseGuards,
   Request,
+  HttpStatus,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/request/create-user.dto';
@@ -31,6 +32,7 @@ import {
 import { jwtAuthName } from 'src/config/constants.config';
 import { RolesGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { JwtPayload } from './types';
 
 @ApiTags('Users')
 @ApiBearerAuth(jwtAuthName)
@@ -40,7 +42,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.admin)
-  @ApiOperation({ summary: 'Create a new user (by Admins only' })
+  @ApiOperation({ summary: 'Create a new user (by Admins only)' })
   @ApiResponse({
     status: 201,
     description: 'The user has been successfully created',
@@ -62,6 +64,53 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get my profile' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been successfully retrieved',
+    type: StudentUserResponseDto,
+  })
+  @Get('/me')
+  async getMe(@Request() request: { user: JwtPayload }) {
+    const userPayload = request['user'];
+    const user = await this.usersService.findOne(userPayload.sub);
+
+    return plainToInstance(userResponseDtoMap[user.role], user, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Update my profile' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The profile has been successfully updated',
+    type: StudentUserResponseDto,
+  })
+  @Patch('/me')
+  async updateMe(
+    @Body(ValidationPipe, CreateUserValidationPipe)
+    updateUserDto: UpdateUserDto,
+    @Request() request: { user: JwtPayload },
+  ) {
+    const { sub: email } = request['user'];
+    const oldUser = await this.usersService.findOne(email);
+
+    const user = await this.usersService.update(
+      email,
+      new CreateUserValidationPipe().transform({
+        ...updateUserDto,
+        email,
+        role: oldUser.role,
+      }),
+    );
+
+    return plainToInstance(userResponseDtoMap[user.role], user, {
+      excludeExtraneousValues: true,
+    });
+  }
+
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.admin, Role.employee)
   @ApiOperation({ summary: 'Get a user by email (by Staffs only)' })
@@ -79,16 +128,37 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.admin, Role.employee)
+  @ApiOperation({ summary: 'Update a user by email (by Staffs only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'The user has been successfully updated',
+    type: StudentUserResponseDto,
+  })
+  @Patch('/:email')
+  async update(
+    @Param('email') email: string,
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+    @Request() request: { user: JwtPayload },
   ) {
-    return this.usersService.update(+id, updateUserDto);
-  }
+    const oldUser = await this.usersService.findOne(email);
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    if (request['user'].role !== Role.admin && oldUser.role !== Role.admin) {
+      throw new ForbiddenException('You are not allowed to update this user');
+    }
+
+    const user = await this.usersService.update(
+      email,
+      new CreateUserValidationPipe().transform({
+        ...updateUserDto,
+        email,
+        role: oldUser.role,
+      }),
+    );
+
+    return plainToInstance(userResponseDtoMap[user.role], user, {
+      excludeExtraneousValues: true,
+    });
   }
 }
