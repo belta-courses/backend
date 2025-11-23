@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
-import { AllConfig } from 'src/config/config.type';
+import { AllConfig } from 'src/core/config/config.type';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma.service';
 

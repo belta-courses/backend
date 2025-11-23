@@ -1,8 +1,10 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Router } from './core/router';
 
-@Controller()
+@ApiTags(Router.App.ApiTag)
+@Controller(Router.App.Base)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -11,7 +13,7 @@ export class AppController {
     status: HttpStatus.OK,
     example: 'Belta-Course server is working well! Thanks for checking❤️',
   })
-  @Get()
+  @Get(Router.App.Health)
   getHello(): string {
     return this.appService.getHello();
   }

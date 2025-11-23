@@ -29,15 +29,16 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { jwtAuthName } from 'src/config/constants.config';
+import { jwtAuthName } from 'src/core/config/constants.config';
 import { JwtPayload } from './users.types';
 import { PermissionsGuard } from 'src/auth/permissions.guard';
-import { Permission } from 'src/config/permissions.config';
+import { Permission } from 'src/core/config/permissions.config';
 import { AccessedBy } from 'src/auth/permissions.decorator';
+import { Router } from 'src/core/router';
 
-@ApiTags('Users')
+@ApiTags(Router.Users.ApiTag)
 @ApiBearerAuth(jwtAuthName)
-@Controller('users')
+@Controller(Router.Users.Base)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -60,7 +61,7 @@ export class UsersController {
     });
   }
 
-  @Get()
+  @Get(Router.Users.List)
   findAll() {
     return this.usersService.findAll();
   }
@@ -72,7 +73,7 @@ export class UsersController {
     type: StudentUserResponseDto,
   })
   @UseGuards(AuthGuard)
-  @Get('/me')
+  @Get(Router.Users.Me)
   async getMe(@Request() request: { user: JwtPayload }) {
     const userPayload = request['user'];
     const user = await this.usersService.findOne(userPayload.email);
@@ -89,7 +90,7 @@ export class UsersController {
     type: StudentUserResponseDto,
   })
   @UseGuards(AuthGuard)
-  @Patch('/me')
+  @Patch(Router.Users.Me)
   async updateMe(
     @Body(ValidationPipe, CreateUserValidationPipe)
     updateUserDto: UpdateUserDto,
@@ -124,7 +125,7 @@ export class UsersController {
   })
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
-  @Get('/:email')
+  @Get(Router.Users.ByEmail)
   findOne(@Param('email') email: string) {
     return this.usersService.findOne(email);
   }
@@ -137,7 +138,7 @@ export class UsersController {
   })
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
-  @Patch('/:email')
+  @Patch(Router.Users.ByEmail)
   async update(
     @Param('email') email: string,
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,

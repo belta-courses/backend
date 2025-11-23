@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StorageService } from './storage.service';
 import { PrismaService } from 'src/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { AllConfig } from 'src/config/config.type';
+import { AllConfig } from 'src/core/config/config.type';
 
 describe('StorageService', () => {
   let service: StorageService;

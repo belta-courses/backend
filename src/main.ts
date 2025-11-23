@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { jwtAuthName, PORT } from './config/constants.config';
+import { jwtAuthName, PORT } from './core/config/constants.config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { version } from '../package.json';
 

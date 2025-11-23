@@ -7,11 +7,13 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { StorageService } from './storage.service';
-import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UploadResponseDto } from './dto/response/upload-response.dto';
 import { plainToInstance } from 'class-transformer';
+import { Router } from 'src/core/router';
 
-@Controller('storage')
+@ApiTags(Router.Storage.ApiTag)
+@Controller(Router.Storage.Base)
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
@@ -30,7 +32,7 @@ export class StorageController {
     type: UploadResponseDto,
   })
   @UseInterceptors(FileInterceptor('file'))
-  @Post('upload-file')
+  @Post(Router.Storage.UploadFile)
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     const metadata = await this.storageService.uploadFile(file);
 

@@ -9,7 +9,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AllConfig } from 'src/config/config.type';
+import { AllConfig } from 'src/core/config/config.type';
 import { PrismaService } from 'src/prisma.service';
 import { File } from '@prisma/client';
 import { InjectQueue } from '@nestjs/bullmq';

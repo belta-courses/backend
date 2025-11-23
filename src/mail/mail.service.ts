@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { createTransport, SendMailOptions, Transporter } from 'nodemailer';
 import nodemailerMjmlPlugin from 'nodemailer-mjml';
-import { HOST_URL, mailTemplatesPath } from 'src/config/constants.config';
+import { HOST_URL, mailTemplatesPath } from 'src/core/config/constants.config';
 import { ConfigService } from '@nestjs/config';
-import { AllConfig } from 'src/config/config.type';
+import { AllConfig } from 'src/core/config/config.type';
 
 @Injectable()
 export class MailService {

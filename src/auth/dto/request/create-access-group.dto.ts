@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Permission } from 'src/config/permissions.config';
+import { Permission } from 'src/core/config/permissions.config';
 
 export class CreateAccessGroupDto {
   @ApiProperty({

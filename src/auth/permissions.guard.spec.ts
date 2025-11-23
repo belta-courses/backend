@@ -7,7 +7,7 @@ import { PermissionsGuard } from './permissions.guard';
 import { PrismaService } from 'src/prisma.service';
 import { UsersService } from 'src/users/users.service';
 import { PERMISSIONS_KEY } from './permissions.decorator';
-import { Permission } from 'src/config/permissions.config';
+import { Permission } from 'src/core/config/permissions.config';
 
 describe('PermissionsGuard', () => {
   let guard: PermissionsGuard;
