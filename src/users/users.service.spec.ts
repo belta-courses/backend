@@ -154,14 +154,14 @@ describe('UsersService', () => {
     it('should throw NotFoundException if user does not exist', async () => {
       mockPrismaService.user.findUnique.mockResolvedValue(null);
 
-      await expect(service.findOne('nonexistent@example.com')).rejects.toThrow(
+      await expect(service.findOne('nonexistent-id')).rejects.toThrow(
         NotFoundException,
       );
-      await expect(service.findOne('nonexistent@example.com')).rejects.toThrow(
+      await expect(service.findOne('nonexistent-id')).rejects.toThrow(
         'User not found',
       );
       expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
-        where: { email: 'nonexistent@example.com' },
+        where: { id: 'nonexistent-id' },
       });
     });
 
@@ -175,11 +175,11 @@ describe('UsersService', () => {
 
       mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
 
-      const result = await service.findOne('test@example.com');
+      const result = await service.findOne(mockUser.id);
 
       expect(result).toEqual(mockUser);
       expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
-        where: { email: 'test@example.com' },
+        where: { id: mockUser.id },
       });
     });
   });
@@ -196,10 +196,10 @@ describe('UsersService', () => {
       mockPrismaService.user.update.mockRejectedValue(prismaError);
 
       await expect(
-        service.update('nonexistent@example.com', updateUserDto),
+        service.update('nonexistent-id', updateUserDto),
       ).rejects.toThrow('Record not found');
       expect(mockPrismaService.user.update).toHaveBeenCalledWith({
-        where: { email: 'nonexistent@example.com' },
+        where: { id: 'nonexistent-id' },
         data: updateUserDto,
       });
     });
@@ -214,11 +214,11 @@ describe('UsersService', () => {
 
       mockPrismaService.user.update.mockResolvedValue(updatedUser);
 
-      const result = await service.update('test@example.com', updateUserDto);
+      const result = await service.update(updatedUser.id, updateUserDto);
 
       expect(result).toEqual(updatedUser);
       expect(mockPrismaService.user.update).toHaveBeenCalledWith({
-        where: { email: 'test@example.com' },
+        where: { id: updatedUser.id },
         data: updateUserDto,
       });
     });

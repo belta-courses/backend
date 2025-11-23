@@ -33,7 +33,7 @@ export class AuthService {
     });
 
     try {
-      const user = await this.usersService.findOne(signInDto.email);
+      const user = await this.usersService.findOneByEmail(signInDto.email);
       const payload: JwtPayload = {
         sub: user.id,
         email: user.email,
@@ -156,8 +156,8 @@ export class AuthService {
     return updatedAccessGroup;
   }
 
-  async addEmployeeToAccessGroup(accessGroupId: string, email: string) {
-    const oldUser = await this.usersService.findOne(email);
+  async addEmployeeToAccessGroup(accessGroupId: string, userId: string) {
+    const oldUser = await this.usersService.findOne(userId);
 
     if (oldUser.role !== Role.employee)
       throw new BadRequestException(
@@ -175,18 +175,18 @@ export class AuthService {
     }
 
     const user = await this.prismaService.user.update({
-      where: { email },
+      where: { id: userId },
       data: { accessGroupId },
       include: { accessGroup: true },
     });
     return user;
   }
 
-  async removeEmployeeFromAccessGroup(email: string) {
-    await this.usersService.findOne(email);
+  async removeEmployeeFromAccessGroup(userId: string) {
+    await this.usersService.findOne(userId);
 
     const user = await this.prismaService.user.update({
-      where: { email },
+      where: { id: userId },
       data: { accessGroupId: null },
     });
 

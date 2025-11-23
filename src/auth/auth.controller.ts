@@ -171,7 +171,7 @@ export class AuthController {
   ) {
     const user = await this.authService.addEmployeeToAccessGroup(
       accessGroupId,
-      dto.email,
+      dto.id,
     );
 
     return plainToInstance(userResponseDtoMap[user.role], user, {
@@ -191,9 +191,7 @@ export class AuthController {
   async removeEmployeeFromAccessGroup(
     @Body(ValidationPipe) dto: AssignEmployeeToAccessGroupDto,
   ) {
-    const user = await this.authService.removeEmployeeFromAccessGroup(
-      dto.email,
-    );
+    const user = await this.authService.removeEmployeeFromAccessGroup(dto.id);
 
     return plainToInstance(userResponseDtoMap[user.role], user, {
       excludeExtraneousValues: true,

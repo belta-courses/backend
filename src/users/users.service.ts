@@ -49,7 +49,17 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOne(email: string) {
+  async findOne(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
+  async findOneByEmail(email: string) {
     const user = await this.prisma.user.findUnique({
       where: { email },
     });
@@ -59,15 +69,15 @@ export class UsersService {
     return user;
   }
 
-  async update(email: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const oldUser = await this.prisma.user.findUnique({
-      where: { email },
+      where: { id },
     });
     if (!oldUser) {
       throw new NotFoundException('User not found');
     }
     const user = await this.prisma.user.update({
-      where: { email },
+      where: { id },
       data: updateUserDto,
     });
 
@@ -77,9 +87,5 @@ export class UsersService {
     }
 
     return user;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

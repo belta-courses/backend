@@ -74,8 +74,9 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Get(Router.Users.Me)
   async getMe(@Request() request: { user: JwtPayload }) {
-    const userPayload = request['user'];
-    const user = await this.usersService.findOne(userPayload.email);
+    const { sub: id } = request['user'];
+
+    const user = await this.usersService.findOne(id);
 
     return plainToInstance(userResponseDtoMap[user.role], user, {
       excludeExtraneousValues: true,
@@ -91,18 +92,18 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Patch(Router.Users.Me)
   async updateMe(
-    @Body(ValidationPipe, CreateUserValidationPipe)
+    @Body(ValidationPipe)
     updateUserDto: UpdateUserDto,
     @Request() request: { user: JwtPayload },
   ) {
-    const { email } = request['user'];
-    const oldUser = await this.usersService.findOne(email);
+    const { sub: id } = request['user'];
+    const oldUser = await this.usersService.findOne(id);
 
     const user = await this.usersService.update(
-      email,
+      id,
       new CreateUserValidationPipe().transform({
         ...updateUserDto,
-        email,
+        email: oldUser.email,
         role: oldUser.role,
       }),
     );
@@ -112,21 +113,25 @@ export class UsersController {
     });
   }
 
-  @ApiOperation({ summary: 'Get a user by email (by Staffs only)' })
+  @ApiOperation({ summary: 'Get a user by id (by Staffs only)' })
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully retrieved',
     type: StudentUserResponseDto,
   })
   @ApiParam({
-    name: 'email',
-    example: 'student@beltacourses.com',
+    name: 'id',
+    example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
-  @Get(Router.Users.ByEmail)
-  findOne(@Param('email') email: string) {
-    return this.usersService.findOne(email);
+  @Get(Router.Users.ById)
+  async findOne(@Param('id') id: string) {
+    const user = await this.usersService.findOne(id);
+
+    return plainToInstance(userResponseDtoMap[user.role], user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @ApiOperation({ summary: 'Update a user by email (by Staffs only)' })
@@ -137,23 +142,23 @@ export class UsersController {
   })
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
-  @Patch(Router.Users.ByEmail)
+  @Patch(Router.Users.ById)
   async update(
-    @Param('email') email: string,
+    @Param('id') id: string,
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
     @Request() request: { user: JwtPayload },
   ) {
-    const oldUser = await this.usersService.findOne(email);
+    const oldUser = await this.usersService.findOne(id);
 
     if (request['user'].role !== Role.admin && oldUser.role === Role.admin) {
       throw new ForbiddenException('You are not allowed to update this user');
     }
 
     const user = await this.usersService.update(
-      email,
+      id,
       new CreateUserValidationPipe().transform({
         ...updateUserDto,
-        email,
+        email: oldUser.email,
         role: oldUser.role,
       }),
     );

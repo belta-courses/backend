@@ -132,9 +132,7 @@ describe('UsersController', () => {
       const request = { user: userPayload };
       const result = await controller.getMe(request);
 
-      expect(mockUsersService.findOne).toHaveBeenCalledWith(
-        'student@example.com',
-      );
+      expect(mockUsersService.findOne).toHaveBeenCalledWith('1');
       expect(result).toBeDefined();
       expect(result.email).toBe(mockUser.email);
     });
@@ -173,9 +171,7 @@ describe('UsersController', () => {
       const request = { user: userPayload };
       const result = await controller.updateMe(updateUserDto, request);
 
-      expect(mockUsersService.findOne).toHaveBeenCalledWith(
-        'student@example.com',
-      );
+      expect(mockUsersService.findOne).toHaveBeenCalledWith('1');
       expect(mockUsersService.update).toHaveBeenCalled();
       expect(result).toBeDefined();
       expect(result.name).toBe(mockUpdatedUser.name);

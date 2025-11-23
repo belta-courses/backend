@@ -77,8 +77,8 @@ export abstract class Router {
     static List: string;
     /** me */
     static Me = 'me';
-    /** :email */
-    static ByEmail = ':email';
+    /** :id */
+    static ById = ':id';
   };
 
   /**

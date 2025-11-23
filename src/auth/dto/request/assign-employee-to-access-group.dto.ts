@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class AssignEmployeeToAccessGroupDto {
   @ApiProperty({
-    description: 'The email of the employee',
-    example: 'employee@beltacourses.com',
+    description: 'The id of the employee',
+    example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @IsNotEmpty()
   @IsString()
-  @IsEmail()
-  email: string;
+  @IsUUID()
+  id: string;
 }
