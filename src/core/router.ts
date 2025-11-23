@@ -15,6 +15,21 @@ export abstract class Router {
   };
 
   /**
+   * Integrated libraries routes
+   * @static
+   * @memberof Router
+   * @example /queues
+   */
+  static Integrated = class {
+    /** Swagger auth name */
+    static ApiAuthName = 'JWT-auth';
+    /** Swagger route */
+    static SwaggerRoute = 'api';
+    /** MQ Board */
+    static MqBoard = 'queues';
+  };
+
+  /**
    * Authentication routes
    * @static
    * @memberof Router

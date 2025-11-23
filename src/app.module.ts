@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { StorageModule } from './storage/storage.module';
 import { PrismaService } from './prisma.service';
 import appConfig from './core/config/app.config';
-import { publicPath } from './core/config/constants.config';
+import { publicPath } from './core/constants/paths.constants';
 import databaseConfig from './core/config/database.config';
 import s3Config from './core/config/s3.config';
 import jwtConfig from './core/config/jwt.config';
@@ -18,6 +18,7 @@ import { joiSchema } from './core/config/joi.schema';
 import { BullModule } from '@nestjs/bullmq';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ExpressAdapter } from '@bull-board/express';
+import { Router } from './core/router';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { ExpressAdapter } from '@bull-board/express';
       },
     }),
     BullBoardModule.forRoot({
-      route: '/queues',
+      route: Router.Integrated.MqBoard,
       adapter: ExpressAdapter,
     }),
 

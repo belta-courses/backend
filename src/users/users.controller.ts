@@ -29,7 +29,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { jwtAuthName } from 'src/core/config/constants.config';
 import { JwtPayload } from './users.types';
 import { PermissionsGuard } from 'src/auth/permissions.guard';
 import { Permission } from 'src/core/config/permissions.config';
@@ -37,7 +36,7 @@ import { AccessedBy } from 'src/auth/permissions.decorator';
 import { Router } from 'src/core/router';
 
 @ApiTags(Router.Users.ApiTag)
-@ApiBearerAuth(jwtAuthName)
+@ApiBearerAuth(Router.Integrated.ApiAuthName)
 @Controller(Router.Users.Base)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

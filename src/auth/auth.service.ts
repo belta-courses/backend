@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload, JwtPurpose } from 'src/users/users.types';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/core/config/config.type';
-import { devEmails } from 'src/core/config/constants.config';
+import { devEmails } from 'src/core/constants/auth.constants';
 import { PrismaService } from 'src/prisma.service';
 import { CreateAccessGroupDto } from './dto/request/create-access-group.dto';
 import { UpdateAccessGroupDto } from './dto/request/update-access-group.dto';

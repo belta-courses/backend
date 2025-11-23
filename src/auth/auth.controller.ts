@@ -26,7 +26,6 @@ import {
 } from '@nestjs/swagger';
 import { JWTPurposeGuard } from './jwt-purpose.guard';
 import { JWTPurpose } from './jwt-purpose.decorator';
-import { jwtAuthName } from 'src/core/config/constants.config';
 import { RegisterDto } from './dto/request/register.dto';
 import {
   Permission,
@@ -66,7 +65,7 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.CREATED,
   })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, JWTPurposeGuard)
   @JWTPurpose(JwtPurpose.Register)
   @Post(Router.Auth.Register)
@@ -87,7 +86,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Get all application permissions' })
   @ApiResponse({ status: HttpStatus.OK })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_READ,
@@ -101,7 +100,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Get all application access groups' })
   @ApiResponse({ status: HttpStatus.OK })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_READ,
@@ -115,7 +114,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Create a new access group' })
   @ApiResponse({ status: HttpStatus.CREATED })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_CREATE,
@@ -137,7 +136,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Update an access group' })
   @ApiResponse({ status: HttpStatus.OK })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_UPDATE,
@@ -159,7 +158,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Add an employee to an access group' })
   @ApiResponse({ status: HttpStatus.OK })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_ASSIGN,
@@ -182,7 +181,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Remove an employee from an access group' })
   @ApiResponse({ status: HttpStatus.OK })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_UNASSIGN,
@@ -203,7 +202,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Delete an access group' })
   @ApiResponse({ status: HttpStatus.OK })
-  @ApiBearerAuth(jwtAuthName)
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_DELETE,

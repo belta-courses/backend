@@ -6,14 +6,15 @@ import { BullModule } from '@nestjs/bullmq';
 import StorageProcessor from './storage.processor';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { STORAGE_QUEUE } from 'src/core/constants/queues.constants';
 
 @Module({
   imports: [
     BullModule.registerQueue({
-      name: 'storage',
+      name: STORAGE_QUEUE,
     }),
     BullBoardModule.forFeature({
-      name: 'storage',
+      name: STORAGE_QUEUE,
       adapter: BullMQAdapter, //or use BullAdapter if you're using bull instead of bullMQ
     }),
   ],

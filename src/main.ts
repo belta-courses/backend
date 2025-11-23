@@ -1,8 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { jwtAuthName, PORT } from './core/config/constants.config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { version } from '../package.json';
+import { Router } from './core/router';
+import { PORT } from './core/constants/paths.constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,11 +19,11 @@ async function bootstrap() {
         scheme: 'bearer',
         bearerFormat: 'JWT',
       },
-      jwtAuthName,
+      Router.Integrated.ApiAuthName,
     )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup(Router.Integrated.SwaggerRoute, app, documentFactory);
 
   await app.listen(PORT);
 }

@@ -2,8 +2,9 @@ import { Job } from 'bullmq';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { StorageService } from './storage.service';
 import { PrismaService } from 'src/prisma.service';
+import { STORAGE_QUEUE } from 'src/core/constants/queues.constants';
 
-@Processor('storage', { concurrency: 5 })
+@Processor(STORAGE_QUEUE, { concurrency: 5 })
 class StorageProcessor extends WorkerHost {
   constructor(
     private readonly storageService: StorageService,

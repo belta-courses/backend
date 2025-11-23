@@ -3,6 +3,7 @@ import { StorageService } from './storage.service';
 import { PrismaService } from 'src/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/core/config/config.type';
+import { STORAGE_QUEUE } from 'src/core/constants/queues.constants';
 
 describe('StorageService', () => {
   let service: StorageService;
@@ -18,7 +19,7 @@ describe('StorageService', () => {
           },
         },
         {
-          provide: 'BullQueue_storage',
+          provide: `BullQueue_${STORAGE_QUEUE}`,
           useValue: {
             add: jest.fn(),
           },

@@ -14,6 +14,7 @@ import { PrismaService } from 'src/prisma.service';
 import { File } from '@prisma/client';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
+import { STORAGE_QUEUE } from 'src/core/constants/queues.constants';
 
 @Injectable()
 export class StorageService implements OnModuleInit {
@@ -23,7 +24,7 @@ export class StorageService implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     private readonly configService: ConfigService<AllConfig>,
-    @InjectQueue('storage') private readonly mq: Queue,
+    @InjectQueue(STORAGE_QUEUE) private readonly mq: Queue,
   ) {
     this.client = new S3Client({
       region: this.configService.getOrThrow('s3.region', {
