@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
-import { RolesGuard } from './role.guard';
+import { RolesGuard } from './roles.guard';
 import { ROLES_KEY } from './roles.decorator';
 import { JwtPayload, JwtPurpose } from 'src/users/types';
 

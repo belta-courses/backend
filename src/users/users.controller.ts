@@ -30,7 +30,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { jwtAuthName } from 'src/config/constants.config';
-import { RolesGuard } from 'src/auth/role.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { JwtPayload } from './types';
 import { PermissionsGuard } from 'src/auth/permissions.guard';
