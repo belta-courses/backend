@@ -3,6 +3,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/config/config.type';
 import { PrismaService } from 'src/prisma.service';
+import { File } from '@prisma/client';
 
 @Injectable()
 export class StorageService {
@@ -36,7 +37,7 @@ export class StorageService {
     return metadata;
   }
 
-  async uploadFile(file: Express.Multer.File) {
+  async uploadFile(file: Express.Multer.File): Promise<File> {
     try {
       const key = `${Date.now()}-${file.originalname}`;
       const url = `https://${this.bucket}.s3.amazonaws.com/${key}`;

@@ -3,7 +3,7 @@ import { SignInDto } from 'src/users/dto/request/sign-in.dto';
 import { UsersService } from 'src/users/users.service';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from 'src/users/types';
+import { JwtPayload, JwtPurpose } from 'src/users/types';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/config/config.type';
 import { devEmails } from 'src/config/constants.config';
@@ -50,7 +50,7 @@ export class AuthService {
         const payload: JwtPayload = {
           sub: signInDto.email,
           role: null,
-          purpose: 'register',
+          purpose: JwtPurpose.Register,
         };
         const oneTimeToken = await this.jwtService.signAsync(payload);
 

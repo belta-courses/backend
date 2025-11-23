@@ -31,13 +31,11 @@ export class StorageController {
     description: 'The file has been successfully uploaded',
     type: UploadResponseDto,
   })
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return plainToInstance(
-      UploadResponseDto,
-      this.storageService.uploadFile(file),
-      {
-        excludeExtraneousValues: true,
-      },
-    );
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const metadata = await this.storageService.uploadFile(file);
+
+    return plainToInstance(UploadResponseDto, metadata, {
+      excludeExtraneousValues: true,
+    });
   }
 }

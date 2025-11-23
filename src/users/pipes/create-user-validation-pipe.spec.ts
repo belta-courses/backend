@@ -14,7 +14,7 @@ describe('CreateUserValidationPipe', () => {
     date_of_birth: '1990-01-01',
   };
   const teacherFields = {
-    bio: 'Experienced software engineer with 10+ years in web development. Passionate about teaching and helping students achieve their goals.',
+    bio: 'Experienced software engineer with 10+ years in web development',
   };
 
   beforeEach(() => {
@@ -25,11 +25,6 @@ describe('CreateUserValidationPipe', () => {
     expect(pipe).toBeDefined();
   });
 
-  it('should throw BadRequestException when [role: admin]', () => {
-    const userDto = { ...baseUserDto, role: Role.admin };
-    expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
-  });
-
   describe('missing fields', () => {
     it('should throw BadRequestException when [role: employee] and missing gender or date_of_birth', () => {
       const userDto = { ...baseUserDto, role: Role.employee };
@@ -38,7 +33,7 @@ describe('CreateUserValidationPipe', () => {
   });
 
   describe('extra fields', () => {
-    it('should throw BadRequestException when [role: employee] and is_mentor, session_price or is_new has value', () => {
+    it('should throw BadRequestException when [role: employee] and bio has value', () => {
       const userDto = {
         ...baseUserDto,
         role: Role.employee,
@@ -47,7 +42,7 @@ describe('CreateUserValidationPipe', () => {
       expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
     });
 
-    it('should throw BadRequestException when [role: teacher] and gender, date_of_birth or is_new has value', () => {
+    it('should throw BadRequestException when [role: teacher] and gender, date_of_birth has value', () => {
       const userDto = {
         ...baseUserDto,
         role: Role.teacher,
@@ -56,7 +51,7 @@ describe('CreateUserValidationPipe', () => {
       expect(() => pipe.transform(userDto)).toThrow(BadRequestException);
     });
 
-    it('should throw BadRequestException when [role: student] and gender, date_of_birth or is_mentor has value', () => {
+    it('should throw BadRequestException when [role: student] and gender, date_of_birth or bio has value', () => {
       const userDto = {
         ...baseUserDto,
         role: Role.student,

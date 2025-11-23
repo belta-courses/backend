@@ -11,7 +11,7 @@ export class CreateUserValidationPipe implements PipeTransform {
     const base = { email, name, role, coverId };
     switch (role) {
       case Role.admin:
-        throw new BadRequestException("Can't create admin user");
+        return base;
 
       case Role.employee:
         if (!date_of_birth || !gender) {

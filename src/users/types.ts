@@ -1,9 +1,11 @@
 import { Role } from '@prisma/client';
 
-export type JwtPurpose = 'register' | null;
+export enum JwtPurpose {
+  Register = 'register',
+}
 
 export type JwtPayload = {
   sub: string;
   role: Role | null;
-  purpose: JwtPurpose;
+  purpose: JwtPurpose | null;
 };

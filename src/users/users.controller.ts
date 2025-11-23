@@ -144,7 +144,7 @@ export class UsersController {
   ) {
     const oldUser = await this.usersService.findOne(email);
 
-    if (request['user'].role !== Role.admin && oldUser.role !== Role.admin) {
+    if (request['user'].role !== Role.admin && oldUser.role === Role.admin) {
       throw new ForbiddenException('You are not allowed to update this user');
     }
 

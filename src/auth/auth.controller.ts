@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { JwtPayload } from 'src/users/types';
+import { JwtPayload, JwtPurpose } from 'src/users/types';
 import { SignInDto } from 'src/users/dto/request/sign-in.dto';
 import { plainToInstance } from 'class-transformer';
 import { userResponseDtoMap } from 'src/users/dto/response/user-response.dto';
@@ -37,7 +37,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard, JWTPurposeGuard)
   @ApiBearerAuth(jwtAuthName)
-  @JWTPurpose('register')
+  @JWTPurpose(JwtPurpose.Register)
   @Post('/register')
   async register(
     @Body() createUserDto: RegisterDto,
