@@ -10,6 +10,7 @@ import {
   Request,
   HttpStatus,
   ForbiddenException,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/request/create-user.dto';
@@ -34,6 +35,7 @@ import { PermissionsGuard } from 'src/auth/permissions.guard';
 import { Permission } from 'src/core/config/permissions.config';
 import { AccessedBy } from 'src/auth/permissions.decorator';
 import { Router } from 'src/core/router';
+import { FindUsersQueryDto } from './dto/request/find-users-query.dto';
 
 @ApiTags(Router.Users.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -60,9 +62,40 @@ export class UsersController {
     });
   }
 
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({
+    status: 200,
+    description: 'The users have been successfully retrieved',
+    type: StudentUserResponseDto,
+  })
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @Get(Router.Users.List)
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Query(ValidationPipe)
+    { page, limit, role: queryRole, ...dto }: FindUsersQueryDto,
+    @Request() request: { user: JwtPayload },
+  ) {
+    const user = request['user'];
+
+    if (
+      user.role === Role.employee &&
+      (queryRole === Role.admin || queryRole === Role.employee)
+    ) {
+      throw new ForbiddenException(
+        'You are not allowed to access this resource',
+      );
+    }
+
+    return this.usersService.findAll({
+      page: Number(page),
+      limit: Number(limit),
+      role:
+        user.role === Role.employee && !queryRole
+          ? [Role.teacher, Role.student]
+          : queryRole,
+      ...dto,
+    });
   }
 
   @ApiOperation({ summary: 'Get my profile' })

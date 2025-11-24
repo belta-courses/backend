@@ -9,6 +9,7 @@ import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './users.types';
 import { StorageService } from 'src/storage/storage.service';
+import { Prisma, Role } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -45,8 +46,46 @@ export class UsersService {
     return { ...newUser, accessToken, coverId: undefined, cover: cover?.url };
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(filters: {
+    page: number;
+    limit: number;
+    search: string;
+    role?: Role | Role[];
+  }) {
+    const { page, limit, search, role } = filters;
+
+    const where: Prisma.UserFindManyArgs['where'] = {
+      OR: [
+        { email: { contains: search || '', mode: 'insensitive' } },
+        { name: { contains: search || '', mode: 'insensitive' } },
+      ],
+      role: role
+        ? Array.isArray(role)
+          ? { in: role }
+          : { equals: role }
+        : undefined,
+    };
+
+    const [users, totalCount] = await this.prisma.$transaction([
+      this.prisma.user.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.user.count({
+        where,
+      }),
+    ]);
+
+    return {
+      data: users,
+      meta: {
+        page: page,
+        limit: limit,
+        count: users.length,
+        total: totalCount,
+      },
+    };
   }
 
   async findOne(id: string) {

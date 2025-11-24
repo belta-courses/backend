@@ -103,7 +103,22 @@ describe('UsersController', () => {
       const expectedResult = 'This action returns all users';
       mockUsersService.findAll.mockReturnValue(expectedResult);
 
-      const result = controller.findAll();
+      const result = controller.findAll(
+        {
+          page: 1,
+          limit: 10,
+          search: '',
+          role: Role.student,
+        },
+        {
+          user: {
+            role: Role.admin,
+            sub: '1',
+            email: 'admin@example.com',
+            purpose: null,
+          },
+        },
+      );
 
       expect(mockUsersService.findAll).toHaveBeenCalled();
       expect(result).toBe(expectedResult);

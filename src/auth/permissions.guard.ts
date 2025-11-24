@@ -23,15 +23,14 @@ export class PermissionsGuard implements CanActivate {
       return true;
     }
     const {
-      user: { role, email },
+      user: { role, sub: userId },
     } = context.switchToHttp().getRequest<{ user: JwtPayload }>();
-
     if (role === Role.admin) return true;
     // student or teacher => false
     if (role !== Role.employee) return false;
 
     try {
-      const user = await this.usersService.findOne(email);
+      const user = await this.usersService.findOne(userId);
 
       if (!user.accessGroupId) return false;
 
@@ -39,7 +38,6 @@ export class PermissionsGuard implements CanActivate {
         where: { id: user.accessGroupId },
         include: { permissions: true },
       });
-
       return (
         accessGroup?.permissions.some((permission) =>
           requiredPermissions.includes(permission.key as unknown as Permission),
