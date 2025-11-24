@@ -198,7 +198,7 @@ describe('PermissionsGuard', () => {
       const result = await guard.canActivate(context);
 
       expect(result).toBe(false);
-      expect(usersService.findOne).toHaveBeenCalledWith('employee@example.com');
+      expect(usersService.findOne).toHaveBeenCalledWith('1');
       expect(prismaService.accessGroup.findUnique).not.toHaveBeenCalled();
     });
 
@@ -223,7 +223,7 @@ describe('PermissionsGuard', () => {
       const result = await guard.canActivate(context);
 
       expect(result).toBe(true);
-      expect(usersService.findOne).toHaveBeenCalledWith('employee@example.com');
+      expect(usersService.findOne).toHaveBeenCalledWith('1');
       expect(prismaService.accessGroup.findUnique).toHaveBeenCalledWith({
         where: { id: '1' },
         include: { permissions: true },
