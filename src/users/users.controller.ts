@@ -15,10 +15,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
 import { CreateUserValidationPipe } from './pipes/create-user-validation.pipe';
-import {
-  StudentUserResponseDto,
-  userResponseDtoMap,
-} from './dto/response/user-response.dto';
+import { UserResponseDto } from './dto/response/user-response.dto';
 import { plainToInstance } from 'class-transformer';
 import { Role } from '@prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -46,7 +43,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: 'The user has been successfully created',
-    type: StudentUserResponseDto,
+    type: UserResponseDto,
   })
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(Permission.USERS_CREATE, Permission.USERS_FULL_ACCESS)
@@ -56,7 +53,7 @@ export class UsersController {
     createUserDto: CreateUserDto,
   ) {
     const newUser = await this.usersService.create(createUserDto);
-    return plainToInstance(userResponseDtoMap[newUser.role], newUser, {
+    return plainToInstance(UserResponseDto, newUser, {
       excludeExtraneousValues: true,
     });
   }
@@ -65,12 +62,12 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'The users have been successfully retrieved',
-    type: StudentUserResponseDto,
+    type: UserResponseDto,
   })
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @Get(Router.Users.List)
-  findAll(
+  async findAll(
     @Query()
     { role: queryRole, ...dto }: FindUsersQueryDto,
     @Request() request: { user: JwtPayload },
@@ -91,17 +88,23 @@ export class UsersController {
         ? [Role.teacher, Role.student]
         : queryRole;
 
-    return this.usersService.findAll({
+    const { data, meta } = await this.usersService.findAll({
       role,
       ...dto,
     });
+    return {
+      data: plainToInstance(UserResponseDto, data, {
+        excludeExtraneousValues: true,
+      }),
+      meta,
+    };
   }
 
   @ApiOperation({ summary: 'Get my profile' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The user has been successfully retrieved',
-    type: StudentUserResponseDto,
+    type: UserResponseDto,
   })
   @UseGuards(AuthGuard)
   @Get(Router.Users.Me)
@@ -110,7 +113,7 @@ export class UsersController {
 
     const user = await this.usersService.findOne(id);
 
-    return plainToInstance(userResponseDtoMap[user.role], user, {
+    return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,
     });
   }
@@ -119,7 +122,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The profile has been successfully updated',
-    type: StudentUserResponseDto,
+    type: UserResponseDto,
   })
   @UseGuards(AuthGuard)
   @Patch(Router.Users.Me)
@@ -140,7 +143,7 @@ export class UsersController {
       }),
     );
 
-    return plainToInstance(userResponseDtoMap[user.role], user, {
+    return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,
     });
   }
@@ -149,7 +152,7 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully retrieved',
-    type: StudentUserResponseDto,
+    type: UserResponseDto,
   })
   @ApiParam({
     name: 'id',
@@ -161,7 +164,7 @@ export class UsersController {
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
 
-    return plainToInstance(userResponseDtoMap[user.role], user, {
+    return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,
     });
   }
@@ -170,7 +173,7 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully updated',
-    type: StudentUserResponseDto,
+    type: UserResponseDto,
   })
   @UseGuards(AuthGuard, PermissionsGuard)
   @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
@@ -195,7 +198,7 @@ export class UsersController {
       }),
     );
 
-    return plainToInstance(userResponseDtoMap[user.role], user, {
+    return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,
     });
   }

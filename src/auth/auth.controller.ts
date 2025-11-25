@@ -14,9 +14,9 @@ import {
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { JwtPayload, JwtPurpose } from 'src/users/users.types';
-import { SignInDto } from 'src/users/dto/request/sign-in.dto';
+import { SignInDto } from 'src/auth/dto/request/sign-in.dto';
 import { plainToInstance } from 'class-transformer';
-import { userResponseDtoMap } from 'src/users/dto/response/user-response.dto';
+import { UserResponseDto } from 'src/users/dto/response/user-response.dto';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -78,7 +78,7 @@ export class AuthController {
       email,
       role: role || Role.student,
     });
-    return plainToInstance(userResponseDtoMap[newUser.role], newUser, {
+    return plainToInstance(UserResponseDto, newUser, {
       excludeExtraneousValues: true,
     });
   }
@@ -171,7 +171,7 @@ export class AuthController {
       dto.id,
     );
 
-    return plainToInstance(userResponseDtoMap[user.role], user, {
+    return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,
     });
   }
@@ -190,7 +190,7 @@ export class AuthController {
   ) {
     const user = await this.authService.removeEmployeeFromAccessGroup(dto.id);
 
-    return plainToInstance(userResponseDtoMap[user.role], user, {
+    return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,
     });
   }

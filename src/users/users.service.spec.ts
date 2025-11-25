@@ -26,6 +26,7 @@ describe('UsersService', () => {
 
   const mockStorageService = {
     getFile: jest.fn(),
+    deleteFile: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -95,6 +96,8 @@ describe('UsersService', () => {
         name: 'Test User',
         role: Role.student,
         coverId: null,
+        cover: null,
+        accessGroup: null,
       };
 
       mockPrismaService.user.findUnique.mockResolvedValue(null);
@@ -103,14 +106,10 @@ describe('UsersService', () => {
 
       const result = await service.create(createUserDto);
 
-      expect(result).toEqual({
-        ...newUser,
-        accessToken: 'mock-jwt-token',
-        coverId: undefined,
-        cover: undefined,
-      });
+      expect(result).toEqual(newUser);
       expect(mockPrismaService.user.create).toHaveBeenCalledWith({
         data: createUserDto,
+        include: { cover: true, accessGroup: true },
       });
     });
 
@@ -131,6 +130,8 @@ describe('UsersService', () => {
         name: 'Test User',
         role: Role.student,
         coverId: 'cover-123',
+        cover: mockCover,
+        accessGroup: null,
       };
 
       mockPrismaService.user.findUnique.mockResolvedValue(null);
@@ -140,12 +141,7 @@ describe('UsersService', () => {
 
       const result = await service.create(createUserDtoWithCover);
 
-      expect(result).toEqual({
-        ...newUser,
-        accessToken: 'mock-jwt-token',
-        coverId: undefined,
-        cover: 'https://example.com/cover.jpg',
-      });
+      expect(result).toEqual(newUser);
       expect(mockStorageService.getFile).toHaveBeenCalledWith('cover-123');
     });
   });
@@ -162,6 +158,7 @@ describe('UsersService', () => {
       );
       expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
         where: { id: 'nonexistent-id' },
+        include: { cover: true, accessGroup: true },
       });
     });
 
@@ -171,6 +168,8 @@ describe('UsersService', () => {
         email: 'test@example.com',
         name: 'Test User',
         role: Role.student,
+        cover: null,
+        accessGroup: null,
       };
 
       mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
@@ -180,6 +179,7 @@ describe('UsersService', () => {
       expect(result).toEqual(mockUser);
       expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
         where: { id: mockUser.id },
+        include: { cover: true, accessGroup: true },
       });
     });
   });
@@ -190,28 +190,36 @@ describe('UsersService', () => {
     };
 
     it('should throw error if user does not exist', async () => {
-      const prismaError = Object.assign(new Error('Record not found'), {
-        code: 'P2025',
-      });
-      mockPrismaService.user.update.mockRejectedValue(prismaError);
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
 
       await expect(
         service.update('nonexistent-id', updateUserDto),
-      ).rejects.toThrow('Record not found');
-      expect(mockPrismaService.user.update).toHaveBeenCalledWith({
+      ).rejects.toThrow(NotFoundException);
+      expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
         where: { id: 'nonexistent-id' },
-        data: updateUserDto,
       });
     });
 
     it('should successfully update user if user exists', async () => {
+      const oldUser = {
+        id: '1',
+        email: 'test@example.com',
+        name: 'Test User',
+        role: Role.student,
+        coverId: null,
+      };
+
       const updatedUser = {
         id: '1',
         email: 'test@example.com',
         name: 'Updated Name',
         role: Role.student,
+        coverId: null,
+        cover: null,
+        accessGroup: null,
       };
 
+      mockPrismaService.user.findUnique.mockResolvedValue(oldUser);
       mockPrismaService.user.update.mockResolvedValue(updatedUser);
 
       const result = await service.update(updatedUser.id, updateUserDto);
@@ -220,7 +228,40 @@ describe('UsersService', () => {
       expect(mockPrismaService.user.update).toHaveBeenCalledWith({
         where: { id: updatedUser.id },
         data: updateUserDto,
+        include: { cover: true, accessGroup: true },
       });
+    });
+
+    it('should delete old cover file when updating with new cover', async () => {
+      const oldUser = {
+        id: '1',
+        email: 'test@example.com',
+        name: 'Test User',
+        role: Role.student,
+        coverId: 'old-cover-id',
+      };
+
+      const updatedUser = {
+        id: '1',
+        email: 'test@example.com',
+        name: 'Test User',
+        role: Role.student,
+        coverId: 'new-cover-id',
+        cover: { id: 'new-cover-id', url: 'https://example.com/new.jpg' },
+        accessGroup: null,
+      };
+
+      mockPrismaService.user.findUnique.mockResolvedValue(oldUser);
+      mockPrismaService.user.update.mockResolvedValue(updatedUser);
+
+      await service.update(oldUser.id, {
+        name: 'Test User',
+        coverId: 'new-cover-id',
+      });
+
+      expect(mockStorageService.deleteFile).toHaveBeenCalledWith(
+        'old-cover-id',
+      );
     });
   });
 });

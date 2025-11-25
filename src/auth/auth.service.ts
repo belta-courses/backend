@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { SignInDto } from 'src/users/dto/request/sign-in.dto';
+import { SignInDto } from 'src/auth/dto/request/sign-in.dto';
 import { UsersService } from 'src/users/users.service';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';

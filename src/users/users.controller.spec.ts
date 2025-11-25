@@ -99,11 +99,29 @@ describe('UsersController', () => {
   });
 
   describe('findAll', () => {
-    it('should return all users', () => {
-      const expectedResult = 'This action returns all users';
-      mockUsersService.findAll.mockReturnValue(expectedResult);
+    it('should return all users', async () => {
+      const mockUsers = [
+        {
+          id: '1',
+          email: 'student@example.com',
+          name: 'Test Student',
+          role: Role.student,
+          cover: null,
+          accessGroup: null,
+        },
+      ];
+      const expectedResult = {
+        data: mockUsers,
+        meta: {
+          page: 1,
+          limit: 10,
+          count: 1,
+          total: 1,
+        },
+      };
+      mockUsersService.findAll.mockResolvedValue(expectedResult);
 
-      const result = controller.findAll(
+      const result = await controller.findAll(
         {
           page: 1,
           limit: 10,
@@ -121,7 +139,8 @@ describe('UsersController', () => {
       );
 
       expect(mockUsersService.findAll).toHaveBeenCalled();
-      expect(result).toBe(expectedResult);
+      expect(result.data).toBeDefined();
+      expect(result.meta).toEqual(expectedResult.meta);
     });
   });
 
@@ -194,27 +213,29 @@ describe('UsersController', () => {
   });
 
   describe('findOne', () => {
-    it('should return a user by email', async () => {
+    it('should return a user by id', async () => {
       const mockUser = {
         id: '1',
         email: 'student@example.com',
         name: 'Test Student',
         role: Role.student,
+        cover: null,
+        accessGroup: null,
       };
 
       mockUsersService.findOne.mockResolvedValue(mockUser);
 
-      const result = await controller.findOne('student@example.com');
+      const result = await controller.findOne('1');
 
-      expect(mockUsersService.findOne).toHaveBeenCalledWith(
-        'student@example.com',
-      );
-      expect(result).toEqual(mockUser);
+      expect(mockUsersService.findOne).toHaveBeenCalledWith('1');
+      expect(result).toBeDefined();
+      expect(result.email).toBe(mockUser.email);
+      expect(result.name).toBe(mockUser.name);
     });
   });
 
   describe('update', () => {
-    it('should update a user by email (admin updating student)', async () => {
+    it('should update a user by id (admin updating student)', async () => {
       const adminPayload: JwtPayload = {
         sub: '1',
         email: 'admin@example.com',
@@ -227,32 +248,30 @@ describe('UsersController', () => {
       };
 
       const mockOldUser = {
-        id: '1',
+        id: '2',
         email: 'student@example.com',
         name: 'Test Student',
         role: Role.student,
+        cover: null,
+        accessGroup: null,
       };
 
       const mockUpdatedUser = {
-        id: '1',
+        id: '2',
         email: 'student@example.com',
         name: 'Updated Student Name',
         role: Role.student,
+        cover: null,
+        accessGroup: null,
       };
 
       mockUsersService.findOne.mockResolvedValue(mockOldUser);
       mockUsersService.update.mockResolvedValue(mockUpdatedUser);
 
       const request = { user: adminPayload };
-      const result = await controller.update(
-        'student@example.com',
-        updateUserDto,
-        request,
-      );
+      const result = await controller.update('2', updateUserDto, request);
 
-      expect(mockUsersService.findOne).toHaveBeenCalledWith(
-        'student@example.com',
-      );
+      expect(mockUsersService.findOne).toHaveBeenCalledWith('2');
       expect(mockUsersService.update).toHaveBeenCalled();
       expect(result).toBeDefined();
       expect(result.name).toBe(mockUpdatedUser.name);
@@ -271,10 +290,12 @@ describe('UsersController', () => {
       };
 
       const mockAdminUser = {
-        id: '1',
+        id: '2',
         email: 'admin@example.com',
         name: 'Admin User',
         role: Role.admin,
+        cover: null,
+        accessGroup: null,
       };
 
       mockUsersService.findOne.mockResolvedValue(mockAdminUser);
@@ -282,12 +303,10 @@ describe('UsersController', () => {
       const request = { user: employeePayload };
 
       await expect(
-        controller.update('admin@example.com', updateUserDto, request),
+        controller.update('2', updateUserDto, request),
       ).rejects.toThrow(ForbiddenException);
 
-      expect(mockUsersService.findOne).toHaveBeenCalledWith(
-        'admin@example.com',
-      );
+      expect(mockUsersService.findOne).toHaveBeenCalledWith('2');
       expect(mockUsersService.update).not.toHaveBeenCalled();
     });
 
@@ -304,32 +323,30 @@ describe('UsersController', () => {
       };
 
       const mockOldUser = {
-        id: '1',
+        id: '2',
         email: 'student@example.com',
         name: 'Test Student',
         role: Role.student,
+        cover: null,
+        accessGroup: null,
       };
 
       const mockUpdatedUser = {
-        id: '1',
+        id: '2',
         email: 'student@example.com',
         name: 'Updated Student Name',
         role: Role.student,
+        cover: null,
+        accessGroup: null,
       };
 
       mockUsersService.findOne.mockResolvedValue(mockOldUser);
       mockUsersService.update.mockResolvedValue(mockUpdatedUser);
 
       const request = { user: employeePayload };
-      const result = await controller.update(
-        'student@example.com',
-        updateUserDto,
-        request,
-      );
+      const result = await controller.update('2', updateUserDto, request);
 
-      expect(mockUsersService.findOne).toHaveBeenCalledWith(
-        'student@example.com',
-      );
+      expect(mockUsersService.findOne).toHaveBeenCalledWith('2');
       expect(mockUsersService.update).toHaveBeenCalled();
       expect(result).toBeDefined();
     });
@@ -351,6 +368,8 @@ describe('UsersController', () => {
         email: 'admin2@example.com',
         name: 'Admin Two',
         role: Role.admin,
+        cover: null,
+        accessGroup: null,
       };
 
       const mockUpdatedUser = {
@@ -358,21 +377,17 @@ describe('UsersController', () => {
         email: 'admin2@example.com',
         name: 'Updated Admin Name',
         role: Role.admin,
+        cover: null,
+        accessGroup: null,
       };
 
       mockUsersService.findOne.mockResolvedValue(mockOldUser);
       mockUsersService.update.mockResolvedValue(mockUpdatedUser);
 
       const request = { user: adminPayload };
-      const result = await controller.update(
-        'admin2@example.com',
-        updateUserDto,
-        request,
-      );
+      const result = await controller.update('2', updateUserDto, request);
 
-      expect(mockUsersService.findOne).toHaveBeenCalledWith(
-        'admin2@example.com',
-      );
+      expect(mockUsersService.findOne).toHaveBeenCalledWith('2');
       expect(mockUsersService.update).toHaveBeenCalled();
       expect(result).toBeDefined();
     });

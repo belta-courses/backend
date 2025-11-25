@@ -6,8 +6,6 @@ import {
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
-import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from './users.types';
 import { StorageService } from 'src/storage/storage.service';
 import { Prisma, Role } from '@prisma/client';
 
@@ -15,7 +13,6 @@ import { Prisma, Role } from '@prisma/client';
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
     private readonly storageService: StorageService,
   ) {}
 
@@ -34,16 +31,12 @@ export class UsersService {
       throw new NotFoundException('Cover not found');
     }
 
-    const newUser = await this.prisma.user.create({ data: createUserDto });
-    const payload: JwtPayload = {
-      sub: newUser.id,
-      email: newUser.email,
-      role: newUser.role,
-      purpose: null,
-    };
-    const accessToken = await this.jwtService.signAsync(payload);
+    const newUser = await this.prisma.user.create({
+      data: createUserDto,
+      include: { cover: true, accessGroup: true },
+    });
 
-    return { ...newUser, accessToken, coverId: undefined, cover: cover?.url };
+    return newUser;
   }
 
   async findAll(filters: {
@@ -71,6 +64,10 @@ export class UsersService {
         where,
         skip: (page - 1) * limit,
         take: limit,
+        include: {
+          cover: true,
+          accessGroup: true,
+        },
       }),
       this.prisma.user.count({
         where,
@@ -91,6 +88,7 @@ export class UsersService {
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
+      include: { cover: true, accessGroup: true },
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -101,6 +99,7 @@ export class UsersService {
   async findOneByEmail(email: string) {
     const user = await this.prisma.user.findUnique({
       where: { email },
+      include: { cover: true, accessGroup: true },
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -118,6 +117,7 @@ export class UsersService {
     const user = await this.prisma.user.update({
       where: { id },
       data: updateUserDto,
+      include: { cover: true, accessGroup: true },
     });
 
     // Delete old cover file
