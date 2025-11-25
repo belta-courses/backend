@@ -9,7 +9,6 @@ import {
   Get,
   Param,
   Patch,
-  ValidationPipe,
   Delete,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -70,7 +69,7 @@ export class AuthController {
   @JWTPurpose(JwtPurpose.Register)
   @Post(Router.Auth.Register)
   async register(
-    @Body(ValidationPipe) registerDto: RegisterDto,
+    @Body() registerDto: RegisterDto,
     @Request() request: { user: JwtPayload },
   ) {
     const { email, role } = request['user'];
@@ -122,9 +121,7 @@ export class AuthController {
   )
   @HttpCode(HttpStatus.CREATED)
   @Post(Router.Auth.AccessGroups.Base)
-  createAccessGroup(
-    @Body(ValidationPipe) createAccessGroupDto: CreateAccessGroupDto,
-  ) {
+  createAccessGroup(@Body() createAccessGroupDto: CreateAccessGroupDto) {
     return plainToInstance(
       AccessGroupDto,
       this.authService.createAccessGroup(createAccessGroupDto),
@@ -145,7 +142,7 @@ export class AuthController {
   @Patch(Router.Auth.AccessGroups.ById)
   updateAccessGroup(
     @Param('accessGroupId') accessGroupId: string,
-    @Body(ValidationPipe) updateAccessGroupDto: UpdateAccessGroupDto,
+    @Body() updateAccessGroupDto: UpdateAccessGroupDto,
   ) {
     return plainToInstance(
       AccessGroupDto,
@@ -167,7 +164,7 @@ export class AuthController {
   @Post(Router.Auth.AccessGroups.AddEmployee)
   async addEmployeeToAccessGroup(
     @Param('accessGroupId') accessGroupId: string,
-    @Body(ValidationPipe) dto: AssignEmployeeToAccessGroupDto,
+    @Body() dto: AssignEmployeeToAccessGroupDto,
   ) {
     const user = await this.authService.addEmployeeToAccessGroup(
       accessGroupId,
@@ -189,7 +186,7 @@ export class AuthController {
   )
   @Delete(Router.Auth.AccessGroups.RemoveEmployee)
   async removeEmployeeFromAccessGroup(
-    @Body(ValidationPipe) dto: AssignEmployeeToAccessGroupDto,
+    @Body() dto: AssignEmployeeToAccessGroupDto,
   ) {
     const user = await this.authService.removeEmployeeFromAccessGroup(dto.id);
 

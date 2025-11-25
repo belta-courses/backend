@@ -1,27 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
-import { Type } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { PaginationDto } from 'src/core/dto/pagination.dto';
 
-export class FindUsersQueryDto {
-  @ApiProperty({
-    example: 1,
-    required: false,
-  })
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  page: number;
-
-  @ApiProperty({
-    example: 10,
-    required: false,
-  })
-  @Type(() => Number)
-  @IsNumber()
-  @IsOptional()
-  limit: number;
-
+export class FindUsersQueryDto extends PaginationDto {
   @ApiProperty({
     description: 'Search by email or name',
     required: false,

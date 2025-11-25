@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { version } from '../package.json';
 import { Router } from './core/router';
 import { PORT } from './core/constants/paths.constants';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,6 +25,15 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(Router.Integrated.SwaggerRoute, app, documentFactory);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strip unknown fields
+      forbidNonWhitelisted: true, // Throw error if unknown fields exist
+      transform: false, // 👈 Enables auto type conversion
+      transformOptions: { enableImplicitConversion: false }, // 👈 Allows @Type() to work
+    }),
+  );
 
   await app.listen(PORT);
 }

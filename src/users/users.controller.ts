@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  ValidationPipe,
   UseGuards,
   Request,
   HttpStatus,
@@ -53,7 +52,7 @@ export class UsersController {
   @AccessedBy(Permission.USERS_CREATE, Permission.USERS_FULL_ACCESS)
   @Post()
   async create(
-    @Body(ValidationPipe, CreateUserValidationPipe)
+    @Body(CreateUserValidationPipe)
     createUserDto: CreateUserDto,
   ) {
     const newUser = await this.usersService.create(createUserDto);
@@ -72,8 +71,8 @@ export class UsersController {
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @Get(Router.Users.List)
   findAll(
-    @Query(ValidationPipe)
-    { page, limit, role: queryRole, ...dto }: FindUsersQueryDto,
+    @Query()
+    { role: queryRole, ...dto }: FindUsersQueryDto,
     @Request() request: { user: JwtPayload },
   ) {
     const user = request['user'];
@@ -87,13 +86,13 @@ export class UsersController {
       );
     }
 
+    const role =
+      user.role === Role.employee && !queryRole
+        ? [Role.teacher, Role.student]
+        : queryRole;
+
     return this.usersService.findAll({
-      page: Number(page),
-      limit: Number(limit),
-      role:
-        user.role === Role.employee && !queryRole
-          ? [Role.teacher, Role.student]
-          : queryRole,
+      role,
       ...dto,
     });
   }
@@ -125,7 +124,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Patch(Router.Users.Me)
   async updateMe(
-    @Body(ValidationPipe)
+    @Body()
     updateUserDto: UpdateUserDto,
     @Request() request: { user: JwtPayload },
   ) {
@@ -178,7 +177,7 @@ export class UsersController {
   @Patch(Router.Users.ById)
   async update(
     @Param('id') id: string,
-    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
     @Request() request: { user: JwtPayload },
   ) {
     const oldUser = await this.usersService.findOne(id);
