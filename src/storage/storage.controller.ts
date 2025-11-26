@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   HttpStatus,
   Post,
@@ -34,6 +35,8 @@ export class StorageController {
   @UseInterceptors(FileInterceptor('file'))
   @Post(Router.Storage.UploadFile)
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (!file) throw new BadRequestException('File is required');
+
     const metadata = await this.storageService.uploadFile(file);
 
     return plainToInstance(UploadResponseDto, metadata, {
