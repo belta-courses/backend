@@ -16,6 +16,7 @@ import { CreateAccessGroupDto } from './dto/request/create-access-group.dto';
 import { UpdateAccessGroupDto } from './dto/request/update-access-group.dto';
 import { Role } from '@prisma/client';
 import { CreateUserDto } from 'src/users/dto/request/create-user.dto';
+import { AdminSignInDto } from './dto/request/admin-sign-in.dto';
 
 @Injectable()
 export class AuthService {
@@ -27,20 +28,43 @@ export class AuthService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  async signIn(signInDto: SignInDto) {
+  async generateAccessToken({
+    payload,
+    expiresIn,
+  }: {
+    payload: JwtPayload;
+    expiresIn?: string;
+  }) {
+    return this.jwtService.signAsync(
+      payload,
+      expiresIn
+        ? {
+            expiresIn: parseInt(expiresIn),
+          }
+        : undefined,
+    );
+  }
+
+  async signIn(signInDto: SignInDto | AdminSignInDto, roles?: Role[]) {
     const nodeEnv = this.configService.get('app.nodeEnv', {
       infer: true,
     });
 
     try {
-      const user = await this.usersService.findOneByEmail(signInDto.email);
-      const payload: JwtPayload = {
-        sub: user.id,
-        email: user.email,
-        role: user.role,
-        purpose: null,
-      };
-      const accessToken = await this.jwtService.signAsync(payload);
+      const user = await this.usersService.findOneByEmail(
+        signInDto.email,
+        roles?.length ? { role: { in: roles } } : undefined,
+      );
+
+      const accessToken = await this.generateAccessToken({
+        payload: {
+          sub: user.id,
+          email: user.email,
+          role: user.role,
+          purpose: null,
+        },
+        expiresIn: '10m',
+      });
 
       if (nodeEnv !== 'production' && devEmails.includes(signInDto.email)) {
         return { accessToken };
@@ -56,14 +80,18 @@ export class AuthService {
         });
       }
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        const payload: JwtPayload = {
-          sub: 'new-user',
-          email: signInDto.email,
-          role: null,
-          purpose: JwtPurpose.Register,
-        };
-        const oneTimeToken = await this.jwtService.signAsync(payload);
+      if (
+        error instanceof NotFoundException &&
+        signInDto instanceof SignInDto
+      ) {
+        const oneTimeToken = await this.generateAccessToken({
+          payload: {
+            sub: 'new-user',
+            email: signInDto.email,
+            role: null,
+            purpose: JwtPurpose.Register,
+          },
+        });
 
         if (nodeEnv !== 'production' && devEmails.includes(signInDto.email)) {
           return { oneTimeToken };

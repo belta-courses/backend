@@ -96,9 +96,12 @@ export class UsersService {
     return user;
   }
 
-  async findOneByEmail(email: string) {
+  async findOneByEmail(
+    email: string,
+    where?: Omit<Prisma.UserFindUniqueArgs['where'], 'email' | 'id'>,
+  ) {
     const user = await this.prisma.user.findUnique({
-      where: { email },
+      where: { email, ...where },
       include: { cover: true, accessGroup: true },
     });
     if (!user) {

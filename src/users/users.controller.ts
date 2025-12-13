@@ -32,12 +32,17 @@ import { Permission } from 'src/core/config/permissions.config';
 import { AccessedBy } from 'src/auth/permissions.decorator';
 import { Router } from 'src/core/router';
 import { FindUsersQueryDto } from './dto/request/find-users-query.dto';
+import { AuthService } from 'src/auth/auth.service';
+import { SessionResponseDto } from './dto/response/session-response.dto';
 
 @ApiTags(Router.Users.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
 @Controller(Router.Users.Base)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @ApiOperation({ summary: 'Create a new user (by Admins only)' })
   @ApiResponse({
@@ -100,7 +105,10 @@ export class UsersController {
     };
   }
 
-  @ApiOperation({ summary: 'Get my profile' })
+  @ApiOperation({
+    summary: 'Get my profile',
+    description: "Get the current user's profile with new Access Token",
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The user has been successfully retrieved',
@@ -112,10 +120,22 @@ export class UsersController {
     const { sub: id } = request['user'];
 
     const user = await this.usersService.findOne(id);
-
-    return plainToInstance(UserResponseDto, user, {
-      excludeExtraneousValues: true,
+    const accessToken = await this.authService.generateAccessToken({
+      payload: {
+        sub: user.id,
+        email: user.email,
+        role: user.role,
+        purpose: null,
+      },
     });
+
+    return plainToInstance(
+      SessionResponseDto,
+      { ...user, accessToken },
+      {
+        excludeExtraneousValues: true,
+      },
+    );
   }
 
   @ApiOperation({ summary: 'Update my profile' })

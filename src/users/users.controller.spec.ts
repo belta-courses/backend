@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { Role } from '@prisma/client';
 import { ForbiddenException } from '@nestjs/common';
 import { JwtPayload } from './users.types';
+import { AuthService } from 'src/auth/auth.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -30,6 +31,12 @@ describe('UsersController', () => {
         {
           provide: UsersService,
           useValue: mockUsersService,
+        },
+        {
+          provide: AuthService,
+          useValue: {
+            generateAccessToken: jest.fn(),
+          },
         },
       ],
     }).compile();

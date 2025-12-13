@@ -42,6 +42,8 @@ export abstract class Router {
     static Base = 'auth';
     /** sign-in */
     static SignIn = 'sign-in';
+    /** admin-sign-in */
+    static AdminSignIn = 'admin-sign-in';
     /** register */
     static Register = 'register';
     /** permissions */

@@ -10,6 +10,8 @@ import {
   Param,
   Patch,
   Delete,
+  UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
@@ -38,6 +40,7 @@ import { AccessedBy } from './permissions.decorator';
 import { AccessGroupDto } from './dto/response/access-group.dto';
 import { Role } from '@prisma/client';
 import { Router } from 'src/core/router';
+import { AdminSignInDto } from './dto/request/admin-sign-in.dto';
 
 @ApiTags(Router.Auth.ApiTag)
 @Controller(Router.Auth.Base)
@@ -55,6 +58,30 @@ export class AuthController {
   @Post(Router.Auth.SignIn)
   async signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
+  }
+
+  @ApiOperation({
+    description:
+      'Sign in for only Admin and Employee, without register redirect url',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+  })
+  @HttpCode(HttpStatus.OK)
+  @Post(Router.Auth.AdminSignIn)
+  async adminSignIn(@Body() signInDto: AdminSignInDto) {
+    try {
+      const res = await this.authService.signIn(signInDto, [
+        Role.admin,
+        Role.employee,
+      ]);
+      return res;
+    } catch (error) {
+      if (error instanceof NotFoundException)
+        throw new UnauthorizedException('Invalid user email');
+
+      throw error;
+    }
   }
 
   @ApiOperation({
