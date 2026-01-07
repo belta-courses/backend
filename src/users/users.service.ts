@@ -44,8 +44,11 @@ export class UsersService {
     limit: number;
     search: string;
     role?: Role | Role[];
+    sortNewest?: boolean;
   }) {
     const { page, limit, search, role } = filters;
+    let { sortNewest } = filters;
+    if (sortNewest === undefined) sortNewest = true;
 
     const where: Prisma.UserFindManyArgs['where'] = {
       OR: [
@@ -67,6 +70,9 @@ export class UsersService {
         include: {
           cover: true,
           accessGroup: true,
+        },
+        orderBy: {
+          created_at: sortNewest ? 'desc' : undefined,
         },
       }),
       this.prisma.user.count({
