@@ -120,6 +120,7 @@ export class AuthService {
   async getRoles() {
     const roles = await this.prismaService.accessGroup.findMany({
       include: { permissions: true },
+      orderBy: { created_at: 'desc' },
     });
     return roles;
   }

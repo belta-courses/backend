@@ -34,7 +34,6 @@ import {
 } from 'src/core/config/permissions.config';
 import { CreateAccessGroupDto } from './dto/request/create-access-group.dto';
 import { UpdateAccessGroupDto } from './dto/request/update-access-group.dto';
-import { AssignEmployeeToAccessGroupDto } from './dto/request/assign-employee-to-access-group.dto';
 import { PermissionsGuard } from './permissions.guard';
 import { AccessedBy } from './permissions.decorator';
 import { AccessGroupDto } from './dto/response/access-group.dto';
@@ -191,11 +190,11 @@ export class AuthController {
   @Post(Router.Auth.AccessGroups.AddEmployee)
   async addEmployeeToAccessGroup(
     @Param('accessGroupId') accessGroupId: string,
-    @Body() dto: AssignEmployeeToAccessGroupDto,
+    @Param('userId') userId: string,
   ) {
     const user = await this.authService.addEmployeeToAccessGroup(
       accessGroupId,
-      dto.id,
+      userId,
     );
 
     return plainToInstance(UserResponseDto, user, {
@@ -212,10 +211,8 @@ export class AuthController {
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
   @Delete(Router.Auth.AccessGroups.RemoveEmployee)
-  async removeEmployeeFromAccessGroup(
-    @Body() dto: AssignEmployeeToAccessGroupDto,
-  ) {
-    const user = await this.authService.removeEmployeeFromAccessGroup(dto.id);
+  async removeEmployeeFromAccessGroup(@Param('userId') userId: string) {
+    const user = await this.authService.removeEmployeeFromAccessGroup(userId);
 
     return plainToInstance(UserResponseDto, user, {
       excludeExtraneousValues: true,

@@ -56,11 +56,11 @@ export abstract class Router {
       /** access-groups */
       static Base = 'access-groups';
       /** :accessGroupId */
-      static ById = ':accessGroupId';
+      static ById = 'access-groups/:accessGroupId';
       /** :accessGroupId/add-employee */
-      static AddEmployee = ':accessGroupId/add-employee';
+      static AddEmployee = 'access-groups/:accessGroupId/add-employee/:userId';
       /** access-groups/remove-employee */
-      static RemoveEmployee = 'access-groups/remove-employee';
+      static RemoveEmployee = 'access-groups/remove-employee/:userId';
     };
   };
 

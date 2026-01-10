@@ -45,8 +45,14 @@ export class UsersService {
     search: string;
     role?: Role | Role[];
     sortNewest?: boolean;
+    accessGroupId?: string | null;
   }) {
-    const { page, limit, search, role } = filters;
+    const { page, limit, search, role, accessGroupId } = filters;
+
+    if (accessGroupId && role !== Role.employee) {
+      return { data: [], meta: { page, limit, count: 0, total: 0 } };
+    }
+
     let { sortNewest } = filters;
     if (sortNewest === undefined) sortNewest = true;
 
@@ -60,6 +66,12 @@ export class UsersService {
           ? { in: role }
           : { equals: role }
         : undefined,
+      accessGroupId:
+        accessGroupId !== undefined
+          ? {
+              equals: accessGroupId,
+            }
+          : undefined,
     };
 
     const [users, totalCount] = await this.prisma.$transaction([
