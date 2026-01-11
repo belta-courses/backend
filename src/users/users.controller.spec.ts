@@ -134,6 +134,7 @@ describe('UsersController', () => {
           limit: 10,
           search: '',
           role: Role.student,
+          accessGroupId: null,
         },
         {
           user: {

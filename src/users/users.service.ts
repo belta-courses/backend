@@ -106,7 +106,7 @@ export class UsersService {
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      include: { cover: true, accessGroup: true },
+      include: { cover: true, accessGroup: { include: { permissions: true } } },
     });
     if (!user) {
       throw new NotFoundException('User not found');

@@ -158,7 +158,12 @@ describe('UsersService', () => {
       );
       expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
         where: { id: 'nonexistent-id' },
-        include: { cover: true, accessGroup: true },
+        include: {
+          cover: true,
+          accessGroup: {
+            include: { permissions: true },
+          },
+        },
       });
     });
 
@@ -179,7 +184,10 @@ describe('UsersService', () => {
       expect(result).toEqual(mockUser);
       expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
         where: { id: mockUser.id },
-        include: { cover: true, accessGroup: true },
+        include: {
+          cover: true,
+          accessGroup: { include: { permissions: true } },
+        },
       });
     });
   });
