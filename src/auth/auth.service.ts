@@ -32,7 +32,7 @@ export class AuthService {
     payload,
     expiresIn,
   }: {
-    payload: JwtPayload;
+    payload: Omit<JwtPayload, 'iat'>;
     expiresIn?: string;
   }) {
     return this.jwtService.signAsync(

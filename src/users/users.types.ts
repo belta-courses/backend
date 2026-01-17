@@ -8,5 +8,6 @@ export type JwtPayload = {
   sub: string;
   email: string;
   role: Role | null;
+  iat: number;
   purpose: JwtPurpose | null;
 };

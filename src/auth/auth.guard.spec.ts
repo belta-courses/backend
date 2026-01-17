@@ -2,6 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -27,6 +28,12 @@ describe('AuthGuard', () => {
           provide: JwtService,
           useValue: {
             verifyAsync: jest.fn(),
+          },
+        },
+        {
+          provide: UsersService,
+          useValue: {
+            findOne: jest.fn(),
           },
         },
       ],
