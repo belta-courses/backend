@@ -82,7 +82,7 @@ export class AuthService {
     } catch (error) {
       if (
         error instanceof NotFoundException &&
-        signInDto instanceof SignInDto
+        'register_redirect_url' in signInDto
       ) {
         const oneTimeToken = await this.generateAccessToken({
           payload: {
