@@ -33,13 +33,13 @@ export class AuthService {
     expiresIn,
   }: {
     payload: Omit<JwtPayload, 'iat'>;
-    expiresIn?: string;
+    expiresIn?: number;
   }) {
     return this.jwtService.signAsync(
       payload,
       expiresIn
         ? {
-            expiresIn: parseInt(expiresIn),
+            expiresIn,
           }
         : undefined,
     );
@@ -63,7 +63,7 @@ export class AuthService {
           role: user.role,
           purpose: null,
         },
-        expiresIn: '10m',
+        expiresIn: 10 * 60,
       });
 
       if (nodeEnv !== 'production' && devEmails.includes(signInDto.email)) {
@@ -91,6 +91,7 @@ export class AuthService {
             role: null,
             purpose: JwtPurpose.Register,
           },
+          expiresIn: 10 * 60,
         });
 
         if (nodeEnv !== 'production' && devEmails.includes(signInDto.email)) {
