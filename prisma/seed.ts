@@ -115,7 +115,7 @@ async function main() {
   // Users
   await prisma.user.create({
     data: {
-      email: 'student@beltacrourses.com',
+      email: 'student@beltacourses.com',
       name: 'Belta Student',
       role: 'student',
     },
@@ -123,7 +123,7 @@ async function main() {
 
   await prisma.user.create({
     data: {
-      email: 'teacher@beltacrourses.com',
+      email: 'teacher@beltacourses.com',
       name: 'Belta Teacher',
       role: 'teacher',
       bio: 'Belta Teacher focuses on practical web development.\nTeaches modern frontend and backend workflows.\nGuides students through real projects and feedback.',
@@ -132,7 +132,7 @@ async function main() {
 
   await prisma.user.create({
     data: {
-      email: 'admin@beltacrourses.com',
+      email: 'admin@beltacourses.com',
       name: 'Belta Admin',
       role: 'admin',
     },
@@ -140,7 +140,7 @@ async function main() {
 
   await prisma.user.create({
     data: {
-      email: 'employee@beltacrourses.com',
+      email: 'employee@beltacourses.com',
       name: 'Belta Employee',
       role: 'employee',
       accessGroupId: fullAccessGroup.id,
