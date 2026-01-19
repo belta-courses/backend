@@ -5,9 +5,6 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
-  "engines": {
-    "node": "22.x"
-  },
   "packageManager": "pnpm@10.5.1",
   "scripts": {
     "postinstall": "prisma generate --no-engine",
