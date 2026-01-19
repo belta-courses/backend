@@ -34,6 +34,8 @@ import { Router } from 'src/core/router';
 import { FindUsersQueryDto } from './dto/request/find-users-query.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { SessionResponseDto } from './dto/response/session-response.dto';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
 
 @ApiTags(Router.Users.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -50,7 +52,8 @@ export class UsersController {
     description: 'The user has been successfully created',
     type: UserResponseDto,
   })
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_CREATE, Permission.USERS_FULL_ACCESS)
   @Post()
   async create(
@@ -69,7 +72,8 @@ export class UsersController {
     description: 'The users have been successfully retrieved',
     type: UserResponseDto,
   })
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @Get(Router.Users.List)
   async findAll(
@@ -178,7 +182,8 @@ export class UsersController {
     name: 'id',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
   @Get(Router.Users.ById)
   async findOne(@Param('id') id: string) {
@@ -195,7 +200,8 @@ export class UsersController {
     description: 'The user has been successfully updated',
     type: UserResponseDto,
   })
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
   @Patch(Router.Users.ById)
   async update(

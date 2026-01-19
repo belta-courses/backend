@@ -27,20 +27,6 @@ describe('PermissionsGuard', () => {
     } as unknown as ExecutionContext;
   };
 
-  const mockUser = {
-    id: '1',
-    email: 'test@example.com',
-    role: Role.employee,
-    accessGroupId: '1',
-    name: 'Test User',
-    coverId: null,
-    bio: null,
-    gender: null,
-    date_of_birth: null,
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
-
   const mockAccessGroup = {
     id: '1',
     name: 'Test Group',
@@ -61,7 +47,23 @@ describe('PermissionsGuard', () => {
         created_at: new Date(),
       },
     ],
-  } as AccessGroup;
+  };
+
+  const mockUser = {
+    id: '1',
+    email: 'test@example.com',
+    role: Role.employee,
+    accessGroupId: mockAccessGroup.id,
+    accessGroup: mockAccessGroup,
+    name: 'Test User',
+    coverId: null,
+    cover: null,
+    bio: null,
+    gender: null,
+    date_of_birth: null,
+    created_at: new Date(),
+    updated_at: new Date(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -111,6 +113,7 @@ describe('PermissionsGuard', () => {
         email: 'test@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest.spyOn(reflector, 'getAllAndOverride').mockReturnValue(undefined);
@@ -130,6 +133,7 @@ describe('PermissionsGuard', () => {
         email: 'admin@example.com',
         role: Role.admin,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -142,12 +146,13 @@ describe('PermissionsGuard', () => {
       expect(usersService.findOne).not.toHaveBeenCalled();
     });
 
-    it('should return false for student users when permissions are required', async () => {
+    it('should return true for student users when permissions are required', async () => {
       const context = mockExecutionContext({
         sub: '1',
         email: 'student@example.com',
         role: Role.student,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -156,16 +161,17 @@ describe('PermissionsGuard', () => {
 
       const result = await guard.canActivate(context);
 
-      expect(result).toBe(false);
+      expect(result).toBe(true);
       expect(usersService.findOne).not.toHaveBeenCalled();
     });
 
-    it('should return false for teacher users when permissions are required', async () => {
+    it('should return true for teacher users when permissions are required', async () => {
       const context = mockExecutionContext({
         sub: '1',
         email: 'teacher@example.com',
         role: Role.teacher,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -174,7 +180,7 @@ describe('PermissionsGuard', () => {
 
       const result = await guard.canActivate(context);
 
-      expect(result).toBe(false);
+      expect(result).toBe(true);
       expect(usersService.findOne).not.toHaveBeenCalled();
     });
 
@@ -184,6 +190,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -193,6 +200,7 @@ describe('PermissionsGuard', () => {
       jest.spyOn(usersService, 'findOne').mockResolvedValue({
         ...mockUser,
         accessGroupId: null,
+        accessGroup: null,
       });
 
       const result = await guard.canActivate(context);
@@ -208,6 +216,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -236,6 +245,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -263,6 +273,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -286,6 +297,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -309,6 +321,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -333,6 +346,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest
@@ -354,6 +368,7 @@ describe('PermissionsGuard', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: Date.now(),
       });
 
       jest

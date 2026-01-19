@@ -40,6 +40,8 @@ import { AccessGroupDto } from './dto/response/access-group.dto';
 import { Role } from '@prisma/client';
 import { Router } from 'src/core/router';
 import { AdminSignInDto } from './dto/request/admin-sign-in.dto';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
 
 @ApiTags(Router.Auth.ApiTag)
 @Controller(Router.Auth.Base)
@@ -112,7 +114,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Get all application permissions' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(
     Permission.ACCESS_GROUPS_READ,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
@@ -126,7 +129,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Get all application access groups' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(
     Permission.ACCESS_GROUPS_READ,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
@@ -140,7 +144,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Create a new access group' })
   @ApiResponse({ status: HttpStatus.CREATED })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(
     Permission.ACCESS_GROUPS_CREATE,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
@@ -160,7 +165,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Update an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @AccessedBy(
     Permission.ACCESS_GROUPS_UPDATE,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
@@ -182,7 +187,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Add an employee to an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(
     Permission.ACCESS_GROUPS_ASSIGN,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
@@ -205,7 +211,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Remove an employee from an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(
     Permission.ACCESS_GROUPS_UNASSIGN,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
@@ -222,7 +229,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Delete an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
-  @UseGuards(AuthGuard, PermissionsGuard)
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
   @AccessedBy(
     Permission.ACCESS_GROUPS_DELETE,
     Permission.ACCESS_GROUPS_FULL_ACCESS,

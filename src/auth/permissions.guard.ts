@@ -25,9 +25,9 @@ export class PermissionsGuard implements CanActivate {
     const {
       user: { role, sub: userId },
     } = context.switchToHttp().getRequest<{ user: JwtPayload }>();
-    if (role === Role.admin) return true;
-    // student or teacher => false
-    if (role !== Role.employee) return false;
+
+    // check permissions for employees only
+    if (role !== Role.employee) return true;
 
     try {
       const user = await this.usersService.findOne(userId);
