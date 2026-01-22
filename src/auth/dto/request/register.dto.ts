@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 import { IsEnum } from 'class-validator';
 import { CreateUserDto } from 'src/users/dto/request/create-user.dto';
 

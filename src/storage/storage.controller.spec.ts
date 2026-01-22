@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StorageController } from './storage.controller';
 import { StorageService } from './storage.service';
-import { File } from '@prisma/client';
+import { File } from 'src/generated/prisma/client';
 
 describe('StorageController', () => {
   let controller: StorageController;

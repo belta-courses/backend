@@ -7,7 +7,7 @@ import { StorageService } from 'src/storage/storage.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 
 describe('UsersService', () => {
   let service: UsersService;

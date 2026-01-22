@@ -1,4 +1,4 @@
-import { Gender, Role } from '@prisma/client';
+import { Gender, Role } from 'src/generated/prisma/client';
 import { CreateUserValidationPipe } from './create-user-validation.pipe';
 import { BadRequestException } from '@nestjs/common';
 

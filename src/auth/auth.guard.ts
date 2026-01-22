@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 import { Request } from 'express';
 import { jwtConstants } from 'src/core/constants/auth.constants';
 import { Router } from 'src/core/router';

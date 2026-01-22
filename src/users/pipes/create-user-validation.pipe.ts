@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import { CreateUserDto } from '../dto/request/create-user.dto';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 
 @Injectable()
 export class CreateUserValidationPipe implements PipeTransform {

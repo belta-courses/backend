@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AccessGroup, Role } from '@prisma/client';
+import { AccessGroup, Role } from 'src/generated/prisma/client';
 import { JwtPayload } from 'src/users/users.types';
 import { PermissionsGuard } from './permissions.guard';
 import { PrismaService } from 'src/prisma.service';

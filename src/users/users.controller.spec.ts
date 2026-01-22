@@ -6,7 +6,7 @@ import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
 import { MailService } from 'src/mail/mail.service';
 import { JwtModule } from '@nestjs/jwt';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 import { ForbiddenException } from '@nestjs/common';
 import { JwtPayload } from './users.types';
 import { AuthService } from 'src/auth/auth.service';

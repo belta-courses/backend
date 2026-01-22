@@ -37,7 +37,7 @@ import { UpdateAccessGroupDto } from './dto/request/update-access-group.dto';
 import { PermissionsGuard } from './permissions.guard';
 import { AccessedBy } from './permissions.decorator';
 import { AccessGroupDto } from './dto/response/access-group.dto';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 import { Router } from 'src/core/router';
 import { AdminSignInDto } from './dto/request/admin-sign-in.dto';
 import { RolesGuard } from './roles.guard';

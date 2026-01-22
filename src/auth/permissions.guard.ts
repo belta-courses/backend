@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Permission, Role } from '@prisma/client';
+import { Permission, Role } from 'src/generated/prisma/client';
 import { JwtPayload } from 'src/users/users.types';
 import { PERMISSIONS_KEY } from './permissions.decorator';
 import { PrismaService } from 'src/prisma.service';

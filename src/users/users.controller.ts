@@ -17,7 +17,7 @@ import { UpdateUserDto } from './dto/request/update-user.dto';
 import { CreateUserValidationPipe } from './pipes/create-user-validation.pipe';
 import { UserResponseDto } from './dto/response/user-response.dto';
 import { plainToInstance } from 'class-transformer';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
 import {
   ApiBearerAuth,

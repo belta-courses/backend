@@ -14,7 +14,7 @@ import { devEmails } from 'src/core/constants/auth.constants';
 import { PrismaService } from 'src/prisma.service';
 import { CreateAccessGroupDto } from './dto/request/create-access-group.dto';
 import { UpdateAccessGroupDto } from './dto/request/update-access-group.dto';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 import { CreateUserDto } from 'src/users/dto/request/create-user.dto';
 import { AdminSignInDto } from './dto/request/admin-sign-in.dto';
 

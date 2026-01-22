@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Gender, Role } from '@prisma/client';
+import { Gender, Role } from 'src/generated/prisma/client';
 import { Expose, plainToInstance, Transform } from 'class-transformer';
 import { AccessGroupDto } from 'src/auth/dto/response/access-group.dto';
 

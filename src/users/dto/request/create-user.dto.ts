@@ -7,7 +7,7 @@ import {
   IsEmail,
   IsUUID,
 } from 'class-validator';
-import { Role, Gender } from '@prisma/client';
+import { Role, Gender } from 'src/generated/prisma/client';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {

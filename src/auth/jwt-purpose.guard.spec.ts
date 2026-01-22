@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { JWTPurposeGuard } from './jwt-purpose.guard';
 import { JwtPayload, JwtPurpose } from 'src/users/users.types';
 import { JWT_PURPOSE_KEY } from './jwt-purpose.decorator';
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 
 describe('JWTPurposeGuard', () => {
   let guard: JWTPurposeGuard;

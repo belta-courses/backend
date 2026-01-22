@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from 'src/generated/prisma/client';
 
 export enum JwtPurpose {
   Register = 'register',
