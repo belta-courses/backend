@@ -1834,6 +1834,7 @@ export const LectureScalarFieldEnum = {
   videoId: 'videoId',
   demo: 'demo',
   moduleId: 'moduleId',
+  courseId: 'courseId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

@@ -14,6 +14,27 @@ export enum Permission {
   ACCESS_GROUPS_DELETE = 'access-groups:delete',
   ACCESS_GROUPS_ASSIGN = 'access-groups:assign',
   ACCESS_GROUPS_UNASSIGN = 'access-groups:unassign',
+
+  // Courses
+  COURSES_FULL_ACCESS = 'courses:full-access',
+  COURSES_CREATE = 'courses:create',
+  COURSES_READ = 'courses:read',
+  COURSES_UPDATE = 'courses:update',
+  COURSES_DELETE = 'courses:delete',
+
+  // Modules
+  MODULES_FULL_ACCESS = 'modules:full-access',
+  MODULES_CREATE = 'modules:create',
+  MODULES_READ = 'modules:read',
+  MODULES_UPDATE = 'modules:update',
+  MODULES_DELETE = 'modules:delete',
+
+  // Lectures
+  LECTURES_FULL_ACCESS = 'lectures:full-access',
+  LECTURES_CREATE = 'lectures:create',
+  LECTURES_READ = 'lectures:read',
+  LECTURES_UPDATE = 'lectures:update',
+  LECTURES_DELETE = 'lectures:delete',
 }
 
 export const permissionsList = [

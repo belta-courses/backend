@@ -2,7 +2,7 @@ model Course {
   id           String       @id @default(cuid())
   name         String
   description  String?
-  price        Decimal
+  price        Decimal @db.Decimal(10, 2)
   status       CourseStatus @default(draft)
   publishedAt  DateTime?
   coverId      String?
@@ -11,6 +11,7 @@ model Course {
   introVideo   File?        @relation("introVideoFile", fields: [introVideoId], references: [id])
 
   modules Module[]
+  lectures Lecture[]
 
   teacherId String
   teacher   User    @relation(fields: [teacherId], references: [id])
@@ -57,6 +58,8 @@ model Lecture {
   demo              Boolean            @default(false)
   moduleId          String
   module            Module             @relation(fields: [moduleId], references: [id])
+  courseId          String            
+  course            Course            @relation(fields: [courseId], references: [id])
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   completedLectures CompletedLecture[]

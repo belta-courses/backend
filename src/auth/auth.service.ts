@@ -63,7 +63,6 @@ export class AuthService {
           role: user.role,
           purpose: null,
         },
-        expiresIn: 10 * 60,
       });
 
       if (nodeEnv !== 'production' && devEmails.includes(signInDto.email)) {

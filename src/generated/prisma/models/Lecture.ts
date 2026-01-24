@@ -44,6 +44,7 @@ export type LectureMinAggregateOutputType = {
   videoId: string | null
   demo: boolean | null
   moduleId: string | null
+  courseId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -58,6 +59,7 @@ export type LectureMaxAggregateOutputType = {
   videoId: string | null
   demo: boolean | null
   moduleId: string | null
+  courseId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -72,6 +74,7 @@ export type LectureCountAggregateOutputType = {
   videoId: number
   demo: number
   moduleId: number
+  courseId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -96,6 +99,7 @@ export type LectureMinAggregateInputType = {
   videoId?: true
   demo?: true
   moduleId?: true
+  courseId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -110,6 +114,7 @@ export type LectureMaxAggregateInputType = {
   videoId?: true
   demo?: true
   moduleId?: true
+  courseId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -124,6 +129,7 @@ export type LectureCountAggregateInputType = {
   videoId?: true
   demo?: true
   moduleId?: true
+  courseId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -225,6 +231,7 @@ export type LectureGroupByOutputType = {
   videoId: string | null
   demo: boolean
   moduleId: string
+  courseId: string
   createdAt: Date
   updatedAt: Date
   _count: LectureCountAggregateOutputType | null
@@ -262,10 +269,12 @@ export type LectureWhereInput = {
   videoId?: Prisma.StringNullableFilter<"Lecture"> | string | null
   demo?: Prisma.BoolFilter<"Lecture"> | boolean
   moduleId?: Prisma.StringFilter<"Lecture"> | string
+  courseId?: Prisma.StringFilter<"Lecture"> | string
   createdAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
   video?: Prisma.XOR<Prisma.FileNullableScalarRelationFilter, Prisma.FileWhereInput> | null
   module?: Prisma.XOR<Prisma.ModuleScalarRelationFilter, Prisma.ModuleWhereInput>
+  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   completedLectures?: Prisma.CompletedLectureListRelationFilter
 }
 
@@ -279,10 +288,12 @@ export type LectureOrderByWithRelationInput = {
   videoId?: Prisma.SortOrderInput | Prisma.SortOrder
   demo?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  courseId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   video?: Prisma.FileOrderByWithRelationInput
   module?: Prisma.ModuleOrderByWithRelationInput
+  course?: Prisma.CourseOrderByWithRelationInput
   completedLectures?: Prisma.CompletedLectureOrderByRelationAggregateInput
 }
 
@@ -299,10 +310,12 @@ export type LectureWhereUniqueInput = Prisma.AtLeast<{
   videoId?: Prisma.StringNullableFilter<"Lecture"> | string | null
   demo?: Prisma.BoolFilter<"Lecture"> | boolean
   moduleId?: Prisma.StringFilter<"Lecture"> | string
+  courseId?: Prisma.StringFilter<"Lecture"> | string
   createdAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
   video?: Prisma.XOR<Prisma.FileNullableScalarRelationFilter, Prisma.FileWhereInput> | null
   module?: Prisma.XOR<Prisma.ModuleScalarRelationFilter, Prisma.ModuleWhereInput>
+  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   completedLectures?: Prisma.CompletedLectureListRelationFilter
 }, "id">
 
@@ -316,6 +329,7 @@ export type LectureOrderByWithAggregationInput = {
   videoId?: Prisma.SortOrderInput | Prisma.SortOrder
   demo?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  courseId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.LectureCountOrderByAggregateInput
@@ -338,6 +352,7 @@ export type LectureScalarWhereWithAggregatesInput = {
   videoId?: Prisma.StringNullableWithAggregatesFilter<"Lecture"> | string | null
   demo?: Prisma.BoolWithAggregatesFilter<"Lecture"> | boolean
   moduleId?: Prisma.StringWithAggregatesFilter<"Lecture"> | string
+  courseId?: Prisma.StringWithAggregatesFilter<"Lecture"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Lecture"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Lecture"> | Date | string
 }
@@ -354,6 +369,7 @@ export type LectureCreateInput = {
   updatedAt?: Date | string
   video?: Prisma.FileCreateNestedOneWithoutLecturesInput
   module: Prisma.ModuleCreateNestedOneWithoutLecturesInput
+  course: Prisma.CourseCreateNestedOneWithoutLecturesInput
   completedLectures?: Prisma.CompletedLectureCreateNestedManyWithoutLectureInput
 }
 
@@ -367,6 +383,7 @@ export type LectureUncheckedCreateInput = {
   videoId?: string | null
   demo?: boolean
   moduleId: string
+  courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   completedLectures?: Prisma.CompletedLectureUncheckedCreateNestedManyWithoutLectureInput
@@ -384,6 +401,7 @@ export type LectureUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   video?: Prisma.FileUpdateOneWithoutLecturesNestedInput
   module?: Prisma.ModuleUpdateOneRequiredWithoutLecturesNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutLecturesNestedInput
   completedLectures?: Prisma.CompletedLectureUpdateManyWithoutLectureNestedInput
 }
 
@@ -397,6 +415,7 @@ export type LectureUncheckedUpdateInput = {
   videoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedLectures?: Prisma.CompletedLectureUncheckedUpdateManyWithoutLectureNestedInput
@@ -412,6 +431,7 @@ export type LectureCreateManyInput = {
   videoId?: string | null
   demo?: boolean
   moduleId: string
+  courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -438,6 +458,7 @@ export type LectureUncheckedUpdateManyInput = {
   videoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -462,6 +483,7 @@ export type LectureCountOrderByAggregateInput = {
   videoId?: Prisma.SortOrder
   demo?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  courseId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -480,6 +502,7 @@ export type LectureMaxOrderByAggregateInput = {
   videoId?: Prisma.SortOrder
   demo?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  courseId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -494,6 +517,7 @@ export type LectureMinOrderByAggregateInput = {
   videoId?: Prisma.SortOrder
   demo?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  courseId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -505,6 +529,48 @@ export type LectureSumOrderByAggregateInput = {
 export type LectureScalarRelationFilter = {
   is?: Prisma.LectureWhereInput
   isNot?: Prisma.LectureWhereInput
+}
+
+export type LectureCreateNestedManyWithoutCourseInput = {
+  create?: Prisma.XOR<Prisma.LectureCreateWithoutCourseInput, Prisma.LectureUncheckedCreateWithoutCourseInput> | Prisma.LectureCreateWithoutCourseInput[] | Prisma.LectureUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.LectureCreateOrConnectWithoutCourseInput | Prisma.LectureCreateOrConnectWithoutCourseInput[]
+  createMany?: Prisma.LectureCreateManyCourseInputEnvelope
+  connect?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+}
+
+export type LectureUncheckedCreateNestedManyWithoutCourseInput = {
+  create?: Prisma.XOR<Prisma.LectureCreateWithoutCourseInput, Prisma.LectureUncheckedCreateWithoutCourseInput> | Prisma.LectureCreateWithoutCourseInput[] | Prisma.LectureUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.LectureCreateOrConnectWithoutCourseInput | Prisma.LectureCreateOrConnectWithoutCourseInput[]
+  createMany?: Prisma.LectureCreateManyCourseInputEnvelope
+  connect?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+}
+
+export type LectureUpdateManyWithoutCourseNestedInput = {
+  create?: Prisma.XOR<Prisma.LectureCreateWithoutCourseInput, Prisma.LectureUncheckedCreateWithoutCourseInput> | Prisma.LectureCreateWithoutCourseInput[] | Prisma.LectureUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.LectureCreateOrConnectWithoutCourseInput | Prisma.LectureCreateOrConnectWithoutCourseInput[]
+  upsert?: Prisma.LectureUpsertWithWhereUniqueWithoutCourseInput | Prisma.LectureUpsertWithWhereUniqueWithoutCourseInput[]
+  createMany?: Prisma.LectureCreateManyCourseInputEnvelope
+  set?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  disconnect?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  delete?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  connect?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  update?: Prisma.LectureUpdateWithWhereUniqueWithoutCourseInput | Prisma.LectureUpdateWithWhereUniqueWithoutCourseInput[]
+  updateMany?: Prisma.LectureUpdateManyWithWhereWithoutCourseInput | Prisma.LectureUpdateManyWithWhereWithoutCourseInput[]
+  deleteMany?: Prisma.LectureScalarWhereInput | Prisma.LectureScalarWhereInput[]
+}
+
+export type LectureUncheckedUpdateManyWithoutCourseNestedInput = {
+  create?: Prisma.XOR<Prisma.LectureCreateWithoutCourseInput, Prisma.LectureUncheckedCreateWithoutCourseInput> | Prisma.LectureCreateWithoutCourseInput[] | Prisma.LectureUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.LectureCreateOrConnectWithoutCourseInput | Prisma.LectureCreateOrConnectWithoutCourseInput[]
+  upsert?: Prisma.LectureUpsertWithWhereUniqueWithoutCourseInput | Prisma.LectureUpsertWithWhereUniqueWithoutCourseInput[]
+  createMany?: Prisma.LectureCreateManyCourseInputEnvelope
+  set?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  disconnect?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  delete?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  connect?: Prisma.LectureWhereUniqueInput | Prisma.LectureWhereUniqueInput[]
+  update?: Prisma.LectureUpdateWithWhereUniqueWithoutCourseInput | Prisma.LectureUpdateWithWhereUniqueWithoutCourseInput[]
+  updateMany?: Prisma.LectureUpdateManyWithWhereWithoutCourseInput | Prisma.LectureUpdateManyWithWhereWithoutCourseInput[]
+  deleteMany?: Prisma.LectureScalarWhereInput | Prisma.LectureScalarWhereInput[]
 }
 
 export type LectureCreateNestedManyWithoutModuleInput = {
@@ -609,6 +675,80 @@ export type LectureUpdateOneRequiredWithoutCompletedLecturesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LectureUpdateToOneWithWhereWithoutCompletedLecturesInput, Prisma.LectureUpdateWithoutCompletedLecturesInput>, Prisma.LectureUncheckedUpdateWithoutCompletedLecturesInput>
 }
 
+export type LectureCreateWithoutCourseInput = {
+  id?: string
+  name: string
+  order: number
+  description?: string | null
+  duration?: string | null
+  content: string
+  demo?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  video?: Prisma.FileCreateNestedOneWithoutLecturesInput
+  module: Prisma.ModuleCreateNestedOneWithoutLecturesInput
+  completedLectures?: Prisma.CompletedLectureCreateNestedManyWithoutLectureInput
+}
+
+export type LectureUncheckedCreateWithoutCourseInput = {
+  id?: string
+  name: string
+  order: number
+  description?: string | null
+  duration?: string | null
+  content: string
+  videoId?: string | null
+  demo?: boolean
+  moduleId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  completedLectures?: Prisma.CompletedLectureUncheckedCreateNestedManyWithoutLectureInput
+}
+
+export type LectureCreateOrConnectWithoutCourseInput = {
+  where: Prisma.LectureWhereUniqueInput
+  create: Prisma.XOR<Prisma.LectureCreateWithoutCourseInput, Prisma.LectureUncheckedCreateWithoutCourseInput>
+}
+
+export type LectureCreateManyCourseInputEnvelope = {
+  data: Prisma.LectureCreateManyCourseInput | Prisma.LectureCreateManyCourseInput[]
+  skipDuplicates?: boolean
+}
+
+export type LectureUpsertWithWhereUniqueWithoutCourseInput = {
+  where: Prisma.LectureWhereUniqueInput
+  update: Prisma.XOR<Prisma.LectureUpdateWithoutCourseInput, Prisma.LectureUncheckedUpdateWithoutCourseInput>
+  create: Prisma.XOR<Prisma.LectureCreateWithoutCourseInput, Prisma.LectureUncheckedCreateWithoutCourseInput>
+}
+
+export type LectureUpdateWithWhereUniqueWithoutCourseInput = {
+  where: Prisma.LectureWhereUniqueInput
+  data: Prisma.XOR<Prisma.LectureUpdateWithoutCourseInput, Prisma.LectureUncheckedUpdateWithoutCourseInput>
+}
+
+export type LectureUpdateManyWithWhereWithoutCourseInput = {
+  where: Prisma.LectureScalarWhereInput
+  data: Prisma.XOR<Prisma.LectureUpdateManyMutationInput, Prisma.LectureUncheckedUpdateManyWithoutCourseInput>
+}
+
+export type LectureScalarWhereInput = {
+  AND?: Prisma.LectureScalarWhereInput | Prisma.LectureScalarWhereInput[]
+  OR?: Prisma.LectureScalarWhereInput[]
+  NOT?: Prisma.LectureScalarWhereInput | Prisma.LectureScalarWhereInput[]
+  id?: Prisma.StringFilter<"Lecture"> | string
+  name?: Prisma.StringFilter<"Lecture"> | string
+  order?: Prisma.IntFilter<"Lecture"> | number
+  description?: Prisma.StringNullableFilter<"Lecture"> | string | null
+  duration?: Prisma.StringNullableFilter<"Lecture"> | string | null
+  content?: Prisma.StringFilter<"Lecture"> | string
+  videoId?: Prisma.StringNullableFilter<"Lecture"> | string | null
+  demo?: Prisma.BoolFilter<"Lecture"> | boolean
+  moduleId?: Prisma.StringFilter<"Lecture"> | string
+  courseId?: Prisma.StringFilter<"Lecture"> | string
+  createdAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
+}
+
 export type LectureCreateWithoutModuleInput = {
   id?: string
   name: string
@@ -620,6 +760,7 @@ export type LectureCreateWithoutModuleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   video?: Prisma.FileCreateNestedOneWithoutLecturesInput
+  course: Prisma.CourseCreateNestedOneWithoutLecturesInput
   completedLectures?: Prisma.CompletedLectureCreateNestedManyWithoutLectureInput
 }
 
@@ -632,6 +773,7 @@ export type LectureUncheckedCreateWithoutModuleInput = {
   content: string
   videoId?: string | null
   demo?: boolean
+  courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   completedLectures?: Prisma.CompletedLectureUncheckedCreateNestedManyWithoutLectureInput
@@ -663,23 +805,6 @@ export type LectureUpdateManyWithWhereWithoutModuleInput = {
   data: Prisma.XOR<Prisma.LectureUpdateManyMutationInput, Prisma.LectureUncheckedUpdateManyWithoutModuleInput>
 }
 
-export type LectureScalarWhereInput = {
-  AND?: Prisma.LectureScalarWhereInput | Prisma.LectureScalarWhereInput[]
-  OR?: Prisma.LectureScalarWhereInput[]
-  NOT?: Prisma.LectureScalarWhereInput | Prisma.LectureScalarWhereInput[]
-  id?: Prisma.StringFilter<"Lecture"> | string
-  name?: Prisma.StringFilter<"Lecture"> | string
-  order?: Prisma.IntFilter<"Lecture"> | number
-  description?: Prisma.StringNullableFilter<"Lecture"> | string | null
-  duration?: Prisma.StringNullableFilter<"Lecture"> | string | null
-  content?: Prisma.StringFilter<"Lecture"> | string
-  videoId?: Prisma.StringNullableFilter<"Lecture"> | string | null
-  demo?: Prisma.BoolFilter<"Lecture"> | boolean
-  moduleId?: Prisma.StringFilter<"Lecture"> | string
-  createdAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Lecture"> | Date | string
-}
-
 export type LectureCreateWithoutVideoInput = {
   id?: string
   name: string
@@ -691,6 +816,7 @@ export type LectureCreateWithoutVideoInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   module: Prisma.ModuleCreateNestedOneWithoutLecturesInput
+  course: Prisma.CourseCreateNestedOneWithoutLecturesInput
   completedLectures?: Prisma.CompletedLectureCreateNestedManyWithoutLectureInput
 }
 
@@ -703,6 +829,7 @@ export type LectureUncheckedCreateWithoutVideoInput = {
   content: string
   demo?: boolean
   moduleId: string
+  courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   completedLectures?: Prisma.CompletedLectureUncheckedCreateNestedManyWithoutLectureInput
@@ -746,6 +873,7 @@ export type LectureCreateWithoutCompletedLecturesInput = {
   updatedAt?: Date | string
   video?: Prisma.FileCreateNestedOneWithoutLecturesInput
   module: Prisma.ModuleCreateNestedOneWithoutLecturesInput
+  course: Prisma.CourseCreateNestedOneWithoutLecturesInput
 }
 
 export type LectureUncheckedCreateWithoutCompletedLecturesInput = {
@@ -758,6 +886,7 @@ export type LectureUncheckedCreateWithoutCompletedLecturesInput = {
   videoId?: string | null
   demo?: boolean
   moduleId: string
+  courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -790,9 +919,69 @@ export type LectureUpdateWithoutCompletedLecturesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   video?: Prisma.FileUpdateOneWithoutLecturesNestedInput
   module?: Prisma.ModuleUpdateOneRequiredWithoutLecturesNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutLecturesNestedInput
 }
 
 export type LectureUncheckedUpdateWithoutCompletedLecturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  videoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type LectureCreateManyCourseInput = {
+  id?: string
+  name: string
+  order: number
+  description?: string | null
+  duration?: string | null
+  content: string
+  videoId?: string | null
+  demo?: boolean
+  moduleId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type LectureUpdateWithoutCourseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  video?: Prisma.FileUpdateOneWithoutLecturesNestedInput
+  module?: Prisma.ModuleUpdateOneRequiredWithoutLecturesNestedInput
+  completedLectures?: Prisma.CompletedLectureUpdateManyWithoutLectureNestedInput
+}
+
+export type LectureUncheckedUpdateWithoutCourseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  videoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedLectures?: Prisma.CompletedLectureUncheckedUpdateManyWithoutLectureNestedInput
+}
+
+export type LectureUncheckedUpdateManyWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
@@ -815,6 +1004,7 @@ export type LectureCreateManyModuleInput = {
   content: string
   videoId?: string | null
   demo?: boolean
+  courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -830,6 +1020,7 @@ export type LectureUpdateWithoutModuleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   video?: Prisma.FileUpdateOneWithoutLecturesNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutLecturesNestedInput
   completedLectures?: Prisma.CompletedLectureUpdateManyWithoutLectureNestedInput
 }
 
@@ -842,6 +1033,7 @@ export type LectureUncheckedUpdateWithoutModuleInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   videoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedLectures?: Prisma.CompletedLectureUncheckedUpdateManyWithoutLectureNestedInput
@@ -856,6 +1048,7 @@ export type LectureUncheckedUpdateManyWithoutModuleInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   videoId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -869,6 +1062,7 @@ export type LectureCreateManyVideoInput = {
   content: string
   demo?: boolean
   moduleId: string
+  courseId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -884,6 +1078,7 @@ export type LectureUpdateWithoutVideoInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   module?: Prisma.ModuleUpdateOneRequiredWithoutLecturesNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutLecturesNestedInput
   completedLectures?: Prisma.CompletedLectureUpdateManyWithoutLectureNestedInput
 }
 
@@ -896,6 +1091,7 @@ export type LectureUncheckedUpdateWithoutVideoInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedLectures?: Prisma.CompletedLectureUncheckedUpdateManyWithoutLectureNestedInput
@@ -910,6 +1106,7 @@ export type LectureUncheckedUpdateManyWithoutVideoInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   demo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -955,10 +1152,12 @@ export type LectureSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   videoId?: boolean
   demo?: boolean
   moduleId?: boolean
+  courseId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   video?: boolean | Prisma.Lecture$videoArgs<ExtArgs>
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   completedLectures?: boolean | Prisma.Lecture$completedLecturesArgs<ExtArgs>
   _count?: boolean | Prisma.LectureCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lecture"]>
@@ -973,10 +1172,12 @@ export type LectureSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   videoId?: boolean
   demo?: boolean
   moduleId?: boolean
+  courseId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   video?: boolean | Prisma.Lecture$videoArgs<ExtArgs>
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lecture"]>
 
 export type LectureSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -989,10 +1190,12 @@ export type LectureSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   videoId?: boolean
   demo?: boolean
   moduleId?: boolean
+  courseId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   video?: boolean | Prisma.Lecture$videoArgs<ExtArgs>
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lecture"]>
 
 export type LectureSelectScalar = {
@@ -1005,24 +1208,28 @@ export type LectureSelectScalar = {
   videoId?: boolean
   demo?: boolean
   moduleId?: boolean
+  courseId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type LectureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "order" | "description" | "duration" | "content" | "videoId" | "demo" | "moduleId" | "createdAt" | "updatedAt", ExtArgs["result"]["lecture"]>
+export type LectureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "order" | "description" | "duration" | "content" | "videoId" | "demo" | "moduleId" | "courseId" | "createdAt" | "updatedAt", ExtArgs["result"]["lecture"]>
 export type LectureInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   video?: boolean | Prisma.Lecture$videoArgs<ExtArgs>
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   completedLectures?: boolean | Prisma.Lecture$completedLecturesArgs<ExtArgs>
   _count?: boolean | Prisma.LectureCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LectureIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   video?: boolean | Prisma.Lecture$videoArgs<ExtArgs>
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }
 export type LectureIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   video?: boolean | Prisma.Lecture$videoArgs<ExtArgs>
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }
 
 export type $LecturePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1030,6 +1237,7 @@ export type $LecturePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     video: Prisma.$FilePayload<ExtArgs> | null
     module: Prisma.$ModulePayload<ExtArgs>
+    course: Prisma.$CoursePayload<ExtArgs>
     completedLectures: Prisma.$CompletedLecturePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1042,6 +1250,7 @@ export type $LecturePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     videoId: string | null
     demo: boolean
     moduleId: string
+    courseId: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["lecture"]>
@@ -1440,6 +1649,7 @@ export interface Prisma__LectureClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   video<T extends Prisma.Lecture$videoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lecture$videoArgs<ExtArgs>>): Prisma.Prisma__FileClient<runtime.Types.Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   module<T extends Prisma.ModuleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ModuleDefaultArgs<ExtArgs>>): Prisma.Prisma__ModuleClient<runtime.Types.Result.GetResult<Prisma.$ModulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   completedLectures<T extends Prisma.Lecture$completedLecturesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lecture$completedLecturesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompletedLecturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1479,6 +1689,7 @@ export interface LectureFieldRefs {
   readonly videoId: Prisma.FieldRef<"Lecture", 'String'>
   readonly demo: Prisma.FieldRef<"Lecture", 'Boolean'>
   readonly moduleId: Prisma.FieldRef<"Lecture", 'String'>
+  readonly courseId: Prisma.FieldRef<"Lecture", 'String'>
   readonly createdAt: Prisma.FieldRef<"Lecture", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Lecture", 'DateTime'>
 }
