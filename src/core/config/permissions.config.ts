@@ -36,6 +36,9 @@ export enum Permission {
   LECTURES_READ = 'lectures:read',
   LECTURES_UPDATE = 'lectures:update',
   LECTURES_DELETE = 'lectures:delete',
+
+  // Settings
+  SETTINGS_FULL_ACCESS = 'settings:full-access',
 }
 
 export const permissionsList = [
@@ -98,6 +101,15 @@ export const permissionsList = [
       {
         name: 'Unassign Employee',
         value: Permission.ACCESS_GROUPS_UNASSIGN,
+      },
+    ],
+  },
+  {
+    resource: 'Settings',
+    actions: [
+      {
+        name: 'Full Access',
+        value: Permission.SETTINGS_FULL_ACCESS,
       },
     ],
   },

@@ -171,4 +171,19 @@ export abstract class Router {
     /** :lectureId */
     static ById = ':lectureId';
   };
+
+  /**
+   * Settings routes
+   * @static
+   * @memberof Router
+   * @example /settings
+   */
+  static Settings = class {
+    /** Settings */
+    static ApiTag = 'Settings';
+    /** settings */
+    static Base = 'settings';
+    /** :id */
+    static ById = ':id';
+  };
 }

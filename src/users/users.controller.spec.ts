@@ -142,6 +142,7 @@ describe('UsersController', () => {
             sub: '1',
             email: 'admin@example.com',
             purpose: null,
+            iat: 1716806400,
           },
         },
       );
@@ -159,6 +160,7 @@ describe('UsersController', () => {
         email: 'student@example.com',
         role: Role.student,
         purpose: null,
+        iat: 1716806400,
       };
 
       const mockUser = {
@@ -187,6 +189,7 @@ describe('UsersController', () => {
         email: 'student@example.com',
         role: Role.student,
         purpose: null,
+        iat: 1716806400,
       };
 
       const updateUserDto: UpdateUserDto = {
@@ -249,6 +252,7 @@ describe('UsersController', () => {
         email: 'admin@example.com',
         role: Role.admin,
         purpose: null,
+        iat: 1716806400,
       };
 
       const updateUserDto: UpdateUserDto = {
@@ -291,6 +295,7 @@ describe('UsersController', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: 1716806400,
       };
 
       const updateUserDto: UpdateUserDto = {
@@ -324,6 +329,7 @@ describe('UsersController', () => {
         email: 'employee@example.com',
         role: Role.employee,
         purpose: null,
+        iat: 1716806400,
       };
 
       const updateUserDto: UpdateUserDto = {
@@ -365,6 +371,7 @@ describe('UsersController', () => {
         email: 'admin1@example.com',
         role: Role.admin,
         purpose: null,
+        iat: 1716806400,
       };
 
       const updateUserDto: UpdateUserDto = {

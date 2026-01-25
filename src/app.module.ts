@@ -21,6 +21,7 @@ import { ExpressAdapter } from '@bull-board/express';
 import { Router } from './core/router';
 import { CoursesModule } from './courses/courses.module';
 import { WalletModule } from './wallet/wallet.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { WalletModule } from './wallet/wallet.module';
     UsersModule,
     CoursesModule,
     WalletModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService, PrismaService],
