@@ -24,19 +24,19 @@ import { Permission } from 'src/core/config/permissions.config';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 
-@ApiTags('Modules')
+@ApiTags(Router.Modules.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
 @UseGuards(AuthGuard)
-@Controller('modules')
+@Controller(Router.Modules.Base)
 export class ModulesController {
   constructor(private readonly coursesService: CoursesService) {}
 
+  @Post(Router.Modules.ByCourseId)
   @ApiOperation({
     summary: 'Create a module inside a course for the authenticated teacher',
   })
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.teacher)
-  @Post('course/:courseId')
   async createMyModule(
     @Param('courseId') courseId: string,
     @Body() dto: CreateModuleDto,
@@ -52,13 +52,13 @@ export class ModulesController {
     return module;
   }
 
+  @Post(Router.Modules.AdminByCourseId)
   @ApiOperation({
     summary: 'Create a module inside any course (admin/employee)',
   })
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.MODULES_CREATE, Permission.MODULES_FULL_ACCESS)
-  @Post('admin/course/:courseId')
   async createModuleForCourse(
     @Param('courseId') courseId: string,
     @Body() dto: CreateModuleDto,
@@ -67,13 +67,13 @@ export class ModulesController {
     return module;
   }
 
+  @Patch(Router.Modules.ById)
   @ApiOperation({
     summary: 'Update a module (creator teacher or staff)',
   })
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.MODULES_UPDATE, Permission.MODULES_FULL_ACCESS)
-  @Patch(':moduleId')
   async updateModule(
     @Param('moduleId') moduleId: string,
     @Body() dto: UpdateModuleDto,
@@ -90,13 +90,13 @@ export class ModulesController {
     return module;
   }
 
+  @Delete(Router.Modules.ById)
   @ApiOperation({
     summary: 'Delete a module (creator teacher or staff)',
   })
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.MODULES_DELETE, Permission.MODULES_FULL_ACCESS)
-  @Delete(':moduleId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteModule(
     @Param('moduleId') moduleId: string,

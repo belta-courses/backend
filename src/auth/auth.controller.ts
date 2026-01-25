@@ -48,19 +48,20 @@ import { Roles } from './roles.decorator';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post(Router.Auth.SignIn)
   @ApiOperation({
     description:
-      'send redirect urls by email with one-time token for login and email for registration',
+      'send redirect urls by email with one-time token for registration and regular token for login',
   })
   @ApiResponse({
     status: HttpStatus.OK,
   })
   @HttpCode(HttpStatus.OK)
-  @Post(Router.Auth.SignIn)
   async signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
   }
 
+  @Post(Router.Auth.AdminSignIn)
   @ApiOperation({
     description:
       'Sign in for only Admin and Employee, without register redirect url',
@@ -69,7 +70,6 @@ export class AuthController {
     status: HttpStatus.OK,
   })
   @HttpCode(HttpStatus.OK)
-  @Post(Router.Auth.AdminSignIn)
   async adminSignIn(@Body() signInDto: AdminSignInDto) {
     try {
       const res = await this.authService.signIn(signInDto, [
@@ -85,6 +85,7 @@ export class AuthController {
     }
   }
 
+  @Post(Router.Auth.Register)
   @ApiOperation({
     summary: 'Create my Account',
     description: 'Create account for the one-time token received by email',
@@ -95,7 +96,6 @@ export class AuthController {
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, JWTPurposeGuard)
   @JWTPurpose(JwtPurpose.Register)
-  @Post(Router.Auth.Register)
   async register(
     @Body() registerDto: RegisterDto,
     @Request() request: { user: JwtPayload },
@@ -111,6 +111,7 @@ export class AuthController {
     });
   }
 
+  @Get(Router.Auth.Permissions)
   @ApiOperation({ summary: 'Get all application permissions' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -120,12 +121,11 @@ export class AuthController {
     Permission.ACCESS_GROUPS_READ,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
-  @HttpCode(HttpStatus.OK)
-  @Get(Router.Auth.Permissions)
   getPermissions() {
     return permissionsList;
   }
 
+  @Get(Router.Auth.AccessGroups.Base)
   @ApiOperation({ summary: 'Get all application access groups' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -135,12 +135,11 @@ export class AuthController {
     Permission.ACCESS_GROUPS_READ,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
-  @HttpCode(HttpStatus.OK)
-  @Get(Router.Auth.AccessGroups.Base)
   getAccessGroups() {
     return this.authService.getRoles();
   }
 
+  @Post(Router.Auth.AccessGroups.Base)
   @ApiOperation({ summary: 'Create a new access group' })
   @ApiResponse({ status: HttpStatus.CREATED })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -150,8 +149,6 @@ export class AuthController {
     Permission.ACCESS_GROUPS_CREATE,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
-  @HttpCode(HttpStatus.CREATED)
-  @Post(Router.Auth.AccessGroups.Base)
   createAccessGroup(@Body() createAccessGroupDto: CreateAccessGroupDto) {
     return plainToInstance(
       AccessGroupDto,
@@ -162,6 +159,7 @@ export class AuthController {
     );
   }
 
+  @Patch(Router.Auth.AccessGroups.ById)
   @ApiOperation({ summary: 'Update an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -170,7 +168,6 @@ export class AuthController {
     Permission.ACCESS_GROUPS_UPDATE,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
-  @Patch(Router.Auth.AccessGroups.ById)
   updateAccessGroup(
     @Param('accessGroupId') accessGroupId: string,
     @Body() updateAccessGroupDto: UpdateAccessGroupDto,
@@ -184,6 +181,7 @@ export class AuthController {
     );
   }
 
+  @Post(Router.Auth.AccessGroups.AddEmployee)
   @ApiOperation({ summary: 'Add an employee to an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -193,7 +191,6 @@ export class AuthController {
     Permission.ACCESS_GROUPS_ASSIGN,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
-  @Post(Router.Auth.AccessGroups.AddEmployee)
   async addEmployeeToAccessGroup(
     @Param('accessGroupId') accessGroupId: string,
     @Param('userId') userId: string,
@@ -208,6 +205,7 @@ export class AuthController {
     });
   }
 
+  @Delete(Router.Auth.AccessGroups.RemoveEmployee)
   @ApiOperation({ summary: 'Remove an employee from an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -217,7 +215,6 @@ export class AuthController {
     Permission.ACCESS_GROUPS_UNASSIGN,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
-  @Delete(Router.Auth.AccessGroups.RemoveEmployee)
   async removeEmployeeFromAccessGroup(@Param('userId') userId: string) {
     const user = await this.authService.removeEmployeeFromAccessGroup(userId);
 
@@ -226,6 +223,7 @@ export class AuthController {
     });
   }
 
+  @Delete(Router.Auth.AccessGroups.ById)
   @ApiOperation({ summary: 'Delete an access group' })
   @ApiResponse({ status: HttpStatus.OK })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -235,7 +233,6 @@ export class AuthController {
     Permission.ACCESS_GROUPS_DELETE,
     Permission.ACCESS_GROUPS_FULL_ACCESS,
   )
-  @Delete(Router.Auth.AccessGroups.ById)
   deleteAccessGroup(@Param('accessGroupId') accessGroupId: string) {
     return this.authService.deleteAccessGroup(accessGroupId);
   }

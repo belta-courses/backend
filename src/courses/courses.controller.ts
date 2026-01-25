@@ -34,18 +34,18 @@ import { AccessedBy } from 'src/auth/permissions.decorator';
 import { Permission } from 'src/core/config/permissions.config';
 import { getNoDecimalCourse } from './utils/convert-course';
 
-@ApiTags('Courses')
-@Controller('courses')
+@ApiTags(Router.Courses.ApiTag)
+@Controller(Router.Courses.Base)
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
+  @Post()
   @ApiOperation({
     summary: 'Create a new course by Teacher',
   })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.teacher)
-  @Post()
   async createMyCourse(
     @Body() dto: TeacherCreateCourseDto,
     @Request() req: { user: JwtPayload },
@@ -59,6 +59,7 @@ export class CoursesController {
     });
   }
 
+  @Post(Router.Courses.Admin)
   @ApiOperation({
     summary: 'Create a new course by Admin/Employee',
   })
@@ -66,7 +67,6 @@ export class CoursesController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.COURSES_CREATE, Permission.COURSES_FULL_ACCESS)
-  @Post('admin')
   async createCourseForTeacher(@Body() dto: CreateCourseDto) {
     const course = await this.coursesService.createCourse(dto);
     return plainToInstance(CourseResponseDto, getNoDecimalCourse(course), {
@@ -74,12 +74,12 @@ export class CoursesController {
     });
   }
 
+  @Patch(Router.Courses.ById)
   @ApiOperation({ summary: 'Update a course (creator teacher or staff)' })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.COURSES_UPDATE, Permission.COURSES_FULL_ACCESS)
-  @Patch(':courseId')
   async updateCourse(
     @Param('courseId') courseId: string,
     @Body() dto: UpdateCourseDto,
@@ -102,6 +102,7 @@ export class CoursesController {
     );
   }
 
+  @Delete(Router.Courses.ById)
   @ApiOperation({
     summary: 'Delete a course (creator teacher or staff, not purchased)',
   })
@@ -109,7 +110,6 @@ export class CoursesController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.COURSES_DELETE, Permission.COURSES_FULL_ACCESS)
-  @Delete(':courseId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteCourse(
     @Param('courseId') courseId: string,
@@ -121,10 +121,10 @@ export class CoursesController {
     await this.coursesService.deleteCourse(courseId);
   }
 
+  @Get()
   @ApiOperation({
     summary: 'Get all courses with pagination, search and teacher filter',
   })
-  @Get()
   async findAllPublic(@Query() query: FindCoursesQueryDto) {
     const { data, meta } = await this.coursesService.findAllCourses(query);
 
@@ -140,10 +140,10 @@ export class CoursesController {
     };
   }
 
+  @Get(Router.Courses.ById)
   @ApiOperation({
     summary: 'Get a single course by id (basic details only)',
   })
-  @Get(':courseId')
   async findOne(@Param('courseId') courseId: string) {
     const course = await this.coursesService.findCourseById(courseId);
     return plainToInstance(CourseResponseDto, getNoDecimalCourse(course), {
@@ -151,11 +151,11 @@ export class CoursesController {
     });
   }
 
+  @Get(Router.Courses.Detailed)
   @ApiOperation({
     summary:
       'Get a single course by id with modules and lectures (names, descriptions) and teacher details',
   })
-  @Get(':courseId/detailed')
   async findOneDetailed(@Param('courseId') courseId: string) {
     const course = await this.coursesService.findCourseDetailedById(courseId);
     return plainToInstance(

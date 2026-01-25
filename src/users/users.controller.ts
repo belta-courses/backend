@@ -46,6 +46,7 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
+  @Post()
   @ApiOperation({ summary: 'Create a new user (by Admins only)' })
   @ApiResponse({
     status: 201,
@@ -55,7 +56,6 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_CREATE, Permission.USERS_FULL_ACCESS)
-  @Post()
   async create(
     @Body(CreateUserValidationPipe)
     createUserDto: CreateUserDto,
@@ -66,6 +66,7 @@ export class UsersController {
     });
   }
 
+  @Get(Router.Users.List)
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
@@ -75,7 +76,6 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
-  @Get(Router.Users.List)
   async findAll(
     @Query()
     { role: queryRole, ...dto }: FindUsersQueryDto,
@@ -109,6 +109,7 @@ export class UsersController {
     };
   }
 
+  @Get(Router.Users.Me)
   @ApiOperation({
     summary: 'Get my profile',
     description: "Get the current user's profile with new Access Token",
@@ -119,7 +120,6 @@ export class UsersController {
     type: UserResponseDto,
   })
   @UseGuards(AuthGuard)
-  @Get(Router.Users.Me)
   async getMe(@Request() request: { user: JwtPayload }) {
     const { sub: id } = request['user'];
 
@@ -142,6 +142,7 @@ export class UsersController {
     );
   }
 
+  @Patch(Router.Users.Me)
   @ApiOperation({ summary: 'Update my profile' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -149,7 +150,6 @@ export class UsersController {
     type: UserResponseDto,
   })
   @UseGuards(AuthGuard)
-  @Patch(Router.Users.Me)
   async updateMe(
     @Body()
     updateUserDto: UpdateUserDto,
@@ -172,6 +172,7 @@ export class UsersController {
     });
   }
 
+  @Get(Router.Users.ById)
   @ApiOperation({ summary: 'Get a user by id (by Staffs only)' })
   @ApiResponse({
     status: 200,
@@ -180,12 +181,11 @@ export class UsersController {
   })
   @ApiParam({
     name: 'id',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: '',
   })
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_READ, Permission.USERS_FULL_ACCESS)
-  @Get(Router.Users.ById)
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
 
@@ -194,6 +194,7 @@ export class UsersController {
     });
   }
 
+  @Patch(Router.Users.ById)
   @ApiOperation({ summary: 'Update a user by email (by Staffs only)' })
   @ApiResponse({
     status: 200,
@@ -203,7 +204,6 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_UPDATE, Permission.USERS_FULL_ACCESS)
-  @Patch(Router.Users.ById)
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,

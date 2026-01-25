@@ -18,6 +18,7 @@ import { Router } from 'src/core/router';
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
+  @Post(Router.Storage.UploadFile)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -33,7 +34,6 @@ export class StorageController {
     type: UploadResponseDto,
   })
   @UseInterceptors(FileInterceptor('file'))
-  @Post(Router.Storage.UploadFile)
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException('File is required');
 

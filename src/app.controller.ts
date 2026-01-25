@@ -8,12 +8,12 @@ import { Router } from './core/router';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get(Router.App.Health)
   @ApiOperation({ summary: 'Health check' })
   @ApiResponse({
     status: HttpStatus.OK,
     example: 'Belta-Course server is working well! Thanks for checking❤️',
   })
-  @Get(Router.App.Health)
   getHello(): string {
     return this.appService.getHello();
   }

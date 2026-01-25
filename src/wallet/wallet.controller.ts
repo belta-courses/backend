@@ -35,6 +35,7 @@ import { getNoDecimalWallet } from './utils/convert-wallet';
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
+  @Get(Router.Wallet.Me)
   @ApiOperation({ summary: 'Get my wallet (Student/Teacher only)' })
   @ApiResponse({
     status: 200,
@@ -43,7 +44,6 @@ export class WalletController {
   })
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.student, Role.teacher)
-  @Get(Router.Wallet.Me)
   async getMyWallet(@Request() request: { user: JwtPayload }) {
     const { sub: userId } = request['user'];
 
@@ -54,6 +54,7 @@ export class WalletController {
     });
   }
 
+  @Get(Router.Wallet.ByUserId)
   @ApiOperation({ summary: 'Get a user wallet by userId (Admin only)' })
   @ApiResponse({
     status: 200,
@@ -67,7 +68,6 @@ export class WalletController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_WALLET, Permission.USERS_FULL_ACCESS)
-  @Get(Router.Wallet.ByUserId)
   async getUserWallet(@Param('userId') userId: string) {
     const wallet = await this.walletService.findWalletByUserId(userId);
 
@@ -76,6 +76,7 @@ export class WalletController {
     });
   }
 
+  @Get()
   @ApiOperation({ summary: 'Get all wallets (Admin only)' })
   @ApiResponse({
     status: 200,
@@ -85,7 +86,6 @@ export class WalletController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_WALLET, Permission.USERS_FULL_ACCESS)
-  @Get()
   async getAllWallets(@Query() dto: FindWalletsQueryDto) {
     const wallets = await this.walletService.findAllWallets(dto);
 

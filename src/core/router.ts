@@ -114,4 +114,61 @@ export abstract class Router {
     /** :userId */
     static ByUserId = ':userId';
   };
+
+  /**
+   * Courses routes
+   * @static
+   * @memberof Router
+   * @example /courses
+   */
+  static Courses = class {
+    /** Courses */
+    static ApiTag = 'Courses';
+    /** courses */
+    static Base = 'courses';
+    /** admin */
+    static Admin = 'admin';
+    /** :courseId */
+    static ById = ':courseId';
+    /** :courseId/detailed */
+    static Detailed = ':courseId/detailed';
+  };
+
+  /**
+   * Modules routes
+   * @static
+   * @memberof Router
+   * @example /modules
+   */
+  static Modules = class {
+    /** Modules */
+    static ApiTag = 'Modules';
+    /** modules */
+    static Base = 'modules';
+    /** course/:courseId */
+    static ByCourseId = 'course/:courseId';
+    /** admin/course/:courseId */
+    static AdminByCourseId = 'admin/course/:courseId';
+    /** :moduleId */
+    static ById = ':moduleId';
+  };
+
+  /**
+   * Lectures routes
+   * @static
+   * @memberof Router
+   * @example /lectures
+   */
+  static Lectures = class {
+    /** Lectures */
+    static ApiTag = 'Lectures';
+    /** lectures */
+    static Base = 'lectures';
+    /** module/:moduleId */
+    static ByModuleId = 'module/:moduleId';
+    /** admin/module/:moduleId */
+    static AdminByModuleId = 'admin/module/:moduleId';
+    /** :lectureId */
+    static ById = ':lectureId';
+  };
 }

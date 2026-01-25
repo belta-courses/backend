@@ -27,18 +27,18 @@ import { Permission } from 'src/core/config/permissions.config';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 
-@ApiTags('Lectures')
-@Controller('lectures')
+@ApiTags(Router.Lectures.ApiTag)
+@Controller(Router.Lectures.Base)
 export class LecturesController {
   constructor(private readonly coursesService: CoursesService) {}
 
+  @Post(Router.Lectures.ByModuleId)
   @ApiOperation({
     summary: 'Create a lecture inside a module for the authenticated teacher',
   })
   @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.teacher)
-  @Post('module/:moduleId')
   async createMyLecture(
     @Param('moduleId') moduleId: string,
     @Body() dto: CreateLectureDto,
@@ -56,6 +56,7 @@ export class LecturesController {
     });
   }
 
+  @Post(Router.Lectures.AdminByModuleId)
   @ApiOperation({
     summary: 'Create a lecture inside any module (admin/employee)',
   })
@@ -63,7 +64,6 @@ export class LecturesController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.LECTURES_CREATE, Permission.LECTURES_FULL_ACCESS)
-  @Post('admin/module/:moduleId')
   async createLectureForModule(
     @Param('moduleId') moduleId: string,
     @Body() dto: CreateLectureDto,
@@ -74,6 +74,7 @@ export class LecturesController {
     });
   }
 
+  @Patch(Router.Lectures.ById)
   @ApiOperation({
     summary: 'Update a lecture (creator teacher or staff)',
   })
@@ -81,7 +82,6 @@ export class LecturesController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.LECTURES_UPDATE, Permission.LECTURES_FULL_ACCESS)
-  @Patch(':lectureId')
   async updateLecture(
     @Param('lectureId') lectureId: string,
     @Body() dto: UpdateLectureDto,
@@ -100,6 +100,7 @@ export class LecturesController {
     });
   }
 
+  @Delete(Router.Lectures.ById)
   @ApiOperation({
     summary: 'Delete a lecture (creator teacher or staff)',
   })
@@ -107,7 +108,6 @@ export class LecturesController {
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.LECTURES_DELETE, Permission.LECTURES_FULL_ACCESS)
-  @Delete(':lectureId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteLecture(
     @Param('lectureId') lectureId: string,
@@ -123,10 +123,10 @@ export class LecturesController {
     await this.coursesService.deleteLecture(lectureId);
   }
 
+  @Get(Router.Lectures.ById)
   @ApiOperation({
     summary: 'Get a single lecture by id (public)',
   })
-  @Get(':lectureId')
   async findLecture(@Param('lectureId') lectureId: string) {
     const lecture = await this.coursesService.findLectureById(lectureId);
     return plainToInstance(LectureResponseDto, lecture, {
