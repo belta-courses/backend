@@ -20,6 +20,7 @@ import { BullBoardModule } from '@bull-board/nestjs';
 import { ExpressAdapter } from '@bull-board/express';
 import { Router } from './core/router';
 import { CoursesModule } from './courses/courses.module';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { CoursesModule } from './courses/courses.module';
     AuthModule,
     UsersModule,
     CoursesModule,
+    WalletModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService, PrismaService],

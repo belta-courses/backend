@@ -5,6 +5,7 @@ export enum Permission {
   USERS_READ = 'users:read',
   USERS_UPDATE = 'users:update',
   USERS_DELETE = 'users:delete',
+  USERS_WALLET = 'users:wallet',
 
   // Access Groups
   ACCESS_GROUPS_FULL_ACCESS = 'access-groups:full-access',
@@ -60,6 +61,10 @@ export const permissionsList = [
       {
         name: 'Delete',
         value: Permission.USERS_DELETE,
+      },
+      {
+        name: 'Wallet',
+        value: Permission.USERS_WALLET,
       },
     ],
   },

@@ -97,4 +97,21 @@ export abstract class Router {
     /** upload-file */
     static UploadFile = 'upload-file';
   };
+
+  /**
+   * Wallet routes
+   * @static
+   * @memberof Router
+   * @example /wallets
+   */
+  static Wallet = class {
+    /** Wallet */
+    static ApiTag = 'Wallet';
+    /** wallets */
+    static Base = 'wallets';
+    /** me */
+    static Me = 'me';
+    /** :userId */
+    static ByUserId = ':userId';
+  };
 }

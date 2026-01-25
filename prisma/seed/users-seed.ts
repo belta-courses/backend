@@ -61,7 +61,7 @@ export async function seedUsers(prisma: PrismaClient) {
   console.log('Created access groups and permissions');
 
   // Users
-  await prisma.user.create({
+  const student = await prisma.user.create({
     data: {
       email: 'student@beltacourses.com',
       name: 'Belta Student',
@@ -69,7 +69,7 @@ export async function seedUsers(prisma: PrismaClient) {
     },
   });
 
-  await prisma.user.create({
+  const teacher = await prisma.user.create({
     data: {
       email: 'teacher@beltacourses.com',
       name: 'Belta Teacher',
@@ -98,5 +98,22 @@ export async function seedUsers(prisma: PrismaClient) {
   });
 
   console.log('Created users');
+
+  // Create wallets for student and teacher
+  await prisma.wallet.create({
+    data: {
+      userId: student.id,
+      amount: 0,
+    },
+  });
+
+  await prisma.wallet.create({
+    data: {
+      userId: teacher.id,
+      amount: 0,
+    },
+  });
+
+  console.log('Created wallets for student and teacher');
   console.log('Users seeding completed successfully!');
 }
