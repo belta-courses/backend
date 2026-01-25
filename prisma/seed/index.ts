@@ -2,7 +2,10 @@ import { PrismaClient } from 'src/generated/prisma/client';
 import { seedUsers } from './users-seed';
 import { seedCourses } from './courses-seed';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PROFIT_SETTING_KEY } from 'src/core/constants/settings.constants';
+import {
+  PROFIT_SETTING_KEY,
+  CURRENCY_SETTING_KEY,
+} from 'src/core/constants/settings.constants';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -48,6 +51,13 @@ async function main() {
     data: {
       key: PROFIT_SETTING_KEY,
       value: '0.8',
+    },
+  });
+
+  await prisma.setting.create({
+    data: {
+      key: CURRENCY_SETTING_KEY,
+      value: 'USD',
     },
   });
 

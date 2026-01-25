@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { UpdateSettingDto } from './dto/request/update-setting.dto';
-import { PROFIT_SETTING_KEY } from 'src/core/constants/settings.constants';
+import {
+  PROFIT_SETTING_KEY,
+  CURRENCY_SETTING_KEY,
+} from 'src/core/constants/settings.constants';
 
 @Injectable()
 export class SettingsService {
@@ -38,5 +41,19 @@ export class SettingsService {
     }
 
     return parseFloat(setting.value);
+  }
+
+  async getCurrency(): Promise<string> {
+    const setting = await this.prisma.setting.findUnique({
+      where: { key: CURRENCY_SETTING_KEY },
+    });
+
+    if (!setting) {
+      throw new NotFoundException(
+        `${CURRENCY_SETTING_KEY} Setting is not found`,
+      );
+    }
+
+    return setting.value;
   }
 }
