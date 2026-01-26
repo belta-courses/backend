@@ -11,7 +11,8 @@ export class AddBankAccountDto {
   accountNumber: string;
 
   @ApiProperty({
-    description: 'Bank routing number (or SWIFT/BIC for international)',
+    description:
+      'Bank routing number (9-digit ABA for US, SWIFT/BIC for international, or local equivalent)',
     example: '110000000',
   })
   @IsString()

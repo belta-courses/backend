@@ -42,18 +42,19 @@ export class PayoutsService {
 
     const currency = await this.settingsService.getCurrency();
 
-    // Get or create bank account token
-    let bankAccountToken = user.stripeAccountId; // Repurposed field stores bank account token ID
+    // Get or create external account ID
+    let externalAccountId = user.stripeAccountId; // Repurposed field stores external account ID (ba_*)
 
-    if (!bankAccountToken && !dto.bankAccount) {
+    if (!externalAccountId && !dto.bankAccount) {
       throw new BadRequestException({
         message: 'Bank account is required for payouts',
         requiresBankAccount: true,
       });
     }
 
-    // If bank account provided in request, create token
-    if (dto.bankAccount && !bankAccountToken) {
+    // If bank account provided in request, create external account
+    if (dto.bankAccount && !externalAccountId) {
+      // Step 1: Create bank account token
       const token = await this.stripeService.createBankAccountToken({
         accountNumber: dto.bankAccount.accountNumber,
         routingNumber: dto.bankAccount.routingNumber,
@@ -63,26 +64,41 @@ export class PayoutsService {
         currency,
       });
 
-      bankAccountToken = token.id;
+      // Step 2: Get platform Stripe account ID
+      const platformAccountId = await this.stripeService.getAccountId();
 
-      // Extract bank account info from token response
-      const bankAccount = token.bank_account;
-      const last4 = bankAccount?.last4 ?? null;
-      const accountType = bankAccount?.account_type ?? null;
+      // Step 3: Create external account from token
+      const externalAccount = await this.stripeService.createExternalAccount({
+        accountId: platformAccountId,
+        bankAccountToken: token.id,
+      });
 
-      // Save bank account info to user
+      externalAccountId = externalAccount.id;
+
+      // Extract bank account info from external account response
+      // ExternalAccount can be BankAccount or Card, check if it's a bank account
+      const last4 =
+        externalAccount.object === 'bank_account'
+          ? (externalAccount.last4 ?? null)
+          : null;
+      const accountType =
+        externalAccount.object === 'bank_account'
+          ? (externalAccount.account_type ?? null)
+          : null;
+
+      // Save external account ID to user
       await this.prisma.user.update({
         where: { id: userId },
         data: {
-          stripeAccountId: token.id, // Store token ID
+          stripeAccountId: externalAccountId, // Store external account ID (ba_*)
           ...(last4 && { bankAccountLast4: last4 }),
           ...(accountType && { bankAccountType: accountType }),
         },
       });
     }
 
-    if (!bankAccountToken) {
-      throw new BadRequestException('Bank account token is required');
+    if (!externalAccountId) {
+      throw new BadRequestException('External account ID is required');
     }
 
     return this.prisma.$transaction(async (tx) => {
@@ -103,7 +119,7 @@ export class PayoutsService {
         const payout = await this.stripeService.createPayout({
           amount: amount.toNumber(),
           currency: currency.toLowerCase(),
-          destination: bankAccountToken,
+          destination: externalAccountId, // Use external account ID (ba_*)
           metadata: {
             withdrawId: withdraw.id,
             userId,
@@ -155,6 +171,7 @@ export class PayoutsService {
 
     const currency = await this.settingsService.getCurrency();
 
+    // Step 1: Create bank account token
     const token = await this.stripeService.createBankAccountToken({
       accountNumber: dto.accountNumber,
       routingNumber: dto.routingNumber,
@@ -164,15 +181,30 @@ export class PayoutsService {
       currency,
     });
 
-    // Extract bank account info from token response
-    const bankAccount = token.bank_account;
-    const last4 = bankAccount?.last4 ?? null;
-    const accountType = bankAccount?.account_type ?? null;
+    // Step 2: Get platform Stripe account ID
+    const platformAccountId = await this.stripeService.getAccountId();
+
+    // Step 3: Create external account from token
+    const externalAccount = await this.stripeService.createExternalAccount({
+      accountId: platformAccountId,
+      bankAccountToken: token.id,
+    });
+
+    // Extract bank account info from external account response
+    // ExternalAccount can be BankAccount or Card, check if it's a bank account
+    const last4 =
+      externalAccount.object === 'bank_account'
+        ? (externalAccount.last4 ?? null)
+        : null;
+    const accountType =
+      externalAccount.object === 'bank_account'
+        ? (externalAccount.account_type ?? null)
+        : null;
 
     await this.prisma.user.update({
       where: { id: userId },
       data: {
-        stripeAccountId: token.id,
+        stripeAccountId: externalAccount.id, // Store external account ID (ba_*)
         ...(last4 && { bankAccountLast4: last4 }),
         ...(accountType && { bankAccountType: accountType }),
       },
@@ -180,7 +212,7 @@ export class PayoutsService {
 
     return {
       message: 'Bank account added successfully',
-      tokenId: token.id,
+      externalAccountId: externalAccount.id,
       last4,
       accountType,
     };

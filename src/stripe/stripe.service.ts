@@ -180,6 +180,24 @@ export class StripeService {
     return this.stripe.payouts.retrieve(payoutId);
   }
 
+  async getAccountId(): Promise<string> {
+    // Retrieve the default account (platform account)
+    const account = await this.stripe.accounts.retrieve();
+    return account.id;
+  }
+
+  async createExternalAccount({
+    accountId,
+    bankAccountToken,
+  }: {
+    accountId: string;
+    bankAccountToken: string;
+  }): Promise<Stripe.ExternalAccount> {
+    return this.stripe.accounts.createExternalAccount(accountId, {
+      external_account: bankAccountToken,
+    });
+  }
+
   constructWebhookEvent(
     payload: string | Buffer,
     signature: string,
