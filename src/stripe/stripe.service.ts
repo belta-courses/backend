@@ -83,13 +83,10 @@ export class StripeService {
     });
   }
 
-  async createConnectAccount(
-    email: string,
-    country: string = 'US',
-  ): Promise<Stripe.Account> {
+  async createConnectAccount(email: string): Promise<Stripe.Account> {
     return this.stripe.accounts.create({
       type: 'express',
-      country,
+      country: 'AE',
       email,
     });
   }
