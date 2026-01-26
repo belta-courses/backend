@@ -31,6 +31,15 @@ export interface StripeConfig {
   checkoutCancelUrl: string;
 }
 
+export interface RedisConfig {
+  host: string;
+  port: number;
+  username?: string;
+  password?: string;
+  db?: number;
+  tls?: object;
+}
+
 export interface AllConfig {
   app: AppConfig;
   database: DatabaseConfig;
@@ -38,4 +47,5 @@ export interface AllConfig {
   jwt: JwtConfig;
   mail: MailConfig;
   stripe: StripeConfig;
+  redis: RedisConfig;
 }

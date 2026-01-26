@@ -16,4 +16,10 @@ export const joiSchema = Joi.object({
   STRIPE_WEBHOOK_SECRET: Joi.string().optional(),
   STRIPE_CHECKOUT_SUCCESS_URL: Joi.string().uri().required(),
   STRIPE_CHECKOUT_CANCEL_URL: Joi.string().uri().required(),
+  REDIS_HOST: Joi.string().optional(),
+  REDIS_PORT: Joi.number().optional(),
+  REDIS_USERNAME: Joi.string().optional(),
+  REDIS_PASSWORD: Joi.string().optional(),
+  REDIS_DB: Joi.number().optional(),
+  REDIS_TLS: Joi.string().valid('true', 'false').optional(),
 });
