@@ -107,6 +107,7 @@ export class RefundsService {
       const transaction = refund.transaction;
 
       // Process Stripe refund if payment was made via Stripe
+      // Students get refunded directly by Stripe, no wallet needed
       if (transaction.stripePaymentId) {
         try {
           // Check if it's a checkout session ID (starts with cs_) or payment intent ID (starts with pi_)
@@ -132,20 +133,13 @@ export class RefundsService {
             );
           }
         } catch (error) {
-          // Log error but continue with wallet refund
+          // Log error
           console.error('Stripe refund failed:', error);
+          throw error; // Re-throw to prevent marking refund as approved if Stripe refund fails
         }
       }
 
-      // Add paid amount back to student wallet
-      if (transaction.paidPrice.greaterThan(0)) {
-        await this.walletService.addToWallet(
-          transaction.studentId,
-          transaction.paidPrice,
-        );
-      }
-
-      // Remove profit from teacher wallet
+      // Remove profit from teacher wallet (teachers have wallets)
       if (transaction.teacherProfit.greaterThan(0)) {
         await this.walletService.deductFromWallet(
           transaction.teacherId,

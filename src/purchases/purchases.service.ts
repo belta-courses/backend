@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   BadRequestException,
   Injectable,
@@ -75,27 +73,16 @@ export class PurchasesService {
     const originalPrice = course.price;
     const finalPrice = originalPrice; // Same for now, but kept separate for future discounts
 
-    // Get wallet balance
-    let walletAmountUsed = new Decimal(0);
-    let paidPrice = finalPrice;
-
-    if (dto.useWallet !== false) {
-      const wallet = await this.walletService.getOrCreateWallet(studentId);
-      const walletBalance = wallet.amount;
-
-      if (walletBalance.greaterThan(0)) {
-        walletAmountUsed = Decimal.min(walletBalance, finalPrice);
-        paidPrice = Decimal.max(
-          new Decimal(0),
-          finalPrice.minus(walletAmountUsed),
-        );
-      }
-    }
+    // Students don't have wallets - they pay directly via Stripe
+    // Teachers have wallets but they're sellers, not buyers
+    const walletAmountUsed = new Decimal(0);
+    const paidPrice = finalPrice;
 
     // Calculate teacher profit
     const teacherProfit = paidPrice.times(new Decimal(teacherProfitPercent));
 
-    // If paidPrice is 0, complete transaction immediately
+    // Students always pay via Stripe (no free purchases with wallet)
+    // If price is 0, it's a free course - handle separately if needed
     if (paidPrice.equals(0)) {
       return this.completePurchaseWithoutStripe(
         courseId,
@@ -104,7 +91,7 @@ export class PurchasesService {
         originalPrice,
         finalPrice,
         paidPrice,
-        walletAmountUsed,
+        walletAmountUsed, // Always 0 for students
         teacherProfitPercent,
         teacherProfit,
         currency,
@@ -179,10 +166,8 @@ export class PurchasesService {
     currency: string,
   ) {
     return this.prisma.$transaction(async (tx) => {
-      // Deduct from wallet if used
-      if (walletAmountUsed.greaterThan(0)) {
-        await this.walletService.deductFromWallet(studentId, walletAmountUsed);
-      }
+      // Students don't have wallets - they pay directly via Stripe
+      // No wallet deduction needed
 
       // Create transaction
       const transaction = await tx.transaction.create({
@@ -254,20 +239,10 @@ export class PurchasesService {
     }
 
     return this.prisma.$transaction(async (tx) => {
-      // Get wallet amount used (originalPrice - paidPrice)
-      const walletAmountUsed = transaction.originalPrice.minus(
-        transaction.paidPrice,
-      );
+      // Students don't have wallets - they pay directly via Stripe
+      // No wallet deduction needed for students
 
-      // Deduct from wallet if used
-      if (walletAmountUsed.greaterThan(0)) {
-        await this.walletService.deductFromWallet(
-          transaction.studentId,
-          walletAmountUsed,
-        );
-      }
-
-      // Add profit to teacher wallet
+      // Add profit to teacher wallet (teachers have wallets)
       if (transaction.teacherProfit.greaterThan(0)) {
         await this.walletService.addToWallet(
           transaction.teacherId,

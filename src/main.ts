@@ -12,18 +12,14 @@ async function bootstrap() {
     rawBody: true, // Enable raw body for Stripe webhooks
   });
 
-  // IMPORTANT: Configure body parsers BEFORE other middleware
-  // Use raw body parser for webhook route (must come first)
   app.use('/stripe/webhook', raw({ type: 'application/json' }));
 
-  // Use JSON parser for all other routes
   app.use(json());
 
   const config = new DocumentBuilder()
     .setTitle('Belta Courses API')
     .setDescription('Belta Courses API description')
     .setVersion(version)
-    .addTag('belta-courses')
     .addBearerAuth(
       {
         type: 'http',

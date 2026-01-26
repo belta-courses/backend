@@ -180,6 +180,10 @@ export class StripeService {
     return this.stripe.payouts.retrieve(payoutId);
   }
 
+  async retrieveToken(tokenId: string): Promise<Stripe.Token> {
+    return this.stripe.tokens.retrieve(tokenId);
+  }
+
   async getAccountId(): Promise<string> {
     // Retrieve the default account (platform account)
     const account = await this.stripe.accounts.retrieve();

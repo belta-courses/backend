@@ -29,7 +29,6 @@ import { SettingsModule } from './settings/settings.module';
 import { StripeModule } from './stripe/stripe.module';
 import { PurchasesModule } from './purchases/purchases.module';
 import { RefundsModule } from './refunds/refunds.module';
-import { PayoutsModule } from './payouts/payouts.module';
 import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
@@ -80,7 +79,6 @@ import { TransactionsModule } from './transactions/transactions.module';
     SettingsModule,
     PurchasesModule,
     RefundsModule,
-    PayoutsModule,
     TransactionsModule,
   ],
   controllers: [AppController],

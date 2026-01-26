@@ -36,18 +36,18 @@ export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
   @Get(Router.Wallet.Me)
-  @ApiOperation({ summary: 'Get my wallet (Student/Teacher only)' })
+  @ApiOperation({ summary: 'Get my wallet (Teacher only)' })
   @ApiResponse({
     status: 200,
     description: 'The wallet has been successfully retrieved',
     type: WalletResponseDto,
   })
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.student, Role.teacher)
+  @Roles(Role.teacher)
   async getMyWallet(@Request() request: { user: JwtPayload }) {
     const { sub: userId } = request['user'];
 
-    const wallet = await this.walletService.findWalletByUserId(userId);
+    const wallet = await this.walletService.getOrCreateWallet(userId);
 
     return plainToInstance(WalletResponseDto, getNoDecimalWallet(wallet), {
       excludeExtraneousValues: true,
@@ -69,7 +69,7 @@ export class WalletController {
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.USERS_WALLET, Permission.USERS_FULL_ACCESS)
   async getUserWallet(@Param('userId') userId: string) {
-    const wallet = await this.walletService.findWalletByUserId(userId);
+    const wallet = await this.walletService.getOrCreateWallet(userId);
 
     return plainToInstance(WalletResponseDto, getNoDecimalWallet(wallet), {
       excludeExtraneousValues: true,

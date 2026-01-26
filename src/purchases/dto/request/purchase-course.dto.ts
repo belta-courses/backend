@@ -1,17 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsUrl } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsUrl } from 'class-validator';
 
 export class PurchaseCourseDto {
-  @ApiProperty({
-    description: 'Whether to use wallet balance for payment',
-    example: true,
-    required: false,
-    default: true,
-  })
-  @IsBoolean()
-  @IsOptional()
-  useWallet?: boolean = true;
-
   @ApiPropertyOptional({
     description: 'URL to redirect to after successful payment',
     example: 'https://your-frontend.com/purchase/success',

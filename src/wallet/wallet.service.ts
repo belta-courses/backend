@@ -1,8 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { FindWalletsQueryDto } from './dto/request/find-wallets-query.dto';
 import { Decimal } from '@prisma/client/runtime/client';
 import { UsersService } from 'src/users/users.service';
+import { Role } from 'src/generated/prisma/client';
 
 @Injectable()
 export class WalletService {
@@ -11,41 +12,28 @@ export class WalletService {
     private readonly usersService: UsersService,
   ) {}
 
+  private async ensureTeacher(userId: string) {
+    const user = await this.usersService.findOne(userId);
+    if (user.role !== Role.teacher) {
+      throw new ForbiddenException('Wallets are only available for teachers');
+    }
+  }
+
   async getOrCreateWallet(userId: string) {
+    await this.ensureTeacher(userId);
+
     let wallet = await this.prisma.wallet.findFirst({
       where: { userId },
       orderBy: { createdAt: 'desc' },
     });
 
     if (!wallet) {
-      await this.usersService.findOne(userId); // will throw error if user not found
-
       wallet = await this.prisma.wallet.create({
         data: {
           userId,
           amount: new Decimal(0),
         },
       });
-    }
-
-    return wallet;
-  }
-
-  async findWalletByUserId(userId: string) {
-    const wallet = await this.prisma.wallet.findFirst({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-    });
-
-    if (!wallet) {
-      await this.usersService.findOne(userId); // will throw error if user not found
-
-      return {
-        id: 'not-exists',
-        userId: userId,
-        amount: new Decimal(0),
-        createdAt: new Date(),
-      };
     }
 
     return wallet;
