@@ -3,10 +3,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma.service';
 import { WalletService } from 'src/wallet/wallet.service';
 import { StripeService } from 'src/stripe/stripe.service';
 import { SettingsService } from 'src/settings/settings.service';
+import { AllConfig } from 'src/core/config/config.type';
 import { Decimal } from '@prisma/client/runtime/client';
 import { CreatePayoutDto } from './dto/request/create-payout.dto';
 import { GetPayoutHistoryQueryDto } from './dto/request/get-payout-hestory-query.dto';
@@ -18,6 +20,7 @@ export class PayoutsService {
     private readonly walletService: WalletService,
     private readonly stripeService: StripeService,
     private readonly settingsService: SettingsService,
+    private readonly configService: ConfigService<AllConfig>,
   ) {}
 
   async createPayout(userId: string, dto: CreatePayoutDto) {
@@ -49,6 +52,29 @@ export class PayoutsService {
       await this.prisma.user.update({
         where: { id: userId },
         data: { stripeAccountId: account.id },
+      });
+    }
+
+    // Verify account is onboarded before attempting transfer
+    const account = await this.stripeService.retrieveAccount(stripeAccountId);
+
+    if (!account.charges_enabled || !account.details_submitted) {
+      // Account needs onboarding
+      const config = this.configService.getOrThrow('app', { infer: true });
+      const returnUrl = `${config.hostUrl}/payouts/onboarding-complete`;
+      const refreshUrl = `${config.hostUrl}/payouts/onboarding-refresh`;
+
+      const accountLink = await this.stripeService.createAccountLink(
+        stripeAccountId,
+        returnUrl,
+        refreshUrl,
+      );
+
+      throw new BadRequestException({
+        message:
+          'Stripe Connect account needs to be onboarded before receiving payouts',
+        onboardingUrl: accountLink.url,
+        requiresOnboarding: true,
       });
     }
 
@@ -84,14 +110,26 @@ export class PayoutsService {
           amount: amount.toNumber(),
           currency,
         };
-      } catch (ignore) {
+      } catch (error) {
+        // Log the actual error for debugging
+        console.error('Stripe transfer error:', error);
+
         await tx.withdraw.update({
           where: { id: withdraw.id },
           data: { failedAt: new Date() },
         });
         await this.walletService.addToWallet(userId, amount);
+
+        // Provide more specific error message
+        let errorMessage = 'Unknown error occurred';
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        } else if (typeof error === 'string') {
+          errorMessage = error;
+        }
+
         throw new BadRequestException(
-          'Failed to process payout. Please ensure your Stripe Connect account is properly set up.',
+          `Failed to process payout: ${errorMessage}. Please ensure your Stripe Connect account is properly set up.`,
         );
       }
     });
