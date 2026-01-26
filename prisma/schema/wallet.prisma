@@ -14,33 +14,48 @@ model Withdraw {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime
   amount    Decimal
+  failedAt  DateTime?
 
   @@index([userId])
   @@map("withdraws")
 }
 
 model Transaction {
-  id                   String      @id @default(uuid())
+  id                   String            @id @default(uuid())
   studentId            String
-  student              User        @relation("StudentTransactions", fields: [studentId], references: [id])
+  student              User              @relation("StudentTransactions", fields: [studentId], references: [id])
   teacherId            String
-  teacher              User        @relation("TeacherTransactions", fields: [teacherId], references: [id])
-  createdAt            DateTime    @default(now())
+  teacher              User              @relation("TeacherTransactions", fields: [teacherId], references: [id])
+  createdAt            DateTime          @default(now())
   originalPrice        Decimal
+  finalPrice           Decimal
   paidPrice            Decimal
   teacherProfitPercent Decimal
   teacherProfit        Decimal
   coupon               String?
+  stripePaymentId      String?
+  status               TransactionStatus @default(pending)
   courseId             String?
-  course               Course?     @relation(fields: [courseId], references: [id])
+  course               Course?           @relation(fields: [courseId], references: [id])
   sessionId            String?
-  session              Mentorship? @relation(fields: [sessionId], references: [id])
+  session              Mentorship?        @relation(fields: [sessionId], references: [id])
   offerId              String?
-  offer                Offer?      @relation(fields: [offerId], references: [id])
+  offer                Offer?            @relation(fields: [offerId], references: [id])
   ownedLists           OwnedList[]
   refund               Refund?
 
+  @@index([stripePaymentId])
+  @@index([studentId])
+  @@index([teacherId])
+  @@index([status])
   @@map("transactions")
+}
+
+enum TransactionStatus {
+  pending
+  completed
+  canceled
+  rejected
 }
 
 model Refund {

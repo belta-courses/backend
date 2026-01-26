@@ -28,6 +28,7 @@ export type AggregateTransaction = {
 
 export type TransactionAvgAggregateOutputType = {
   originalPrice: runtime.Decimal | null
+  finalPrice: runtime.Decimal | null
   paidPrice: runtime.Decimal | null
   teacherProfitPercent: runtime.Decimal | null
   teacherProfit: runtime.Decimal | null
@@ -35,6 +36,7 @@ export type TransactionAvgAggregateOutputType = {
 
 export type TransactionSumAggregateOutputType = {
   originalPrice: runtime.Decimal | null
+  finalPrice: runtime.Decimal | null
   paidPrice: runtime.Decimal | null
   teacherProfitPercent: runtime.Decimal | null
   teacherProfit: runtime.Decimal | null
@@ -46,10 +48,13 @@ export type TransactionMinAggregateOutputType = {
   teacherId: string | null
   createdAt: Date | null
   originalPrice: runtime.Decimal | null
+  finalPrice: runtime.Decimal | null
   paidPrice: runtime.Decimal | null
   teacherProfitPercent: runtime.Decimal | null
   teacherProfit: runtime.Decimal | null
   coupon: string | null
+  stripePaymentId: string | null
+  status: $Enums.TransactionStatus | null
   courseId: string | null
   sessionId: string | null
   offerId: string | null
@@ -61,10 +66,13 @@ export type TransactionMaxAggregateOutputType = {
   teacherId: string | null
   createdAt: Date | null
   originalPrice: runtime.Decimal | null
+  finalPrice: runtime.Decimal | null
   paidPrice: runtime.Decimal | null
   teacherProfitPercent: runtime.Decimal | null
   teacherProfit: runtime.Decimal | null
   coupon: string | null
+  stripePaymentId: string | null
+  status: $Enums.TransactionStatus | null
   courseId: string | null
   sessionId: string | null
   offerId: string | null
@@ -76,10 +84,13 @@ export type TransactionCountAggregateOutputType = {
   teacherId: number
   createdAt: number
   originalPrice: number
+  finalPrice: number
   paidPrice: number
   teacherProfitPercent: number
   teacherProfit: number
   coupon: number
+  stripePaymentId: number
+  status: number
   courseId: number
   sessionId: number
   offerId: number
@@ -89,6 +100,7 @@ export type TransactionCountAggregateOutputType = {
 
 export type TransactionAvgAggregateInputType = {
   originalPrice?: true
+  finalPrice?: true
   paidPrice?: true
   teacherProfitPercent?: true
   teacherProfit?: true
@@ -96,6 +108,7 @@ export type TransactionAvgAggregateInputType = {
 
 export type TransactionSumAggregateInputType = {
   originalPrice?: true
+  finalPrice?: true
   paidPrice?: true
   teacherProfitPercent?: true
   teacherProfit?: true
@@ -107,10 +120,13 @@ export type TransactionMinAggregateInputType = {
   teacherId?: true
   createdAt?: true
   originalPrice?: true
+  finalPrice?: true
   paidPrice?: true
   teacherProfitPercent?: true
   teacherProfit?: true
   coupon?: true
+  stripePaymentId?: true
+  status?: true
   courseId?: true
   sessionId?: true
   offerId?: true
@@ -122,10 +138,13 @@ export type TransactionMaxAggregateInputType = {
   teacherId?: true
   createdAt?: true
   originalPrice?: true
+  finalPrice?: true
   paidPrice?: true
   teacherProfitPercent?: true
   teacherProfit?: true
   coupon?: true
+  stripePaymentId?: true
+  status?: true
   courseId?: true
   sessionId?: true
   offerId?: true
@@ -137,10 +156,13 @@ export type TransactionCountAggregateInputType = {
   teacherId?: true
   createdAt?: true
   originalPrice?: true
+  finalPrice?: true
   paidPrice?: true
   teacherProfitPercent?: true
   teacherProfit?: true
   coupon?: true
+  stripePaymentId?: true
+  status?: true
   courseId?: true
   sessionId?: true
   offerId?: true
@@ -239,10 +261,13 @@ export type TransactionGroupByOutputType = {
   teacherId: string
   createdAt: Date
   originalPrice: runtime.Decimal
+  finalPrice: runtime.Decimal
   paidPrice: runtime.Decimal
   teacherProfitPercent: runtime.Decimal
   teacherProfit: runtime.Decimal
   coupon: string | null
+  stripePaymentId: string | null
+  status: $Enums.TransactionStatus
   courseId: string | null
   sessionId: string | null
   offerId: string | null
@@ -277,10 +302,13 @@ export type TransactionWhereInput = {
   teacherId?: Prisma.StringFilter<"Transaction"> | string
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   originalPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  stripePaymentId?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
   courseId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   sessionId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   offerId?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -299,10 +327,13 @@ export type TransactionOrderByWithRelationInput = {
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   originalPrice?: Prisma.SortOrder
+  finalPrice?: Prisma.SortOrder
   paidPrice?: Prisma.SortOrder
   teacherProfitPercent?: Prisma.SortOrder
   teacherProfit?: Prisma.SortOrder
   coupon?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   courseId?: Prisma.SortOrderInput | Prisma.SortOrder
   sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   offerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -324,10 +355,13 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   teacherId?: Prisma.StringFilter<"Transaction"> | string
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   originalPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  stripePaymentId?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
   courseId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   sessionId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   offerId?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -346,10 +380,13 @@ export type TransactionOrderByWithAggregationInput = {
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   originalPrice?: Prisma.SortOrder
+  finalPrice?: Prisma.SortOrder
   paidPrice?: Prisma.SortOrder
   teacherProfitPercent?: Prisma.SortOrder
   teacherProfit?: Prisma.SortOrder
   coupon?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   courseId?: Prisma.SortOrderInput | Prisma.SortOrder
   sessionId?: Prisma.SortOrderInput | Prisma.SortOrder
   offerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -369,10 +406,13 @@ export type TransactionScalarWhereWithAggregatesInput = {
   teacherId?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   originalPrice?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
+  stripePaymentId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
+  status?: Prisma.EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
   courseId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
   sessionId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
   offerId?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
@@ -382,10 +422,13 @@ export type TransactionCreateInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   student: Prisma.UserCreateNestedOneWithoutSpendingTransactionsInput
   teacher: Prisma.UserCreateNestedOneWithoutGettingTransactionsInput
   course?: Prisma.CourseCreateNestedOneWithoutTransactionsInput
@@ -401,10 +444,13 @@ export type TransactionUncheckedCreateInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -416,10 +462,13 @@ export type TransactionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   student?: Prisma.UserUpdateOneRequiredWithoutSpendingTransactionsNestedInput
   teacher?: Prisma.UserUpdateOneRequiredWithoutGettingTransactionsNestedInput
   course?: Prisma.CourseUpdateOneWithoutTransactionsNestedInput
@@ -435,10 +484,13 @@ export type TransactionUncheckedUpdateInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -452,10 +504,13 @@ export type TransactionCreateManyInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -465,10 +520,13 @@ export type TransactionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
 }
 
 export type TransactionUncheckedUpdateManyInput = {
@@ -477,10 +535,13 @@ export type TransactionUncheckedUpdateManyInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -507,10 +568,13 @@ export type TransactionCountOrderByAggregateInput = {
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   originalPrice?: Prisma.SortOrder
+  finalPrice?: Prisma.SortOrder
   paidPrice?: Prisma.SortOrder
   teacherProfitPercent?: Prisma.SortOrder
   teacherProfit?: Prisma.SortOrder
   coupon?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   offerId?: Prisma.SortOrder
@@ -518,6 +582,7 @@ export type TransactionCountOrderByAggregateInput = {
 
 export type TransactionAvgOrderByAggregateInput = {
   originalPrice?: Prisma.SortOrder
+  finalPrice?: Prisma.SortOrder
   paidPrice?: Prisma.SortOrder
   teacherProfitPercent?: Prisma.SortOrder
   teacherProfit?: Prisma.SortOrder
@@ -529,10 +594,13 @@ export type TransactionMaxOrderByAggregateInput = {
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   originalPrice?: Prisma.SortOrder
+  finalPrice?: Prisma.SortOrder
   paidPrice?: Prisma.SortOrder
   teacherProfitPercent?: Prisma.SortOrder
   teacherProfit?: Prisma.SortOrder
   coupon?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   offerId?: Prisma.SortOrder
@@ -544,10 +612,13 @@ export type TransactionMinOrderByAggregateInput = {
   teacherId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   originalPrice?: Prisma.SortOrder
+  finalPrice?: Prisma.SortOrder
   paidPrice?: Prisma.SortOrder
   teacherProfitPercent?: Prisma.SortOrder
   teacherProfit?: Prisma.SortOrder
   coupon?: Prisma.SortOrder
+  stripePaymentId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
   sessionId?: Prisma.SortOrder
   offerId?: Prisma.SortOrder
@@ -555,6 +626,7 @@ export type TransactionMinOrderByAggregateInput = {
 
 export type TransactionSumOrderByAggregateInput = {
   originalPrice?: Prisma.SortOrder
+  finalPrice?: Prisma.SortOrder
   paidPrice?: Prisma.SortOrder
   teacherProfitPercent?: Prisma.SortOrder
   teacherProfit?: Prisma.SortOrder
@@ -784,6 +856,10 @@ export type TransactionUncheckedUpdateManyWithoutTeacherNestedInput = {
   deleteMany?: Prisma.TransactionScalarWhereInput | Prisma.TransactionScalarWhereInput[]
 }
 
+export type EnumTransactionStatusFieldUpdateOperationsInput = {
+  set?: $Enums.TransactionStatus
+}
+
 export type TransactionCreateNestedOneWithoutRefundInput = {
   create?: Prisma.XOR<Prisma.TransactionCreateWithoutRefundInput, Prisma.TransactionUncheckedCreateWithoutRefundInput>
   connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutRefundInput
@@ -802,10 +878,13 @@ export type TransactionCreateWithoutCourseInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   student: Prisma.UserCreateNestedOneWithoutSpendingTransactionsInput
   teacher: Prisma.UserCreateNestedOneWithoutGettingTransactionsInput
   session?: Prisma.MentorshipCreateNestedOneWithoutTransactionsInput
@@ -820,10 +899,13 @@ export type TransactionUncheckedCreateWithoutCourseInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   sessionId?: string | null
   offerId?: string | null
   ownedLists?: Prisma.OwnedListUncheckedCreateNestedManyWithoutTransactionInput
@@ -865,10 +947,13 @@ export type TransactionScalarWhereInput = {
   teacherId?: Prisma.StringFilter<"Transaction"> | string
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   originalPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  stripePaymentId?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
   courseId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   sessionId?: Prisma.StringNullableFilter<"Transaction"> | string | null
   offerId?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -878,10 +963,13 @@ export type TransactionCreateWithoutSessionInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   student: Prisma.UserCreateNestedOneWithoutSpendingTransactionsInput
   teacher: Prisma.UserCreateNestedOneWithoutGettingTransactionsInput
   course?: Prisma.CourseCreateNestedOneWithoutTransactionsInput
@@ -896,10 +984,13 @@ export type TransactionUncheckedCreateWithoutSessionInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   offerId?: string | null
   ownedLists?: Prisma.OwnedListUncheckedCreateNestedManyWithoutTransactionInput
@@ -936,10 +1027,13 @@ export type TransactionCreateWithoutOfferInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   student: Prisma.UserCreateNestedOneWithoutSpendingTransactionsInput
   teacher: Prisma.UserCreateNestedOneWithoutGettingTransactionsInput
   course?: Prisma.CourseCreateNestedOneWithoutTransactionsInput
@@ -954,10 +1048,13 @@ export type TransactionUncheckedCreateWithoutOfferInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   ownedLists?: Prisma.OwnedListUncheckedCreateNestedManyWithoutTransactionInput
@@ -994,10 +1091,13 @@ export type TransactionCreateWithoutOwnedListsInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   student: Prisma.UserCreateNestedOneWithoutSpendingTransactionsInput
   teacher: Prisma.UserCreateNestedOneWithoutGettingTransactionsInput
   course?: Prisma.CourseCreateNestedOneWithoutTransactionsInput
@@ -1012,10 +1112,13 @@ export type TransactionUncheckedCreateWithoutOwnedListsInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -1042,10 +1145,13 @@ export type TransactionUpdateWithoutOwnedListsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   student?: Prisma.UserUpdateOneRequiredWithoutSpendingTransactionsNestedInput
   teacher?: Prisma.UserUpdateOneRequiredWithoutGettingTransactionsNestedInput
   course?: Prisma.CourseUpdateOneWithoutTransactionsNestedInput
@@ -1060,10 +1166,13 @@ export type TransactionUncheckedUpdateWithoutOwnedListsInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1074,10 +1183,13 @@ export type TransactionCreateWithoutStudentInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   teacher: Prisma.UserCreateNestedOneWithoutGettingTransactionsInput
   course?: Prisma.CourseCreateNestedOneWithoutTransactionsInput
   session?: Prisma.MentorshipCreateNestedOneWithoutTransactionsInput
@@ -1091,10 +1203,13 @@ export type TransactionUncheckedCreateWithoutStudentInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -1116,10 +1231,13 @@ export type TransactionCreateWithoutTeacherInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   student: Prisma.UserCreateNestedOneWithoutSpendingTransactionsInput
   course?: Prisma.CourseCreateNestedOneWithoutTransactionsInput
   session?: Prisma.MentorshipCreateNestedOneWithoutTransactionsInput
@@ -1133,10 +1251,13 @@ export type TransactionUncheckedCreateWithoutTeacherInput = {
   studentId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -1190,10 +1311,13 @@ export type TransactionCreateWithoutRefundInput = {
   id?: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   student: Prisma.UserCreateNestedOneWithoutSpendingTransactionsInput
   teacher: Prisma.UserCreateNestedOneWithoutGettingTransactionsInput
   course?: Prisma.CourseCreateNestedOneWithoutTransactionsInput
@@ -1208,10 +1332,13 @@ export type TransactionUncheckedCreateWithoutRefundInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -1238,10 +1365,13 @@ export type TransactionUpdateWithoutRefundInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   student?: Prisma.UserUpdateOneRequiredWithoutSpendingTransactionsNestedInput
   teacher?: Prisma.UserUpdateOneRequiredWithoutGettingTransactionsNestedInput
   course?: Prisma.CourseUpdateOneWithoutTransactionsNestedInput
@@ -1256,10 +1386,13 @@ export type TransactionUncheckedUpdateWithoutRefundInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1272,10 +1405,13 @@ export type TransactionCreateManyCourseInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   sessionId?: string | null
   offerId?: string | null
 }
@@ -1284,10 +1420,13 @@ export type TransactionUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   student?: Prisma.UserUpdateOneRequiredWithoutSpendingTransactionsNestedInput
   teacher?: Prisma.UserUpdateOneRequiredWithoutGettingTransactionsNestedInput
   session?: Prisma.MentorshipUpdateOneWithoutTransactionsNestedInput
@@ -1302,10 +1441,13 @@ export type TransactionUncheckedUpdateWithoutCourseInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownedLists?: Prisma.OwnedListUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1318,10 +1460,13 @@ export type TransactionUncheckedUpdateManyWithoutCourseInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1332,10 +1477,13 @@ export type TransactionCreateManySessionInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   offerId?: string | null
 }
@@ -1344,10 +1492,13 @@ export type TransactionUpdateWithoutSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   student?: Prisma.UserUpdateOneRequiredWithoutSpendingTransactionsNestedInput
   teacher?: Prisma.UserUpdateOneRequiredWithoutGettingTransactionsNestedInput
   course?: Prisma.CourseUpdateOneWithoutTransactionsNestedInput
@@ -1362,10 +1513,13 @@ export type TransactionUncheckedUpdateWithoutSessionInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownedLists?: Prisma.OwnedListUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1378,10 +1532,13 @@ export type TransactionUncheckedUpdateManyWithoutSessionInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1392,10 +1549,13 @@ export type TransactionCreateManyOfferInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
 }
@@ -1404,10 +1564,13 @@ export type TransactionUpdateWithoutOfferInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   student?: Prisma.UserUpdateOneRequiredWithoutSpendingTransactionsNestedInput
   teacher?: Prisma.UserUpdateOneRequiredWithoutGettingTransactionsNestedInput
   course?: Prisma.CourseUpdateOneWithoutTransactionsNestedInput
@@ -1422,10 +1585,13 @@ export type TransactionUncheckedUpdateWithoutOfferInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ownedLists?: Prisma.OwnedListUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1438,10 +1604,13 @@ export type TransactionUncheckedUpdateManyWithoutOfferInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1451,10 +1620,13 @@ export type TransactionCreateManyStudentInput = {
   teacherId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -1465,10 +1637,13 @@ export type TransactionCreateManyTeacherInput = {
   studentId: string
   createdAt?: Date | string
   originalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent: runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit: runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: string | null
+  stripePaymentId?: string | null
+  status?: $Enums.TransactionStatus
   courseId?: string | null
   sessionId?: string | null
   offerId?: string | null
@@ -1478,10 +1653,13 @@ export type TransactionUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   teacher?: Prisma.UserUpdateOneRequiredWithoutGettingTransactionsNestedInput
   course?: Prisma.CourseUpdateOneWithoutTransactionsNestedInput
   session?: Prisma.MentorshipUpdateOneWithoutTransactionsNestedInput
@@ -1495,10 +1673,13 @@ export type TransactionUncheckedUpdateWithoutStudentInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1511,10 +1692,13 @@ export type TransactionUncheckedUpdateManyWithoutStudentInput = {
   teacherId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1524,10 +1708,13 @@ export type TransactionUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   student?: Prisma.UserUpdateOneRequiredWithoutSpendingTransactionsNestedInput
   course?: Prisma.CourseUpdateOneWithoutTransactionsNestedInput
   session?: Prisma.MentorshipUpdateOneWithoutTransactionsNestedInput
@@ -1541,10 +1728,13 @@ export type TransactionUncheckedUpdateWithoutTeacherInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1557,10 +1747,13 @@ export type TransactionUncheckedUpdateManyWithoutTeacherInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   originalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  finalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfitPercent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   teacherProfit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coupon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripePaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
   courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   offerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1603,10 +1796,13 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   teacherId?: boolean
   createdAt?: boolean
   originalPrice?: boolean
+  finalPrice?: boolean
   paidPrice?: boolean
   teacherProfitPercent?: boolean
   teacherProfit?: boolean
   coupon?: boolean
+  stripePaymentId?: boolean
+  status?: boolean
   courseId?: boolean
   sessionId?: boolean
   offerId?: boolean
@@ -1626,10 +1822,13 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   teacherId?: boolean
   createdAt?: boolean
   originalPrice?: boolean
+  finalPrice?: boolean
   paidPrice?: boolean
   teacherProfitPercent?: boolean
   teacherProfit?: boolean
   coupon?: boolean
+  stripePaymentId?: boolean
+  status?: boolean
   courseId?: boolean
   sessionId?: boolean
   offerId?: boolean
@@ -1646,10 +1845,13 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   teacherId?: boolean
   createdAt?: boolean
   originalPrice?: boolean
+  finalPrice?: boolean
   paidPrice?: boolean
   teacherProfitPercent?: boolean
   teacherProfit?: boolean
   coupon?: boolean
+  stripePaymentId?: boolean
+  status?: boolean
   courseId?: boolean
   sessionId?: boolean
   offerId?: boolean
@@ -1666,16 +1868,19 @@ export type TransactionSelectScalar = {
   teacherId?: boolean
   createdAt?: boolean
   originalPrice?: boolean
+  finalPrice?: boolean
   paidPrice?: boolean
   teacherProfitPercent?: boolean
   teacherProfit?: boolean
   coupon?: boolean
+  stripePaymentId?: boolean
+  status?: boolean
   courseId?: boolean
   sessionId?: boolean
   offerId?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "teacherId" | "createdAt" | "originalPrice" | "paidPrice" | "teacherProfitPercent" | "teacherProfit" | "coupon" | "courseId" | "sessionId" | "offerId", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "teacherId" | "createdAt" | "originalPrice" | "finalPrice" | "paidPrice" | "teacherProfitPercent" | "teacherProfit" | "coupon" | "stripePaymentId" | "status" | "courseId" | "sessionId" | "offerId", ExtArgs["result"]["transaction"]>
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1718,10 +1923,13 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     teacherId: string
     createdAt: Date
     originalPrice: runtime.Decimal
+    finalPrice: runtime.Decimal
     paidPrice: runtime.Decimal
     teacherProfitPercent: runtime.Decimal
     teacherProfit: runtime.Decimal
     coupon: string | null
+    stripePaymentId: string | null
+    status: $Enums.TransactionStatus
     courseId: string | null
     sessionId: string | null
     offerId: string | null
@@ -2160,10 +2368,13 @@ export interface TransactionFieldRefs {
   readonly teacherId: Prisma.FieldRef<"Transaction", 'String'>
   readonly createdAt: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly originalPrice: Prisma.FieldRef<"Transaction", 'Decimal'>
+  readonly finalPrice: Prisma.FieldRef<"Transaction", 'Decimal'>
   readonly paidPrice: Prisma.FieldRef<"Transaction", 'Decimal'>
   readonly teacherProfitPercent: Prisma.FieldRef<"Transaction", 'Decimal'>
   readonly teacherProfit: Prisma.FieldRef<"Transaction", 'Decimal'>
   readonly coupon: Prisma.FieldRef<"Transaction", 'String'>
+  readonly stripePaymentId: Prisma.FieldRef<"Transaction", 'String'>
+  readonly status: Prisma.FieldRef<"Transaction", 'TransactionStatus'>
   readonly courseId: Prisma.FieldRef<"Transaction", 'String'>
   readonly sessionId: Prisma.FieldRef<"Transaction", 'String'>
   readonly offerId: Prisma.FieldRef<"Transaction", 'String'>

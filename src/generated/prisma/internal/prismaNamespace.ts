@@ -1945,6 +1945,7 @@ export const UserScalarFieldEnum = {
   name: 'name',
   coverId: 'coverId',
   role: 'role',
+  stripeAccountId: 'stripeAccountId',
   bio: 'bio',
   gender: 'gender',
   date_of_birth: 'date_of_birth',
@@ -1991,7 +1992,8 @@ export const WithdrawScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   createdAt: 'createdAt',
-  amount: 'amount'
+  amount: 'amount',
+  failedAt: 'failedAt'
 } as const
 
 export type WithdrawScalarFieldEnum = (typeof WithdrawScalarFieldEnum)[keyof typeof WithdrawScalarFieldEnum]
@@ -2003,10 +2005,13 @@ export const TransactionScalarFieldEnum = {
   teacherId: 'teacherId',
   createdAt: 'createdAt',
   originalPrice: 'originalPrice',
+  finalPrice: 'finalPrice',
   paidPrice: 'paidPrice',
   teacherProfitPercent: 'teacherProfitPercent',
   teacherProfit: 'teacherProfit',
   coupon: 'coupon',
+  stripePaymentId: 'stripePaymentId',
+  status: 'status',
   courseId: 'courseId',
   sessionId: 'sessionId',
   offerId: 'offerId'
@@ -2162,6 +2167,20 @@ export type EnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Gender[]'
  */
 export type ListEnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionStatus'
+ */
+export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionStatus[]'
+ */
+export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
     
 
 

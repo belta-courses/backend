@@ -21,9 +21,9 @@ model Offer {
 }
 
 model Coupon {
-  id     String @id @default(uuid())
+  id    String @id @default(uuid())
   value String @unique
-  offer  Offer?
+  offer Offer?
 
   @@map("coupons")
 }

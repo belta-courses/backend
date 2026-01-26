@@ -30,6 +30,7 @@ export type UserMinAggregateOutputType = {
   name: string | null
   coverId: string | null
   role: $Enums.Role | null
+  stripeAccountId: string | null
   bio: string | null
   gender: $Enums.Gender | null
   date_of_birth: string | null
@@ -44,6 +45,7 @@ export type UserMaxAggregateOutputType = {
   name: string | null
   coverId: string | null
   role: $Enums.Role | null
+  stripeAccountId: string | null
   bio: string | null
   gender: $Enums.Gender | null
   date_of_birth: string | null
@@ -58,6 +60,7 @@ export type UserCountAggregateOutputType = {
   name: number
   coverId: number
   role: number
+  stripeAccountId: number
   bio: number
   gender: number
   date_of_birth: number
@@ -74,6 +77,7 @@ export type UserMinAggregateInputType = {
   name?: true
   coverId?: true
   role?: true
+  stripeAccountId?: true
   bio?: true
   gender?: true
   date_of_birth?: true
@@ -88,6 +92,7 @@ export type UserMaxAggregateInputType = {
   name?: true
   coverId?: true
   role?: true
+  stripeAccountId?: true
   bio?: true
   gender?: true
   date_of_birth?: true
@@ -102,6 +107,7 @@ export type UserCountAggregateInputType = {
   name?: true
   coverId?: true
   role?: true
+  stripeAccountId?: true
   bio?: true
   gender?: true
   date_of_birth?: true
@@ -189,6 +195,7 @@ export type UserGroupByOutputType = {
   name: string
   coverId: string | null
   role: $Enums.Role
+  stripeAccountId: string | null
   bio: string | null
   gender: $Enums.Gender | null
   date_of_birth: string | null
@@ -224,6 +231,7 @@ export type UserWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   coverId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  stripeAccountId?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableFilter<"User"> | string | null
@@ -251,6 +259,7 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   coverId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   date_of_birth?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -281,6 +290,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   coverId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  stripeAccountId?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableFilter<"User"> | string | null
@@ -308,6 +318,7 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   coverId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   date_of_birth?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -328,6 +339,7 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   coverId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  stripeAccountId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -341,6 +353,7 @@ export type UserCreateInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -367,6 +380,7 @@ export type UserUncheckedCreateInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -391,6 +405,7 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -417,6 +432,7 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -442,6 +458,7 @@ export type UserCreateManyInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -455,6 +472,7 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -468,6 +486,7 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -502,6 +521,7 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   coverId?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   date_of_birth?: Prisma.SortOrder
@@ -516,6 +536,7 @@ export type UserMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   coverId?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   date_of_birth?: Prisma.SortOrder
@@ -530,6 +551,7 @@ export type UserMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   coverId?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  stripeAccountId?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   date_of_birth?: Prisma.SortOrder
@@ -793,6 +815,7 @@ export type UserCreateWithoutCoursesInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -818,6 +841,7 @@ export type UserUncheckedCreateWithoutCoursesInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -857,6 +881,7 @@ export type UserUpdateWithoutCoursesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -882,6 +907,7 @@ export type UserUncheckedUpdateWithoutCoursesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -905,6 +931,7 @@ export type UserCreateWithoutMentorshipsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -930,6 +957,7 @@ export type UserUncheckedCreateWithoutMentorshipsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -969,6 +997,7 @@ export type UserUpdateWithoutMentorshipsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -994,6 +1023,7 @@ export type UserUncheckedUpdateWithoutMentorshipsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1017,6 +1047,7 @@ export type UserCreateWithoutCoverInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1041,6 +1072,7 @@ export type UserUncheckedCreateWithoutCoverInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1095,6 +1127,7 @@ export type UserScalarWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   coverId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  stripeAccountId?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableFilter<"User"> | string | null
@@ -1108,6 +1141,7 @@ export type UserCreateWithoutOffersInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1133,6 +1167,7 @@ export type UserUncheckedCreateWithoutOffersInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1172,6 +1207,7 @@ export type UserUpdateWithoutOffersInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1197,6 +1233,7 @@ export type UserUncheckedUpdateWithoutOffersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1220,6 +1257,7 @@ export type UserCreateWithoutSaveListsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1245,6 +1283,7 @@ export type UserUncheckedCreateWithoutSaveListsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1284,6 +1323,7 @@ export type UserUpdateWithoutSaveListsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1309,6 +1349,7 @@ export type UserUncheckedUpdateWithoutSaveListsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1332,6 +1373,7 @@ export type UserCreateWithoutOwnedListsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1357,6 +1399,7 @@ export type UserUncheckedCreateWithoutOwnedListsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1396,6 +1439,7 @@ export type UserUpdateWithoutOwnedListsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1421,6 +1465,7 @@ export type UserUncheckedUpdateWithoutOwnedListsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1444,6 +1489,7 @@ export type UserCreateWithoutCompletedLecturesInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1469,6 +1515,7 @@ export type UserUncheckedCreateWithoutCompletedLecturesInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1508,6 +1555,7 @@ export type UserUpdateWithoutCompletedLecturesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1533,6 +1581,7 @@ export type UserUncheckedUpdateWithoutCompletedLecturesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1556,6 +1605,7 @@ export type UserCreateWithoutAccessGroupInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1581,6 +1631,7 @@ export type UserUncheckedCreateWithoutAccessGroupInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1630,6 +1681,7 @@ export type UserCreateWithoutWalletsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1655,6 +1707,7 @@ export type UserUncheckedCreateWithoutWalletsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1694,6 +1747,7 @@ export type UserUpdateWithoutWalletsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1719,6 +1773,7 @@ export type UserUncheckedUpdateWithoutWalletsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1742,6 +1797,7 @@ export type UserCreateWithoutWithdrawsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1767,6 +1823,7 @@ export type UserUncheckedCreateWithoutWithdrawsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1806,6 +1863,7 @@ export type UserUpdateWithoutWithdrawsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1831,6 +1889,7 @@ export type UserUncheckedUpdateWithoutWithdrawsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1854,6 +1913,7 @@ export type UserCreateWithoutSpendingTransactionsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1879,6 +1939,7 @@ export type UserUncheckedCreateWithoutSpendingTransactionsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1907,6 +1968,7 @@ export type UserCreateWithoutGettingTransactionsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1932,6 +1994,7 @@ export type UserUncheckedCreateWithoutGettingTransactionsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1971,6 +2034,7 @@ export type UserUpdateWithoutSpendingTransactionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1996,6 +2060,7 @@ export type UserUncheckedUpdateWithoutSpendingTransactionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2030,6 +2095,7 @@ export type UserUpdateWithoutGettingTransactionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2055,6 +2121,7 @@ export type UserUncheckedUpdateWithoutGettingTransactionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2078,6 +2145,7 @@ export type UserCreateWithoutRefundsInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2103,6 +2171,7 @@ export type UserUncheckedCreateWithoutRefundsInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2142,6 +2211,7 @@ export type UserUpdateWithoutRefundsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2167,6 +2237,7 @@ export type UserUncheckedUpdateWithoutRefundsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2190,6 +2261,7 @@ export type UserCreateManyCoverInput = {
   email: string
   name: string
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2203,6 +2275,7 @@ export type UserUpdateWithoutCoverInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2227,6 +2300,7 @@ export type UserUncheckedUpdateWithoutCoverInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2251,6 +2325,7 @@ export type UserUncheckedUpdateManyWithoutCoverInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2265,6 +2340,7 @@ export type UserCreateManyAccessGroupInput = {
   name: string
   coverId?: string | null
   role?: $Enums.Role
+  stripeAccountId?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2277,6 +2353,7 @@ export type UserUpdateWithoutAccessGroupInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2302,6 +2379,7 @@ export type UserUncheckedUpdateWithoutAccessGroupInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2326,6 +2404,7 @@ export type UserUncheckedUpdateManyWithoutAccessGroupInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2460,6 +2539,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   coverId?: boolean
   role?: boolean
+  stripeAccountId?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2488,6 +2568,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   coverId?: boolean
   role?: boolean
+  stripeAccountId?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2504,6 +2585,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   coverId?: boolean
   role?: boolean
+  stripeAccountId?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2520,6 +2602,7 @@ export type UserSelectScalar = {
   name?: boolean
   coverId?: boolean
   role?: boolean
+  stripeAccountId?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2528,7 +2611,7 @@ export type UserSelectScalar = {
   updated_at?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "coverId" | "role" | "bio" | "gender" | "date_of_birth" | "accessGroupId" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "coverId" | "role" | "stripeAccountId" | "bio" | "gender" | "date_of_birth" | "accessGroupId" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cover?: boolean | Prisma.User$coverArgs<ExtArgs>
   accessGroup?: boolean | Prisma.User$accessGroupArgs<ExtArgs>
@@ -2577,6 +2660,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     coverId: string | null
     role: $Enums.Role
+    stripeAccountId: string | null
     bio: string | null
     gender: $Enums.Gender | null
     date_of_birth: string | null
@@ -3024,6 +3108,7 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly coverId: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly stripeAccountId: Prisma.FieldRef<"User", 'String'>
   readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly gender: Prisma.FieldRef<"User", 'Gender'>
   readonly date_of_birth: Prisma.FieldRef<"User", 'String'>

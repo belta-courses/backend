@@ -6,6 +6,8 @@ model User {
   cover   File?   @relation(fields: [coverId], references: [id])
   role    Role    @default(student)
 
+  stripeAccountId String?
+
   // Teacher
   bio String?
 

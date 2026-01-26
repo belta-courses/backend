@@ -14,6 +14,7 @@ import databaseConfig from './core/config/database.config';
 import s3Config from './core/config/s3.config';
 import jwtConfig from './core/config/jwt.config';
 import mailConfig from './core/config/mail.config';
+import stripeConfig from './core/config/stripe.config';
 import { joiSchema } from './core/config/joi.schema';
 import { BullModule } from '@nestjs/bullmq';
 import { BullBoardModule } from '@bull-board/nestjs';
@@ -22,12 +23,24 @@ import { Router } from './core/router';
 import { CoursesModule } from './courses/courses.module';
 import { WalletModule } from './wallet/wallet.module';
 import { SettingsModule } from './settings/settings.module';
+import { StripeModule } from './stripe/stripe.module';
+import { PurchasesModule } from './purchases/purchases.module';
+import { RefundsModule } from './refunds/refunds.module';
+import { PayoutsModule } from './payouts/payouts.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, s3Config, jwtConfig, mailConfig],
+      load: [
+        appConfig,
+        databaseConfig,
+        s3Config,
+        jwtConfig,
+        mailConfig,
+        stripeConfig,
+      ],
       validationSchema: joiSchema,
     }),
     ServeStaticModule.forRoot({
@@ -43,6 +56,7 @@ import { SettingsModule } from './settings/settings.module';
       route: Router.Integrated.MqBoard,
       adapter: ExpressAdapter,
     }),
+    StripeModule.forRootAsync(),
 
     StorageModule,
     AuthModule,
@@ -50,6 +64,10 @@ import { SettingsModule } from './settings/settings.module';
     CoursesModule,
     WalletModule,
     SettingsModule,
+    PurchasesModule,
+    RefundsModule,
+    PayoutsModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService, PrismaService],

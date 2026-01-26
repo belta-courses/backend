@@ -10,5 +10,6 @@ import { StorageModule } from 'src/storage/storage.module';
   imports: [StorageModule],
   controllers: [CoursesController, ModulesController, LecturesController],
   providers: [CoursesService, PrismaService],
+  exports: [CoursesService],
 })
 export class CoursesModule {}

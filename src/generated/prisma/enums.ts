@@ -36,6 +36,16 @@ export const Gender = {
 export type Gender = (typeof Gender)[keyof typeof Gender]
 
 
+export const TransactionStatus = {
+  pending: 'pending',
+  completed: 'completed',
+  canceled: 'canceled',
+  rejected: 'rejected'
+} as const
+
+export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
+
+
 export const RefundStatus = {
   waiting: 'waiting',
   approved: 'approved',

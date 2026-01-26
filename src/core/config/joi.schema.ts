@@ -12,4 +12,8 @@ export const joiSchema = Joi.object({
   NODEMAILER_USER: Joi.string().email().required(),
   NODEMAILER_PASS: Joi.string().required(),
   NODEMAILER_SENDER_EMAIL: Joi.string().email().required(),
+  STRIPE_API_KEY: Joi.string().required(),
+  STRIPE_WEBHOOK_SECRET: Joi.string().optional(),
+  STRIPE_CHECKOUT_SUCCESS_URL: Joi.string().uri().required(),
+  STRIPE_CHECKOUT_CANCEL_URL: Joi.string().uri().required(),
 });

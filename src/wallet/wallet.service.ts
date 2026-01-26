@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { FindWalletsQueryDto } from './dto/request/find-wallets-query.dto';
 import { Decimal } from '@prisma/client/runtime/client';
@@ -11,12 +11,31 @@ export class WalletService {
     private readonly usersService: UsersService,
   ) {}
 
+  async getOrCreateWallet(userId: string) {
+    let wallet = await this.prisma.wallet.findFirst({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!wallet) {
+      await this.usersService.findOne(userId); // will throw error if user not found
+
+      wallet = await this.prisma.wallet.create({
+        data: {
+          userId,
+          amount: new Decimal(0),
+        },
+      });
+    }
+
+    return wallet;
+  }
+
   async findWalletByUserId(userId: string) {
     const wallet = await this.prisma.wallet.findFirst({
       where: { userId },
       orderBy: { createdAt: 'desc' },
     });
-    console.log(wallet);
 
     if (!wallet) {
       await this.usersService.findOne(userId); // will throw error if user not found
@@ -30,6 +49,36 @@ export class WalletService {
     }
 
     return wallet;
+  }
+
+  async addToWallet(userId: string, amount: number | Decimal) {
+    const wallet = await this.getOrCreateWallet(userId);
+    const amountDecimal =
+      amount instanceof Decimal ? amount : new Decimal(amount);
+
+    return this.prisma.wallet.update({
+      where: { id: wallet.id },
+      data: {
+        amount: {
+          increment: amountDecimal,
+        },
+      },
+    });
+  }
+
+  async deductFromWallet(userId: string, amount: number | Decimal) {
+    const wallet = await this.getOrCreateWallet(userId);
+    const amountDecimal =
+      amount instanceof Decimal ? amount : new Decimal(amount);
+
+    return this.prisma.wallet.update({
+      where: { id: wallet.id },
+      data: {
+        amount: {
+          decrement: amountDecimal,
+        },
+      },
+    });
   }
 
   async findAllWallets(dto: FindWalletsQueryDto) {

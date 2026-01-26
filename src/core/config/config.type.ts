@@ -24,10 +24,18 @@ export interface MailConfig {
   senderEmail: string;
 }
 
+export interface StripeConfig {
+  apiKey: string;
+  webhookSecret: string;
+  checkoutSuccessUrl: string;
+  checkoutCancelUrl: string;
+}
+
 export interface AllConfig {
   app: AppConfig;
   database: DatabaseConfig;
   s3: S3Config;
   jwt: JwtConfig;
   mail: MailConfig;
+  stripe: StripeConfig;
 }
