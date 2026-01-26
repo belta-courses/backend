@@ -9,6 +9,7 @@ import { WalletService } from 'src/wallet/wallet.service';
 import { SettingsService } from 'src/settings/settings.service';
 import { CoursesService } from 'src/courses/courses.service';
 import { UsersService } from 'src/users/users.service';
+import { MailService } from 'src/mail/mail.service';
 import { CourseStatus, TransactionStatus } from 'src/generated/prisma/client';
 import { PurchaseCourseDto } from './dto/request/purchase-course.dto';
 import { Decimal } from '@prisma/client/runtime/client';
@@ -24,6 +25,7 @@ export class PurchasesService {
     private readonly settingsService: SettingsService,
     private readonly coursesService: CoursesService,
     private readonly usersService: UsersService,
+    private readonly mailService: MailService,
     private readonly configService: ConfigService<AllConfig>,
   ) {}
 
@@ -165,10 +167,7 @@ export class PurchasesService {
     teacherProfit: Decimal,
     currency: string,
   ) {
-    return this.prisma.$transaction(async (tx) => {
-      // Students don't have wallets - they pay directly via Stripe
-      // No wallet deduction needed
-
+    const result = await this.prisma.$transaction(async (tx) => {
       // Create transaction
       const transaction = await tx.transaction.create({
         data: {
@@ -181,6 +180,14 @@ export class PurchasesService {
           teacherProfitPercent: new Decimal(teacherProfitPercent),
           teacherProfit,
           status: TransactionStatus.completed,
+        },
+        include: {
+          course: {
+            include: {
+              teacher: true,
+            },
+          },
+          student: true,
         },
       });
 
@@ -198,19 +205,31 @@ export class PurchasesService {
         },
       });
 
-      return {
-        transactionId: transaction.id,
-        amount: paidPrice.toNumber(),
-        currency,
-        walletAmountUsed: walletAmountUsed.toNumber(),
-      };
+      return transaction;
     });
+
+    // Send invoice email
+    await this.sendPurchaseInvoice(result);
+
+    return {
+      transactionId: result.id,
+      amount: paidPrice.toNumber(),
+      currency,
+      walletAmountUsed: walletAmountUsed.toNumber(),
+    };
   }
 
   async completePurchaseFromWebhook(sessionId: string) {
     const transaction = await this.prisma.transaction.findFirst({
       where: { stripePaymentId: sessionId },
-      include: { course: true },
+      include: {
+        course: {
+          include: {
+            teacher: true,
+          },
+        },
+        student: true,
+      },
     });
 
     if (!transaction) {
@@ -238,7 +257,7 @@ export class PurchasesService {
       }
     }
 
-    return this.prisma.$transaction(async (tx) => {
+    const completedTransaction = await this.prisma.$transaction(async (tx) => {
       // Students don't have wallets - they pay directly via Stripe
       // No wallet deduction needed for students
 
@@ -265,9 +284,21 @@ export class PurchasesService {
       return tx.transaction.update({
         where: { id: transaction.id },
         data: { status: TransactionStatus.completed },
-        include: { course: true },
+        include: {
+          course: {
+            include: {
+              teacher: true,
+            },
+          },
+          student: true,
+        },
       });
     });
+
+    // Send invoice email
+    await this.sendPurchaseInvoice(completedTransaction);
+
+    return completedTransaction;
   }
 
   async cancelTransaction(sessionId: string) {
@@ -298,5 +329,51 @@ export class PurchasesService {
       where: { id: transaction.id },
       data: { status: TransactionStatus.rejected },
     });
+  }
+
+  private async sendPurchaseInvoice(transaction: {
+    id: string;
+    createdAt: Date;
+    paidPrice: Decimal;
+    student: { email: string; name: string | null };
+    course: {
+      name: string;
+      teacher: { name: string | null };
+    } | null;
+  }) {
+    if (!transaction.course) {
+      return; // Skip if no course (shouldn't happen for course purchases)
+    }
+
+    const currency = await this.settingsService.getCurrency();
+    const studentName = transaction.student.name || 'Student';
+    const teacherName = transaction.course.teacher.name || 'Instructor';
+    const purchaseDate = new Date(transaction.createdAt).toLocaleDateString(
+      'en-US',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      },
+    );
+
+    try {
+      await this.mailService.sendTemplate({
+        to: transaction.student.email,
+        name: 'invoice-purchase',
+        data: {
+          studentName,
+          transactionId: transaction.id,
+          purchaseDate,
+          courseName: transaction.course.name,
+          teacherName,
+          paidPrice: transaction.paidPrice.toFixed(2),
+          currency: currency.toUpperCase(),
+        },
+      });
+    } catch (error) {
+      // Log error but don't fail the purchase if email fails
+      console.error('Failed to send purchase invoice email:', error);
+    }
   }
 }

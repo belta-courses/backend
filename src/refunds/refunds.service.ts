@@ -15,6 +15,8 @@ import {
   TransactionStatus,
 } from 'src/generated/prisma/client';
 import { PaginationDto } from 'src/core/dto/pagination.dto';
+import { MailService } from 'src/mail/mail.service';
+import { SettingsService } from 'src/settings/settings.service';
 
 @Injectable()
 export class RefundsService {
@@ -22,6 +24,8 @@ export class RefundsService {
     private readonly prisma: PrismaService,
     private readonly walletService: WalletService,
     private readonly stripeService: StripeService,
+    private readonly mailService: MailService,
+    private readonly settingsService: SettingsService,
   ) {}
 
   async requestRefund(
@@ -103,7 +107,7 @@ export class RefundsService {
     refund: Refund & { transaction: Transaction },
     dto: ReviewRefundDto,
   ) {
-    return this.prisma.$transaction(async (tx) => {
+    const approvedRefund = await this.prisma.$transaction(async (tx) => {
       const transaction = refund.transaction;
 
       // Process Stripe refund if payment was made via Stripe
@@ -166,10 +170,24 @@ export class RefundsService {
           response: dto.response,
         },
         include: {
-          transaction: true,
+          transaction: {
+            include: {
+              course: {
+                include: {
+                  teacher: true,
+                },
+              },
+              student: true,
+            },
+          },
         },
       });
     });
+
+    // Send refund invoice email
+    await this.sendRefundInvoice(approvedRefund);
+
+    return approvedRefund;
   }
 
   private async rejectRefund(refund: Refund, dto: ReviewRefundDto) {
@@ -235,5 +253,56 @@ export class RefundsService {
     }
 
     return refund;
+  }
+
+  private async sendRefundInvoice(
+    refund: Refund & {
+      transaction: Transaction & {
+        course: {
+          name: string;
+          teacher: { name: string | null };
+        } | null;
+        student: { email: string; name: string | null };
+      };
+    },
+  ) {
+    if (!refund.transaction.course) {
+      return; // Skip if no course
+    }
+
+    const currency = await this.settingsService.getCurrency();
+    const studentName = refund.transaction.student.name || 'Student';
+    const teacherName = refund.transaction.course.teacher.name || 'Instructor';
+    const refundDate = refund.reviewedAt
+      ? new Date(refund.reviewedAt).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+
+    try {
+      await this.mailService.sendTemplate({
+        to: refund.transaction.student.email,
+        name: 'invoice-refund',
+        data: {
+          studentName,
+          refundId: refund.id,
+          transactionId: refund.transaction.id,
+          refundDate,
+          courseName: refund.transaction.course.name,
+          teacherName,
+          paidPrice: refund.transaction.paidPrice.toFixed(2),
+          currency: currency.toUpperCase(),
+        },
+      });
+    } catch (error) {
+      // Log error but don't fail the refund if email fails
+      console.error('Failed to send refund invoice email:', error);
+    }
   }
 }

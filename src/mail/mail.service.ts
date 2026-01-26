@@ -57,10 +57,16 @@ export class MailService {
   }
 }
 
-type TemplateName = 'new-user' | 'confirm-login';
+type TemplateName =
+  | 'new-user'
+  | 'confirm-login'
+  | 'invoice-purchase'
+  | 'invoice-refund';
 export const emailSubjects: Record<TemplateName, string> = {
   'new-user': 'Welcome to BeltaCourse',
   'confirm-login': 'Confirm Login to BeltaCourse',
+  'invoice-purchase': 'Purchase Invoice - BeltaCourse',
+  'invoice-refund': 'Refund Invoice - BeltaCourse',
 };
 
 type TemplateData =
@@ -78,6 +84,31 @@ type TemplateData =
         confirmUrl: string;
         expirIn: string;
       };
+    }
+  | {
+      name: 'invoice-purchase';
+      data: {
+        studentName: string;
+        transactionId: string;
+        purchaseDate: string;
+        courseName: string;
+        teacherName: string;
+        paidPrice: string;
+        currency: string;
+      };
+    }
+  | {
+      name: 'invoice-refund';
+      data: {
+        studentName: string;
+        refundId: string;
+        transactionId: string;
+        refundDate: string;
+        courseName: string;
+        teacherName: string;
+        paidPrice: string;
+        currency: string;
+      };
     };
 
 const templateStaticData: Record<TemplateName, Record<string, string>> = {
@@ -85,6 +116,12 @@ const templateStaticData: Record<TemplateName, Record<string, string>> = {
     logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
   },
   'confirm-login': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+  'invoice-purchase': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+  'invoice-refund': {
     logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
   },
 };

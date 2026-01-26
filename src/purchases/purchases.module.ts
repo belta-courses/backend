@@ -7,6 +7,7 @@ import { WalletModule } from 'src/wallet/wallet.module';
 import { SettingsModule } from 'src/settings/settings.module';
 import { CoursesModule } from 'src/courses/courses.module';
 import { UsersModule } from 'src/users/users.module';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { UsersModule } from 'src/users/users.module';
     UsersModule,
   ],
   controllers: [PurchasesController],
-  providers: [PurchasesService, PrismaService],
+  providers: [PurchasesService, PrismaService, MailService],
   exports: [PurchasesService],
 })
 export class PurchasesModule {}
