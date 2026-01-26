@@ -34,6 +34,23 @@ export class MailService {
     });
   }
 
+  private generateMessageId(): string {
+    const domain = this.senderEmail.split('@')[1] || 'beltacourse.com';
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 15);
+    return `<${timestamp}-${random}@${domain}>`;
+  }
+
+  private getEmailHeaders(): Record<string, string> {
+    return {
+      'Message-ID': this.generateMessageId(),
+      'X-Auto-Response-Suppress': 'All',
+      'Auto-Submitted': 'auto-generated',
+      'X-Mailer': 'BeltaCourse',
+      'X-Entity-Ref-ID': `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
+    };
+  }
+
   async sendTemplate({
     name,
     data,
@@ -43,17 +60,36 @@ export class MailService {
       SendMailOptions,
       'from' | 'subject' | 'templateName' | 'templateData'
     >): Promise<void> {
-    await this.transporter.sendMail({
+    const mailOptions: SendMailOptions = {
       from: this.senderEmail,
       subject: emailSubjects[name],
       templateName: name,
       templateData: { ...templateStaticData[name], ...data },
+      headers: {
+        ...this.getEmailHeaders(),
+        ...options.headers,
+      },
       ...options,
-    });
+    };
+
+    // Remove any reply-related headers that might cause Gmail to collapse the email
+    if (mailOptions.headers) {
+      delete mailOptions.headers['In-Reply-To'];
+      delete mailOptions.headers['References'];
+    }
+
+    await this.transporter.sendMail(mailOptions);
   }
 
   async sendEmail(options: Omit<SendMailOptions, 'from'>) {
-    await this.transporter.sendMail({ from: this.senderEmail, ...options });
+    await this.transporter.sendMail({
+      from: this.senderEmail,
+      headers: {
+        ...this.getEmailHeaders(),
+        ...options.headers,
+      },
+      ...options,
+    });
   }
 }
 
