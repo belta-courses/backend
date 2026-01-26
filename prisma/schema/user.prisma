@@ -6,7 +6,9 @@ model User {
   cover   File?   @relation(fields: [coverId], references: [id])
   role    Role    @default(student)
 
-  stripeAccountId String?
+  stripeAccountId String? // Repurposed: stores bank account token ID
+  bankAccountLast4 String? // Last 4 digits of bank account for display
+  bankAccountType String? // "checking" or "savings"
 
   // Teacher
   bio String?

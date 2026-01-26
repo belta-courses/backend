@@ -12,6 +12,7 @@ import { AllConfig } from 'src/core/config/config.type';
 import { Decimal } from '@prisma/client/runtime/client';
 import { CreatePayoutDto } from './dto/request/create-payout.dto';
 import { GetPayoutHistoryQueryDto } from './dto/request/get-payout-hestory-query.dto';
+import { AddBankAccountDto } from './dto/request/add-bank-account.dto';
 
 @Injectable()
 export class PayoutsService {
@@ -41,41 +42,47 @@ export class PayoutsService {
 
     const currency = await this.settingsService.getCurrency();
 
-    // Check if user has Stripe Connect account
-    let { stripeAccountId } = user;
+    // Get or create bank account token
+    let bankAccountToken = user.stripeAccountId; // Repurposed field stores bank account token ID
 
-    if (!stripeAccountId) {
-      // Create Stripe Connect account
-      const account = await this.stripeService.createConnectAccount(user.email);
-      stripeAccountId = account.id;
-
-      await this.prisma.user.update({
-        where: { id: userId },
-        data: { stripeAccountId: account.id },
+    if (!bankAccountToken && !dto.bankAccount) {
+      throw new BadRequestException({
+        message: 'Bank account is required for payouts',
+        requiresBankAccount: true,
       });
     }
 
-    // Verify account is onboarded before attempting transfer
-    const account = await this.stripeService.retrieveAccount(stripeAccountId);
-
-    if (!account.charges_enabled || !account.details_submitted) {
-      // Account needs onboarding
-      const config = this.configService.getOrThrow('app', { infer: true });
-      const returnUrl = `${config.hostUrl}/payouts/onboarding-complete`;
-      const refreshUrl = `${config.hostUrl}/payouts/onboarding-refresh`;
-
-      const accountLink = await this.stripeService.createAccountLink(
-        stripeAccountId,
-        returnUrl,
-        refreshUrl,
-      );
-
-      throw new BadRequestException({
-        message:
-          'Stripe Connect account needs to be onboarded before receiving payouts',
-        onboardingUrl: accountLink.url,
-        requiresOnboarding: true,
+    // If bank account provided in request, create token
+    if (dto.bankAccount && !bankAccountToken) {
+      const token = await this.stripeService.createBankAccountToken({
+        accountNumber: dto.bankAccount.accountNumber,
+        routingNumber: dto.bankAccount.routingNumber,
+        accountHolderName: dto.bankAccount.accountHolderName,
+        accountHolderType: dto.bankAccount.accountHolderType,
+        country: dto.bankAccount.country,
+        currency,
       });
+
+      bankAccountToken = token.id;
+
+      // Extract bank account info from token response
+      const bankAccount = token.bank_account;
+      const last4 = bankAccount?.last4 ?? null;
+      const accountType = bankAccount?.account_type ?? null;
+
+      // Save bank account info to user
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          stripeAccountId: token.id, // Store token ID
+          ...(last4 && { bankAccountLast4: last4 }),
+          ...(accountType && { bankAccountType: accountType }),
+        },
+      });
+    }
+
+    if (!bankAccountToken) {
+      throw new BadRequestException('Bank account token is required');
     }
 
     return this.prisma.$transaction(async (tx) => {
@@ -91,28 +98,30 @@ export class PayoutsService {
         },
       });
 
-      // Create transfer to Stripe Connect account
+      // Create payout to bank account
       try {
-        const transfer = await this.stripeService.createTransfer({
+        const payout = await this.stripeService.createPayout({
           amount: amount.toNumber(),
           currency: currency.toLowerCase(),
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          destination: stripeAccountId,
+          destination: bankAccountToken,
           metadata: {
             withdrawId: withdraw.id,
             userId,
           },
+          method: 'standard', // or 'instant' for faster (higher fees)
         });
 
         return {
           withdrawId: withdraw.id,
-          transferId: transfer.id,
+          payoutId: payout.id,
           amount: amount.toNumber(),
           currency,
+          status: payout.status,
+          arrivalDate: payout.arrival_date,
         };
       } catch (error) {
         // Log the actual error for debugging
-        console.error('Stripe transfer error:', error);
+        console.error('Stripe payout error:', error);
 
         await tx.withdraw.update({
           where: { id: withdraw.id },
@@ -129,10 +138,52 @@ export class PayoutsService {
         }
 
         throw new BadRequestException(
-          `Failed to process payout: ${errorMessage}. Please ensure your Stripe Connect account is properly set up.`,
+          `Failed to process payout: ${errorMessage}. Please verify your bank account details.`,
         );
       }
     });
+  }
+
+  async addBankAccount(userId: string, dto: AddBankAccountDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const currency = await this.settingsService.getCurrency();
+
+    const token = await this.stripeService.createBankAccountToken({
+      accountNumber: dto.accountNumber,
+      routingNumber: dto.routingNumber,
+      accountHolderName: dto.accountHolderName,
+      accountHolderType: dto.accountHolderType,
+      country: dto.country,
+      currency,
+    });
+
+    // Extract bank account info from token response
+    const bankAccount = token.bank_account;
+    const last4 = bankAccount?.last4 ?? null;
+    const accountType = bankAccount?.account_type ?? null;
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        stripeAccountId: token.id,
+        ...(last4 && { bankAccountLast4: last4 }),
+        ...(accountType && { bankAccountType: accountType }),
+      },
+    });
+
+    return {
+      message: 'Bank account added successfully',
+      tokenId: token.id,
+      last4,
+      accountType,
+    };
   }
 
   async getPayoutHistory({ userId, page, limit }: GetPayoutHistoryQueryDto) {

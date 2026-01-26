@@ -15,6 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { PayoutsService } from './payouts.service';
 import { CreatePayoutDto } from './dto/request/create-payout.dto';
+import { AddBankAccountDto } from './dto/request/add-bank-account.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
@@ -43,6 +44,20 @@ export class PayoutsController {
   ) {
     const { sub: userId } = request.user;
     return this.payoutsService.createPayout(userId, dto);
+  }
+
+  @Post('bank-account')
+  @ApiOperation({ summary: 'Add or update bank account for payouts' })
+  @ApiResponse({
+    status: 201,
+    description: 'Bank account added successfully',
+  })
+  async addBankAccount(
+    @Body() dto: AddBankAccountDto,
+    @Request() request: { user: JwtPayload },
+  ) {
+    const { sub: userId } = request.user;
+    return this.payoutsService.addBankAccount(userId, dto);
   }
 
   @Get('history')

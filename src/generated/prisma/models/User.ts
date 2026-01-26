@@ -31,6 +31,8 @@ export type UserMinAggregateOutputType = {
   coverId: string | null
   role: $Enums.Role | null
   stripeAccountId: string | null
+  bankAccountLast4: string | null
+  bankAccountType: string | null
   bio: string | null
   gender: $Enums.Gender | null
   date_of_birth: string | null
@@ -46,6 +48,8 @@ export type UserMaxAggregateOutputType = {
   coverId: string | null
   role: $Enums.Role | null
   stripeAccountId: string | null
+  bankAccountLast4: string | null
+  bankAccountType: string | null
   bio: string | null
   gender: $Enums.Gender | null
   date_of_birth: string | null
@@ -61,6 +65,8 @@ export type UserCountAggregateOutputType = {
   coverId: number
   role: number
   stripeAccountId: number
+  bankAccountLast4: number
+  bankAccountType: number
   bio: number
   gender: number
   date_of_birth: number
@@ -78,6 +84,8 @@ export type UserMinAggregateInputType = {
   coverId?: true
   role?: true
   stripeAccountId?: true
+  bankAccountLast4?: true
+  bankAccountType?: true
   bio?: true
   gender?: true
   date_of_birth?: true
@@ -93,6 +101,8 @@ export type UserMaxAggregateInputType = {
   coverId?: true
   role?: true
   stripeAccountId?: true
+  bankAccountLast4?: true
+  bankAccountType?: true
   bio?: true
   gender?: true
   date_of_birth?: true
@@ -108,6 +118,8 @@ export type UserCountAggregateInputType = {
   coverId?: true
   role?: true
   stripeAccountId?: true
+  bankAccountLast4?: true
+  bankAccountType?: true
   bio?: true
   gender?: true
   date_of_birth?: true
@@ -196,6 +208,8 @@ export type UserGroupByOutputType = {
   coverId: string | null
   role: $Enums.Role
   stripeAccountId: string | null
+  bankAccountLast4: string | null
+  bankAccountType: string | null
   bio: string | null
   gender: $Enums.Gender | null
   date_of_birth: string | null
@@ -232,6 +246,8 @@ export type UserWhereInput = {
   coverId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   stripeAccountId?: Prisma.StringNullableFilter<"User"> | string | null
+  bankAccountLast4?: Prisma.StringNullableFilter<"User"> | string | null
+  bankAccountType?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableFilter<"User"> | string | null
@@ -260,6 +276,8 @@ export type UserOrderByWithRelationInput = {
   coverId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountLast4?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountType?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   date_of_birth?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -291,6 +309,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   coverId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   stripeAccountId?: Prisma.StringNullableFilter<"User"> | string | null
+  bankAccountLast4?: Prisma.StringNullableFilter<"User"> | string | null
+  bankAccountType?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableFilter<"User"> | string | null
@@ -319,6 +339,8 @@ export type UserOrderByWithAggregationInput = {
   coverId?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountLast4?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountType?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   gender?: Prisma.SortOrderInput | Prisma.SortOrder
   date_of_birth?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -340,6 +362,8 @@ export type UserScalarWhereWithAggregatesInput = {
   coverId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   stripeAccountId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  bankAccountLast4?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  bankAccountType?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -354,6 +378,8 @@ export type UserCreateInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -381,6 +407,8 @@ export type UserUncheckedCreateInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -406,6 +434,8 @@ export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -433,6 +463,8 @@ export type UserUncheckedUpdateInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -459,6 +491,8 @@ export type UserCreateManyInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -473,6 +507,8 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -487,6 +523,8 @@ export type UserUncheckedUpdateManyInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -522,6 +560,8 @@ export type UserCountOrderByAggregateInput = {
   coverId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrder
+  bankAccountLast4?: Prisma.SortOrder
+  bankAccountType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   date_of_birth?: Prisma.SortOrder
@@ -537,6 +577,8 @@ export type UserMaxOrderByAggregateInput = {
   coverId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrder
+  bankAccountLast4?: Prisma.SortOrder
+  bankAccountType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   date_of_birth?: Prisma.SortOrder
@@ -552,6 +594,8 @@ export type UserMinOrderByAggregateInput = {
   coverId?: Prisma.SortOrder
   role?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrder
+  bankAccountLast4?: Prisma.SortOrder
+  bankAccountType?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   date_of_birth?: Prisma.SortOrder
@@ -816,6 +860,8 @@ export type UserCreateWithoutCoursesInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -842,6 +888,8 @@ export type UserUncheckedCreateWithoutCoursesInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -882,6 +930,8 @@ export type UserUpdateWithoutCoursesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -908,6 +958,8 @@ export type UserUncheckedUpdateWithoutCoursesInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -932,6 +984,8 @@ export type UserCreateWithoutMentorshipsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -958,6 +1012,8 @@ export type UserUncheckedCreateWithoutMentorshipsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -998,6 +1054,8 @@ export type UserUpdateWithoutMentorshipsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1024,6 +1082,8 @@ export type UserUncheckedUpdateWithoutMentorshipsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1048,6 +1108,8 @@ export type UserCreateWithoutCoverInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1073,6 +1135,8 @@ export type UserUncheckedCreateWithoutCoverInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1128,6 +1192,8 @@ export type UserScalarWhereInput = {
   coverId?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   stripeAccountId?: Prisma.StringNullableFilter<"User"> | string | null
+  bankAccountLast4?: Prisma.StringNullableFilter<"User"> | string | null
+  bankAccountType?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   gender?: Prisma.EnumGenderNullableFilter<"User"> | $Enums.Gender | null
   date_of_birth?: Prisma.StringNullableFilter<"User"> | string | null
@@ -1142,6 +1208,8 @@ export type UserCreateWithoutOffersInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1168,6 +1236,8 @@ export type UserUncheckedCreateWithoutOffersInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1208,6 +1278,8 @@ export type UserUpdateWithoutOffersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1234,6 +1306,8 @@ export type UserUncheckedUpdateWithoutOffersInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1258,6 +1332,8 @@ export type UserCreateWithoutSaveListsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1284,6 +1360,8 @@ export type UserUncheckedCreateWithoutSaveListsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1324,6 +1402,8 @@ export type UserUpdateWithoutSaveListsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1350,6 +1430,8 @@ export type UserUncheckedUpdateWithoutSaveListsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1374,6 +1456,8 @@ export type UserCreateWithoutOwnedListsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1400,6 +1484,8 @@ export type UserUncheckedCreateWithoutOwnedListsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1440,6 +1526,8 @@ export type UserUpdateWithoutOwnedListsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1466,6 +1554,8 @@ export type UserUncheckedUpdateWithoutOwnedListsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1490,6 +1580,8 @@ export type UserCreateWithoutCompletedLecturesInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1516,6 +1608,8 @@ export type UserUncheckedCreateWithoutCompletedLecturesInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1556,6 +1650,8 @@ export type UserUpdateWithoutCompletedLecturesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1582,6 +1678,8 @@ export type UserUncheckedUpdateWithoutCompletedLecturesInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1606,6 +1704,8 @@ export type UserCreateWithoutAccessGroupInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1632,6 +1732,8 @@ export type UserUncheckedCreateWithoutAccessGroupInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1682,6 +1784,8 @@ export type UserCreateWithoutWalletsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1708,6 +1812,8 @@ export type UserUncheckedCreateWithoutWalletsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1748,6 +1854,8 @@ export type UserUpdateWithoutWalletsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1774,6 +1882,8 @@ export type UserUncheckedUpdateWithoutWalletsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1798,6 +1908,8 @@ export type UserCreateWithoutWithdrawsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1824,6 +1936,8 @@ export type UserUncheckedCreateWithoutWithdrawsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1864,6 +1978,8 @@ export type UserUpdateWithoutWithdrawsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1890,6 +2006,8 @@ export type UserUncheckedUpdateWithoutWithdrawsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1914,6 +2032,8 @@ export type UserCreateWithoutSpendingTransactionsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1940,6 +2060,8 @@ export type UserUncheckedCreateWithoutSpendingTransactionsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1969,6 +2091,8 @@ export type UserCreateWithoutGettingTransactionsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -1995,6 +2119,8 @@ export type UserUncheckedCreateWithoutGettingTransactionsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2035,6 +2161,8 @@ export type UserUpdateWithoutSpendingTransactionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2061,6 +2189,8 @@ export type UserUncheckedUpdateWithoutSpendingTransactionsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2096,6 +2226,8 @@ export type UserUpdateWithoutGettingTransactionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2122,6 +2254,8 @@ export type UserUncheckedUpdateWithoutGettingTransactionsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2146,6 +2280,8 @@ export type UserCreateWithoutRefundsInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2172,6 +2308,8 @@ export type UserUncheckedCreateWithoutRefundsInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2212,6 +2350,8 @@ export type UserUpdateWithoutRefundsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2238,6 +2378,8 @@ export type UserUncheckedUpdateWithoutRefundsInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2262,6 +2404,8 @@ export type UserCreateManyCoverInput = {
   name: string
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2276,6 +2420,8 @@ export type UserUpdateWithoutCoverInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2301,6 +2447,8 @@ export type UserUncheckedUpdateWithoutCoverInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2326,6 +2474,8 @@ export type UserUncheckedUpdateManyWithoutCoverInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2341,6 +2491,8 @@ export type UserCreateManyAccessGroupInput = {
   coverId?: string | null
   role?: $Enums.Role
   stripeAccountId?: string | null
+  bankAccountLast4?: string | null
+  bankAccountType?: string | null
   bio?: string | null
   gender?: $Enums.Gender | null
   date_of_birth?: string | null
@@ -2354,6 +2506,8 @@ export type UserUpdateWithoutAccessGroupInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2380,6 +2534,8 @@ export type UserUncheckedUpdateWithoutAccessGroupInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2405,6 +2561,8 @@ export type UserUncheckedUpdateManyWithoutAccessGroupInput = {
   coverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountLast4?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   date_of_birth?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2540,6 +2698,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   coverId?: boolean
   role?: boolean
   stripeAccountId?: boolean
+  bankAccountLast4?: boolean
+  bankAccountType?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2569,6 +2729,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   coverId?: boolean
   role?: boolean
   stripeAccountId?: boolean
+  bankAccountLast4?: boolean
+  bankAccountType?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2586,6 +2748,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   coverId?: boolean
   role?: boolean
   stripeAccountId?: boolean
+  bankAccountLast4?: boolean
+  bankAccountType?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2603,6 +2767,8 @@ export type UserSelectScalar = {
   coverId?: boolean
   role?: boolean
   stripeAccountId?: boolean
+  bankAccountLast4?: boolean
+  bankAccountType?: boolean
   bio?: boolean
   gender?: boolean
   date_of_birth?: boolean
@@ -2611,7 +2777,7 @@ export type UserSelectScalar = {
   updated_at?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "coverId" | "role" | "stripeAccountId" | "bio" | "gender" | "date_of_birth" | "accessGroupId" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "coverId" | "role" | "stripeAccountId" | "bankAccountLast4" | "bankAccountType" | "bio" | "gender" | "date_of_birth" | "accessGroupId" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cover?: boolean | Prisma.User$coverArgs<ExtArgs>
   accessGroup?: boolean | Prisma.User$accessGroupArgs<ExtArgs>
@@ -2661,6 +2827,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     coverId: string | null
     role: $Enums.Role
     stripeAccountId: string | null
+    bankAccountLast4: string | null
+    bankAccountType: string | null
     bio: string | null
     gender: $Enums.Gender | null
     date_of_birth: string | null
@@ -3109,6 +3277,8 @@ export interface UserFieldRefs {
   readonly coverId: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly stripeAccountId: Prisma.FieldRef<"User", 'String'>
+  readonly bankAccountLast4: Prisma.FieldRef<"User", 'String'>
+  readonly bankAccountType: Prisma.FieldRef<"User", 'String'>
   readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly gender: Prisma.FieldRef<"User", 'Gender'>
   readonly date_of_birth: Prisma.FieldRef<"User", 'String'>

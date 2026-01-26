@@ -1946,6 +1946,8 @@ export const UserScalarFieldEnum = {
   coverId: 'coverId',
   role: 'role',
   stripeAccountId: 'stripeAccountId',
+  bankAccountLast4: 'bankAccountLast4',
+  bankAccountType: 'bankAccountType',
   bio: 'bio',
   gender: 'gender',
   date_of_birth: 'date_of_birth',

@@ -127,6 +127,59 @@ export class StripeService {
     return this.stripe.accounts.retrieve(accountId);
   }
 
+  async createBankAccountToken({
+    accountNumber,
+    routingNumber,
+    accountHolderName,
+    accountHolderType,
+    country,
+    currency,
+  }: {
+    accountNumber: string;
+    routingNumber: string;
+    accountHolderName: string;
+    accountHolderType: 'individual' | 'company';
+    country: string;
+    currency: string;
+  }): Promise<Stripe.Token> {
+    return this.stripe.tokens.create({
+      bank_account: {
+        country,
+        currency: currency.toLowerCase(),
+        account_number: accountNumber,
+        routing_number: routingNumber,
+        account_holder_name: accountHolderName,
+        account_holder_type: accountHolderType,
+      },
+    });
+  }
+
+  async createPayout({
+    amount,
+    currency,
+    destination,
+    metadata,
+    method = 'standard',
+  }: {
+    amount: number;
+    currency: string;
+    destination: string;
+    metadata?: Record<string, string>;
+    method?: 'standard' | 'instant';
+  }): Promise<Stripe.Payout> {
+    return this.stripe.payouts.create({
+      amount: Math.round(amount * 100),
+      currency: currency.toLowerCase(),
+      destination,
+      metadata,
+      method,
+    });
+  }
+
+  async retrievePayout(payoutId: string): Promise<Stripe.Payout> {
+    return this.stripe.payouts.retrieve(payoutId);
+  }
+
   constructWebhookEvent(
     payload: string | Buffer,
     signature: string,
