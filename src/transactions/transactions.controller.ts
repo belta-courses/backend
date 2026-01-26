@@ -21,9 +21,9 @@ import { Role } from 'src/generated/prisma/client';
 import { Router } from 'src/core/router';
 import { JwtPayload } from 'src/users/users.types';
 
-@ApiTags('Transactions')
+@ApiTags(Router.Transactions.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
-@Controller('transactions')
+@Controller(Router.Transactions.Base)
 @UseGuards(AuthGuard)
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
@@ -49,7 +49,7 @@ export class TransactionsController {
     });
   }
 
-  @Get(':transactionId')
+  @Get(Router.Transactions.ById)
   @ApiOperation({
     summary: 'Get a transaction by ID',
   })

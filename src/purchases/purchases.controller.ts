@@ -23,15 +23,15 @@ import { Role } from 'src/generated/prisma/client';
 import { Router } from 'src/core/router';
 import { JwtPayload } from 'src/users/users.types';
 
-@ApiTags('Purchases')
+@ApiTags(Router.Purchases.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
-@Controller('purchases')
+@Controller(Router.Purchases.Base)
 @UseGuards(AuthGuard, RolesGuard)
 @Roles(Role.student)
 export class PurchasesController {
   constructor(private readonly purchasesService: PurchasesService) {}
 
-  @Post('courses/:courseId')
+  @Post(Router.Purchases.CourseById)
   @ApiOperation({ summary: 'Purchase a course' })
   @ApiParam({
     name: 'courseId',

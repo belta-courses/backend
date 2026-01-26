@@ -12,9 +12,10 @@ import { StripeService } from './stripe.service';
 import { PurchasesService } from 'src/purchases/purchases.service';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/core/config/config.type';
+import { Router } from 'src/core/router';
 import Stripe from 'stripe';
 
-@Controller('stripe/webhook')
+@Controller(Router.Stripe.Webhook)
 export class StripeWebhookController {
   constructor(
     private readonly stripeService: StripeService,

@@ -186,4 +186,66 @@ export abstract class Router {
     /** :id */
     static ById = ':id';
   };
+
+  /**
+   * Transactions routes
+   * @static
+   * @memberof Router
+   * @example /transactions
+   */
+  static Transactions = class {
+    /** Transactions */
+    static ApiTag = 'Transactions';
+    /** transactions */
+    static Base = 'transactions';
+    /** :transactionId */
+    static ById = ':transactionId';
+  };
+
+  /**
+   * Purchases routes
+   * @static
+   * @memberof Router
+   * @example /purchases
+   */
+  static Purchases = class {
+    /** Purchases */
+    static ApiTag = 'Purchases';
+    /** purchases */
+    static Base = 'purchases';
+    /** courses/:courseId */
+    static CourseById = 'courses/:courseId';
+  };
+
+  /**
+   * Refunds routes
+   * @static
+   * @memberof Router
+   * @example /refunds
+   */
+  static Refunds = class {
+    /** Refunds */
+    static ApiTag = 'Refunds';
+    /** refunds */
+    static Base = 'refunds';
+    /** :refundId */
+    static ById = ':refundId';
+    /** transactions/:transactionId */
+    static ByTransactionId = 'transactions/:transactionId';
+    /** :refundId/review */
+    static Review = ':refundId/review';
+  };
+
+  /**
+   * Stripe webhook routes
+   * @static
+   * @memberof Router
+   * @example /stripe/webhook
+   */
+  static Stripe = class {
+    /** Stripe */
+    static ApiTag = 'Stripe';
+    /** stripe/webhook */
+    static Webhook = 'stripe/webhook';
+  };
 }

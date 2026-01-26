@@ -31,14 +31,14 @@ import { AccessedBy } from 'src/auth/permissions.decorator';
 import { Permission } from 'src/core/config/permissions.config';
 import { PaginationDto } from 'src/core/dto/pagination.dto';
 
-@ApiTags('Refunds')
+@ApiTags(Router.Refunds.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
-@Controller('refunds')
+@Controller(Router.Refunds.Base)
 @UseGuards(AuthGuard)
 export class RefundsController {
   constructor(private readonly refundsService: RefundsService) {}
 
-  @Post('transactions/:transactionId')
+  @Post(Router.Refunds.ByTransactionId)
   @ApiOperation({
     summary: 'Request a refund for a transaction (Student only)',
   })
@@ -61,7 +61,7 @@ export class RefundsController {
     return this.refundsService.requestRefund(transactionId, studentId, dto);
   }
 
-  @Patch(':refundId/review')
+  @Patch(Router.Refunds.Review)
   @ApiOperation({ summary: 'Review a refund request (Admin only)' })
   @ApiParam({
     name: 'refundId',
@@ -106,7 +106,7 @@ export class RefundsController {
     return this.refundsService.findAllRefunds(dto);
   }
 
-  @Get(':refundId')
+  @Get(Router.Refunds.ById)
   @ApiOperation({ summary: 'Get a refund request by ID (Admin only)' })
   @ApiParam({
     name: 'refundId',
