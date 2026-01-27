@@ -290,7 +290,13 @@ export const WithdrawScalarFieldEnum = {
   userId: 'userId',
   createdAt: 'createdAt',
   amount: 'amount',
-  failedAt: 'failedAt'
+  paypalEmail: 'paypalEmail',
+  status: 'status',
+  paypalPayoutId: 'paypalPayoutId',
+  paypalPayoutItemId: 'paypalPayoutItemId',
+  processedAt: 'processedAt',
+  failedAt: 'failedAt',
+  failureReason: 'failureReason'
 } as const
 
 export type WithdrawScalarFieldEnum = (typeof WithdrawScalarFieldEnum)[keyof typeof WithdrawScalarFieldEnum]

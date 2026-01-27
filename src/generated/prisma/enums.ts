@@ -36,6 +36,15 @@ export const Gender = {
 export type Gender = (typeof Gender)[keyof typeof Gender]
 
 
+export const WithdrawStatus = {
+  pending: 'pending',
+  completed: 'completed',
+  failed: 'failed'
+} as const
+
+export type WithdrawStatus = (typeof WithdrawStatus)[keyof typeof WithdrawStatus]
+
+
 export const TransactionStatus = {
   pending: 'pending',
   completed: 'completed',

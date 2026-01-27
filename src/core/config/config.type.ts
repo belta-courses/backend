@@ -31,6 +31,13 @@ export interface StripeConfig {
   checkoutCancelUrl: string;
 }
 
+export interface PayPalConfig {
+  clientId: string;
+  clientSecret: string;
+  mode: 'sandbox' | 'live';
+  webhookId: string;
+}
+
 export interface RedisConfig {
   host: string;
   port: number;
@@ -47,5 +54,6 @@ export interface AllConfig {
   jwt: JwtConfig;
   mail: MailConfig;
   stripe: StripeConfig;
+  paypal: PayPalConfig;
   redis: RedisConfig;
 }

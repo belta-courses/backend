@@ -113,6 +113,14 @@ export abstract class Router {
     static Me = 'me';
     /** :userId */
     static ByUserId = ':userId';
+    /** me/withdraw */
+    static Withdraw = 'me/withdraw';
+    /** me/withdraws */
+    static MyWithdraws = 'me/withdraws';
+    /** :userId/withdraws */
+    static UserWithdraws = ':userId/withdraws';
+    /** withdraws */
+    static AllWithdraws = 'withdraws';
   };
 
   /**
@@ -247,5 +255,18 @@ export abstract class Router {
     static ApiTag = 'Stripe';
     /** stripe/webhook */
     static Webhook = 'stripe/webhook';
+  };
+
+  /**
+   * PayPal webhook routes
+   * @static
+   * @memberof Router
+   * @example /paypal/webhook
+   */
+  static PayPal = class {
+    /** PayPal */
+    static ApiTag = 'PayPal';
+    /** paypal/webhook */
+    static Webhook = 'paypal/webhook';
   };
 }

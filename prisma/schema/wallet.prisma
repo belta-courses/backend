@@ -9,15 +9,28 @@ model Wallet {
 }
 
 model Withdraw {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime
-  amount    Decimal
-  failedAt  DateTime?
+  id                String         @id @default(uuid())
+  userId            String
+  user              User           @relation(fields: [userId], references: [id])
+  createdAt         DateTime       @default(now())
+  amount            Decimal
+  paypalEmail       String
+  status            WithdrawStatus @default(pending)
+  paypalPayoutId    String?
+  paypalPayoutItemId String?
+  processedAt       DateTime?
+  failedAt          DateTime?
+  failureReason     String?
 
   @@index([userId])
+  @@index([status])
   @@map("withdraws")
+}
+
+enum WithdrawStatus {
+  pending
+  completed
+  failed
 }
 
 model Transaction {

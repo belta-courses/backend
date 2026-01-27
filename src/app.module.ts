@@ -15,6 +15,7 @@ import s3Config from './core/config/s3.config';
 import jwtConfig from './core/config/jwt.config';
 import mailConfig from './core/config/mail.config';
 import stripeConfig from './core/config/stripe.config';
+import paypalConfig from './core/config/paypal.config';
 import redisConfig from './core/config/redis.config';
 import { RedisConfig } from './core/config/config.type';
 import { joiSchema } from './core/config/joi.schema';
@@ -27,6 +28,7 @@ import { CoursesModule } from './courses/courses.module';
 import { WalletModule } from './wallet/wallet.module';
 import { SettingsModule } from './settings/settings.module';
 import { StripeModule } from './stripe/stripe.module';
+import { PayPalModule } from './paypal/paypal.module';
 import { PurchasesModule } from './purchases/purchases.module';
 import { RefundsModule } from './refunds/refunds.module';
 import { TransactionsModule } from './transactions/transactions.module';
@@ -42,6 +44,7 @@ import { TransactionsModule } from './transactions/transactions.module';
         jwtConfig,
         mailConfig,
         stripeConfig,
+        paypalConfig,
         redisConfig,
       ],
       validationSchema: joiSchema,
@@ -77,6 +80,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     CoursesModule,
     PurchasesModule,
     StripeModule.forRootAsync(),
+    PayPalModule.forRootAsync(),
     TransactionsModule,
     RefundsModule,
     WalletModule,

@@ -1,6 +1,8 @@
 import {
   Controller,
   Get,
+  Post,
+  Body,
   UseGuards,
   Request,
   Param,
@@ -27,6 +29,10 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { FindWalletsQueryDto } from './dto/request/find-wallets-query.dto';
 import { getNoDecimalWallet } from './utils/convert-wallet';
+import { getNoDecimalWithdraw } from './utils/convert-withdraw';
+import { CreateWithdrawDto } from './dto/request/create-withdraw.dto';
+import { WithdrawResponseDto } from './dto/response/withdraw-response.dto';
+import { FindWithdrawsQueryDto } from './dto/request/find-withdraws-query.dto';
 
 @ApiTags(Router.Wallet.ApiTag)
 @ApiBearerAuth(Router.Integrated.ApiAuthName)
@@ -98,6 +104,127 @@ export class WalletController {
         },
       ),
       meta: wallets.meta,
+    };
+  }
+
+  @Post(Router.Wallet.Withdraw)
+  @ApiOperation({
+    summary: 'Request a withdrawal of full wallet balance (Teacher only)',
+    description:
+      'Withdraws the entire wallet balance. Minimum withdrawal amount is $10 USD.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Withdrawal request has been successfully created',
+    type: WithdrawResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description:
+      'Wallet balance is less than $10 USD minimum withdrawal amount',
+  })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.teacher)
+  async requestWithdrawal(
+    @Request() request: { user: JwtPayload },
+    @Body() dto: CreateWithdrawDto,
+  ) {
+    const { sub: userId } = request['user'];
+
+    const withdrawal = await this.walletService.requestWithdrawal(userId, dto);
+
+    return plainToInstance(
+      WithdrawResponseDto,
+      getNoDecimalWithdraw(withdrawal),
+      {
+        excludeExtraneousValues: true,
+      },
+    );
+  }
+
+  @Get(Router.Wallet.MyWithdraws)
+  @ApiOperation({ summary: 'Get my withdrawals (Teacher only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Withdrawals have been successfully retrieved',
+    type: [WithdrawResponseDto],
+  })
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.teacher)
+  async getMyWithdrawals(
+    @Request() request: { user: JwtPayload },
+    @Query() dto: FindWithdrawsQueryDto,
+  ) {
+    const { sub: userId } = request['user'];
+
+    const withdrawals = await this.walletService.getWithdrawals(dto, userId);
+
+    return {
+      data: plainToInstance(
+        WithdrawResponseDto,
+        withdrawals.data.map((item) => getNoDecimalWithdraw(item)),
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
+      meta: withdrawals.meta,
+    };
+  }
+
+  @Get(Router.Wallet.UserWithdraws)
+  @ApiOperation({ summary: 'Get user withdrawals by userId (Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Withdrawals have been successfully retrieved',
+    type: [WithdrawResponseDto],
+  })
+  @ApiParam({
+    name: 'userId',
+    example: '',
+  })
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
+  @AccessedBy(Permission.USERS_WALLET, Permission.USERS_FULL_ACCESS)
+  async getUserWithdrawals(
+    @Param('userId') userId: string,
+    @Query() dto: FindWithdrawsQueryDto,
+  ) {
+    const withdrawals = await this.walletService.getWithdrawals(dto, userId);
+
+    return {
+      data: plainToInstance(
+        WithdrawResponseDto,
+        withdrawals.data.map((item) => getNoDecimalWithdraw(item)),
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
+      meta: withdrawals.meta,
+    };
+  }
+
+  @Get(Router.Wallet.AllWithdraws)
+  @ApiOperation({ summary: 'Get all withdrawals (Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Withdrawals have been successfully retrieved',
+    type: [WithdrawResponseDto],
+  })
+  @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
+  @Roles(Role.admin, Role.employee)
+  @AccessedBy(Permission.USERS_WALLET, Permission.USERS_FULL_ACCESS)
+  async getAllWithdrawals(@Query() dto: FindWithdrawsQueryDto) {
+    const withdrawals = await this.walletService.getWithdrawals(dto);
+
+    return {
+      data: plainToInstance(
+        WithdrawResponseDto,
+        withdrawals.data.map((item) => getNoDecimalWithdraw(item)),
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
+      meta: withdrawals.meta,
     };
   }
 }

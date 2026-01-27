@@ -1995,7 +1995,13 @@ export const WithdrawScalarFieldEnum = {
   userId: 'userId',
   createdAt: 'createdAt',
   amount: 'amount',
-  failedAt: 'failedAt'
+  paypalEmail: 'paypalEmail',
+  status: 'status',
+  paypalPayoutId: 'paypalPayoutId',
+  paypalPayoutItemId: 'paypalPayoutItemId',
+  processedAt: 'processedAt',
+  failedAt: 'failedAt',
+  failureReason: 'failureReason'
 } as const
 
 export type WithdrawScalarFieldEnum = (typeof WithdrawScalarFieldEnum)[keyof typeof WithdrawScalarFieldEnum]
@@ -2169,6 +2175,20 @@ export type EnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Gender[]'
  */
 export type ListEnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WithdrawStatus'
+ */
+export type EnumWithdrawStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'WithdrawStatus[]'
+ */
+export type ListEnumWithdrawStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawStatus[]'>
     
 
 
