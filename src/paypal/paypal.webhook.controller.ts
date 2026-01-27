@@ -12,6 +12,7 @@ import { WalletService } from 'src/wallet/wallet.service';
 import { ConfigService } from '@nestjs/config';
 import { AllConfig } from 'src/core/config/config.type';
 import { Router } from 'src/core/router';
+import { WithdrawStatus } from 'src/generated/prisma/client';
 
 interface PayPalWebhookEvent {
   id: string;
@@ -26,6 +27,13 @@ interface PayPalWebhookEvent {
     payout_item_id?: string;
     transaction_status?: string;
     payout_batch_id?: string;
+    errors?: {
+      name: string;
+      message: string;
+      information_link?: string;
+      details?: unknown[];
+      links?: unknown[];
+    };
   };
   create_time: string;
 }
@@ -48,11 +56,6 @@ export class PayPalWebhookController {
     @Headers('paypal-cert-url') certUrl: string,
     @Body() body: PayPalWebhookEvent,
   ) {
-    // Note: PayPal webhook verification requires additional setup
-    // For now, we'll process the webhook and log verification status
-    // In production, implement proper webhook signature verification
-    // using PayPal's webhook verification API
-
     if (!body || !body.event_type) {
       console.error('Invalid webhook payload');
       return { received: false };
@@ -64,8 +67,12 @@ export class PayPalWebhookController {
       console.log(`Processing PayPal webhook event: ${eventType}`);
 
       switch (eventType) {
-        case 'PAYMENT.PAYOUTSBATCH.SUCCESS':
         case 'PAYMENT.PAYOUTSBATCH.PROCESSING': {
+          await this.handlePayoutBatchProcessing(body);
+          break;
+        }
+
+        case 'PAYMENT.PAYOUTSBATCH.SUCCESS': {
           await this.handlePayoutBatchSuccess(body);
           break;
         }
@@ -83,8 +90,7 @@ export class PayPalWebhookController {
 
         case 'PAYMENT.PAYOUTS-ITEM.UNCLAIMED': {
           // UNCLAIMED means the recipient hasn't claimed the payment yet
-          // Keep it as pending, don't mark as completed
-          this.handlePayoutItemUnclaimed(body);
+          await this.handlePayoutItemUnclaimed(body);
           break;
         }
 
@@ -107,6 +113,34 @@ export class PayPalWebhookController {
     return { received: true };
   }
 
+  private async handlePayoutBatchProcessing(event: PayPalWebhookEvent) {
+    const batchId = event.resource?.batch_header?.payout_batch_id;
+    if (!batchId) {
+      console.error('Missing batch_id in webhook event');
+      return;
+    }
+
+    try {
+      console.log(`Processing payout batch processing for batch: ${batchId}`);
+      const status = await this.paypalService.getPayoutStatus(batchId);
+      if (status.items && status.items.length > 0) {
+        for (const item of status.items) {
+          // Set status to processing for all items in the batch
+          await this.walletService.updateWithdrawalStatus(
+            item.payoutItemId,
+            'processing' as WithdrawStatus,
+          );
+          console.log(
+            `Updated withdrawal status to processing for payout item: ${item.payoutItemId}`,
+          );
+        }
+      }
+    } catch (error) {
+      console.error(`Error handling payout batch processing:`, error);
+      throw error;
+    }
+  }
+
   private async handlePayoutBatchSuccess(event: PayPalWebhookEvent) {
     const batchId = event.resource?.batch_header?.payout_batch_id;
     if (!batchId) {
@@ -122,10 +156,16 @@ export class PayPalWebhookController {
           if (item.transactionStatus === 'SUCCESS') {
             await this.walletService.updateWithdrawalStatus(
               item.payoutItemId,
-              'completed',
+              WithdrawStatus.completed,
             );
             console.log(
               `Updated withdrawal status to completed for payout item: ${item.payoutItemId}`,
+            );
+          } else if (item.transactionStatus === 'UNCLAIMED') {
+            // Handle unclaimed status - will be handled by PAYMENT.PAYOUTS-ITEM.UNCLAIMED event
+            // But we can also handle it here if needed
+            console.log(
+              `Payout item ${item.payoutItemId} is unclaimed - waiting for item-level webhook`,
             );
           } else if (
             item.transactionStatus === 'FAILED' ||
@@ -134,7 +174,7 @@ export class PayPalWebhookController {
           ) {
             await this.walletService.updateWithdrawalStatus(
               item.payoutItemId,
-              'failed',
+              WithdrawStatus.failed,
               `Payout failed with status: ${item.transactionStatus}`,
             );
             console.log(
@@ -168,7 +208,7 @@ export class PayPalWebhookController {
           ) {
             await this.walletService.updateWithdrawalStatus(
               item.payoutItemId,
-              'failed',
+              WithdrawStatus.failed,
               `Payout batch failed or denied. Status: ${item.transactionStatus}`,
             );
             console.log(
@@ -194,7 +234,7 @@ export class PayPalWebhookController {
       console.log(`Processing payout item success for item: ${payoutItemId}`);
       const result = await this.walletService.updateWithdrawalStatus(
         payoutItemId,
-        'completed',
+        WithdrawStatus.completed,
       );
       if (result) {
         console.log(
@@ -223,7 +263,7 @@ export class PayPalWebhookController {
       );
       const result = await this.walletService.updateWithdrawalStatus(
         payoutItemId,
-        'failed',
+        WithdrawStatus.failed,
         failureReason,
       );
       if (result) {
@@ -237,21 +277,35 @@ export class PayPalWebhookController {
     }
   }
 
-  private handlePayoutItemUnclaimed(event: PayPalWebhookEvent) {
+  private async handlePayoutItemUnclaimed(event: PayPalWebhookEvent) {
     const payoutItemId = event.resource?.payout_item_id;
     if (!payoutItemId) {
       console.error('Missing payout_item_id in webhook event');
       return;
     }
 
-    // UNCLAIMED means the recipient hasn't claimed the payment yet
-    // Keep status as pending - don't update to completed until recipient claims it
-    // The withdrawal will remain in pending status until they claim it
-    console.log(
-      `Processing payout item unclaimed for item: ${payoutItemId}. Payment is waiting for recipient to claim.`,
-    );
-    console.log(
-      `Withdrawal for payout item ${payoutItemId} remains pending until recipient claims payment`,
-    );
+    // Extract error name from webhook event
+    const errorName = event.resource?.errors?.name;
+    const errorMessage = event.resource?.errors?.message;
+
+    try {
+      console.log(
+        `Processing payout item unclaimed for item: ${payoutItemId}. Error: ${errorName || 'Unknown'}`,
+      );
+      const result = await this.walletService.updateWithdrawalStatus(
+        payoutItemId,
+        'unclaimed' as WithdrawStatus,
+        errorMessage,
+        errorName,
+      );
+      if (result) {
+        console.log(
+          `Updated withdrawal status to unclaimed for payout item: ${payoutItemId}`,
+        );
+      }
+    } catch (error) {
+      console.error(`Error handling payout item unclaimed:`, error);
+      throw error;
+    }
   }
 }

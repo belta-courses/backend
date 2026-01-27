@@ -97,12 +97,21 @@ type TemplateName =
   | 'new-user'
   | 'confirm-login'
   | 'invoice-purchase'
-  | 'invoice-refund';
+  | 'invoice-refund'
+  | 'withdrawal-processing'
+  | 'withdrawal-unclaimed'
+  | 'withdrawal-completed'
+  | 'withdrawal-failed';
 export const emailSubjects: Record<TemplateName, string> = {
   'new-user': 'Welcome to BeltaCourse',
   'confirm-login': 'Confirm Login to BeltaCourse',
   'invoice-purchase': 'Purchase Invoice - BeltaCourse',
   'invoice-refund': 'Refund Invoice - BeltaCourse',
+  'withdrawal-processing': 'Withdrawal Processing - BeltaCourse',
+  'withdrawal-unclaimed':
+    'Withdrawal Unclaimed - Action Required - BeltaCourse',
+  'withdrawal-completed': 'Withdrawal Completed - BeltaCourse',
+  'withdrawal-failed': 'Withdrawal Failed - BeltaCourse',
 };
 
 type TemplateData =
@@ -145,6 +154,46 @@ type TemplateData =
         paidPrice: string;
         currency: string;
       };
+    }
+  | {
+      name: 'withdrawal-processing';
+      data: {
+        teacherName: string;
+        amount: string;
+        paypalEmail: string;
+        withdrawalId: string;
+      };
+    }
+  | {
+      name: 'withdrawal-unclaimed';
+      data: {
+        teacherName: string;
+        amount: string;
+        paypalEmail: string;
+        withdrawalId: string;
+        errorMessage: string;
+        instructions: string;
+      };
+    }
+  | {
+      name: 'withdrawal-completed';
+      data: {
+        teacherName: string;
+        amount: string;
+        paypalEmail: string;
+        withdrawalId: string;
+        processedAt: string;
+      };
+    }
+  | {
+      name: 'withdrawal-failed';
+      data: {
+        teacherName: string;
+        amount: string;
+        paypalEmail: string;
+        withdrawalId: string;
+        failureReason: string;
+      };
     };
 
 const templateStaticData: Record<TemplateName, Record<string, string>> = {
@@ -158,6 +207,18 @@ const templateStaticData: Record<TemplateName, Record<string, string>> = {
     logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
   },
   'invoice-refund': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+  'withdrawal-processing': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+  'withdrawal-unclaimed': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+  'withdrawal-completed': {
+    logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
+  },
+  'withdrawal-failed': {
     logoLarge: `${HOST_URL}/images/logo/logo-lg-150.png`,
   },
 };

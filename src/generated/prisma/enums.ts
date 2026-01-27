@@ -38,6 +38,8 @@ export type Gender = (typeof Gender)[keyof typeof Gender]
 
 export const WithdrawStatus = {
   pending: 'pending',
+  processing: 'processing',
+  unclaimed: 'unclaimed',
   completed: 'completed',
   failed: 'failed'
 } as const

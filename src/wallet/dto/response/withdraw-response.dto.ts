@@ -73,4 +73,14 @@ export class WithdrawResponseDto {
   })
   @Expose()
   failureReason?: string;
+
+  @ApiProperty({
+    description:
+      'User-friendly error message (especially for unclaimed status)',
+    required: false,
+    example:
+      'The PayPal email address does not have a PayPal account. Please create a PayPal account with this email or use a different email address.',
+  })
+  @Expose()
+  errorMessage?: string;
 }

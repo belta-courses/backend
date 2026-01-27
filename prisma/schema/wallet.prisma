@@ -28,9 +28,11 @@ model Withdraw {
 }
 
 enum WithdrawStatus {
-  pending
-  completed
-  failed
+  pending      // When withdrawal is created
+  processing   // When batch is processing
+  unclaimed    // When payout is unclaimed
+  completed    // When payout succeeded
+  failed       // When payout failed/denied/returned
 }
 
 model Transaction {
