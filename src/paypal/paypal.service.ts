@@ -1,10 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as paypal from '@paypal/payouts-sdk';
 import {
   CreateBatchPayoutResponse,
   GetBatchPayoutResponse,
   GetPayoutsItemResponse,
 } from '@paypal/payouts-sdk';
+import { AllConfig } from 'src/core/config/config.type';
 
 @Injectable()
 export class PayPalService {
@@ -13,14 +15,17 @@ export class PayPalService {
     | paypal.core.LiveEnvironment;
   private client: paypal.core.PayPalHttpClient;
 
-  constructor(
-    @Inject('PAYPAL_CLIENT_ID')
-    private readonly clientId: string,
-    @Inject('PAYPAL_CLIENT_SECRET')
-    private readonly clientSecret: string,
-    @Inject('PAYPAL_MODE')
-    private readonly mode: 'sandbox' | 'live',
-  ) {
+  constructor(private readonly configService: ConfigService<AllConfig>) {
+    const clientId = this.configService.getOrThrow('paypal.clientId', {
+      infer: true,
+    });
+    const clientSecret = this.configService.getOrThrow('paypal.clientSecret', {
+      infer: true,
+    });
+    const mode = this.configService.getOrThrow('paypal.mode', {
+      infer: true,
+    });
+
     if (mode === 'live') {
       this.environment = new paypal.core.LiveEnvironment(
         clientId,

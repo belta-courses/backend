@@ -1,15 +1,17 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
+import { AllConfig } from 'src/core/config/config.type';
 
 @Injectable()
 export class StripeService {
   private stripe: Stripe;
 
-  constructor(
-    @Inject('STRIPE_API_KEY')
-    private readonly apiKey: string,
-  ) {
-    this.stripe = new Stripe(this.apiKey, { apiVersion: '2025-12-15.clover' });
+  constructor(private readonly configService: ConfigService<AllConfig>) {
+    const apiKey = this.configService.getOrThrow('stripe.apiKey', {
+      infer: true,
+    });
+    this.stripe = new Stripe(apiKey, { apiVersion: '2025-12-15.clover' });
   }
 
   async createCheckoutSession({
