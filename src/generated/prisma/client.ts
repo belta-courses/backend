@@ -118,6 +118,11 @@ export type Wallet = Prisma.WalletModel
  */
 export type Withdraw = Prisma.WithdrawModel
 /**
+ * Model WithdrawHistory
+ * 
+ */
+export type WithdrawHistory = Prisma.WithdrawHistoryModel
+/**
  * Model Transaction
  * 
  */

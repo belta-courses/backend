@@ -67,6 +67,7 @@ export const ModelName = {
   Permission: 'Permission',
   Wallet: 'Wallet',
   Withdraw: 'Withdraw',
+  WithdrawHistory: 'WithdrawHistory',
   Transaction: 'Transaction',
   Refund: 'Refund'
 } as const
@@ -287,19 +288,29 @@ export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof 
 
 export const WithdrawScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  createdAt: 'createdAt',
+  payoutId: 'payoutId',
+  paypalBatchId: 'paypalBatchId',
+  paypalItemId: 'paypalItemId',
   amount: 'amount',
   paypalEmail: 'paypalEmail',
   status: 'status',
-  paypalPayoutId: 'paypalPayoutId',
-  paypalPayoutItemId: 'paypalPayoutItemId',
-  processedAt: 'processedAt',
-  failedAt: 'failedAt',
-  failureReason: 'failureReason'
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type WithdrawScalarFieldEnum = (typeof WithdrawScalarFieldEnum)[keyof typeof WithdrawScalarFieldEnum]
+
+
+export const WithdrawHistoryScalarFieldEnum = {
+  id: 'id',
+  withdrawId: 'withdrawId',
+  status: 'status',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type WithdrawHistoryScalarFieldEnum = (typeof WithdrawHistoryScalarFieldEnum)[keyof typeof WithdrawHistoryScalarFieldEnum]
 
 
 export const TransactionScalarFieldEnum = {

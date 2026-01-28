@@ -36,44 +36,41 @@ export type WithdrawSumAggregateOutputType = {
 
 export type WithdrawMinAggregateOutputType = {
   id: string | null
-  userId: string | null
-  createdAt: Date | null
+  payoutId: string | null
+  paypalBatchId: string | null
+  paypalItemId: string | null
   amount: runtime.Decimal | null
   paypalEmail: string | null
   status: $Enums.WithdrawStatus | null
-  paypalPayoutId: string | null
-  paypalPayoutItemId: string | null
-  processedAt: Date | null
-  failedAt: Date | null
-  failureReason: string | null
+  userId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type WithdrawMaxAggregateOutputType = {
   id: string | null
-  userId: string | null
-  createdAt: Date | null
+  payoutId: string | null
+  paypalBatchId: string | null
+  paypalItemId: string | null
   amount: runtime.Decimal | null
   paypalEmail: string | null
   status: $Enums.WithdrawStatus | null
-  paypalPayoutId: string | null
-  paypalPayoutItemId: string | null
-  processedAt: Date | null
-  failedAt: Date | null
-  failureReason: string | null
+  userId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type WithdrawCountAggregateOutputType = {
   id: number
-  userId: number
-  createdAt: number
+  payoutId: number
+  paypalBatchId: number
+  paypalItemId: number
   amount: number
   paypalEmail: number
   status: number
-  paypalPayoutId: number
-  paypalPayoutItemId: number
-  processedAt: number
-  failedAt: number
-  failureReason: number
+  userId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -88,44 +85,41 @@ export type WithdrawSumAggregateInputType = {
 
 export type WithdrawMinAggregateInputType = {
   id?: true
-  userId?: true
-  createdAt?: true
+  payoutId?: true
+  paypalBatchId?: true
+  paypalItemId?: true
   amount?: true
   paypalEmail?: true
   status?: true
-  paypalPayoutId?: true
-  paypalPayoutItemId?: true
-  processedAt?: true
-  failedAt?: true
-  failureReason?: true
+  userId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type WithdrawMaxAggregateInputType = {
   id?: true
-  userId?: true
-  createdAt?: true
+  payoutId?: true
+  paypalBatchId?: true
+  paypalItemId?: true
   amount?: true
   paypalEmail?: true
   status?: true
-  paypalPayoutId?: true
-  paypalPayoutItemId?: true
-  processedAt?: true
-  failedAt?: true
-  failureReason?: true
+  userId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type WithdrawCountAggregateInputType = {
   id?: true
-  userId?: true
-  createdAt?: true
+  payoutId?: true
+  paypalBatchId?: true
+  paypalItemId?: true
   amount?: true
   paypalEmail?: true
   status?: true
-  paypalPayoutId?: true
-  paypalPayoutItemId?: true
-  processedAt?: true
-  failedAt?: true
-  failureReason?: true
+  userId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -217,16 +211,15 @@ export type WithdrawGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type WithdrawGroupByOutputType = {
   id: string
-  userId: string
-  createdAt: Date
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
   amount: runtime.Decimal
   paypalEmail: string
   status: $Enums.WithdrawStatus
-  paypalPayoutId: string | null
-  paypalPayoutItemId: string | null
-  processedAt: Date | null
-  failedAt: Date | null
-  failureReason: string | null
+  userId: string
+  createdAt: Date
+  updatedAt: Date
   _count: WithdrawCountAggregateOutputType | null
   _avg: WithdrawAvgAggregateOutputType | null
   _sum: WithdrawSumAggregateOutputType | null
@@ -254,64 +247,63 @@ export type WithdrawWhereInput = {
   OR?: Prisma.WithdrawWhereInput[]
   NOT?: Prisma.WithdrawWhereInput | Prisma.WithdrawWhereInput[]
   id?: Prisma.StringFilter<"Withdraw"> | string
-  userId?: Prisma.StringFilter<"Withdraw"> | string
-  createdAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
+  payoutId?: Prisma.StringFilter<"Withdraw"> | string
+  paypalBatchId?: Prisma.StringFilter<"Withdraw"> | string
+  paypalItemId?: Prisma.StringFilter<"Withdraw"> | string
   amount?: Prisma.DecimalFilter<"Withdraw"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFilter<"Withdraw"> | string
   status?: Prisma.EnumWithdrawStatusFilter<"Withdraw"> | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.StringNullableFilter<"Withdraw"> | string | null
-  paypalPayoutItemId?: Prisma.StringNullableFilter<"Withdraw"> | string | null
-  processedAt?: Prisma.DateTimeNullableFilter<"Withdraw"> | Date | string | null
-  failedAt?: Prisma.DateTimeNullableFilter<"Withdraw"> | Date | string | null
-  failureReason?: Prisma.StringNullableFilter<"Withdraw"> | string | null
+  userId?: Prisma.StringFilter<"Withdraw"> | string
+  createdAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  histories?: Prisma.WithdrawHistoryListRelationFilter
 }
 
 export type WithdrawOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  payoutId?: Prisma.SortOrder
+  paypalBatchId?: Prisma.SortOrder
+  paypalItemId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   paypalEmail?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  paypalPayoutId?: Prisma.SortOrderInput | Prisma.SortOrder
-  paypalPayoutItemId?: Prisma.SortOrderInput | Prisma.SortOrder
-  processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  failedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  failureReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  histories?: Prisma.WithdrawHistoryOrderByRelationAggregateInput
 }
 
 export type WithdrawWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  payoutId?: string
+  paypalBatchId?: string
   AND?: Prisma.WithdrawWhereInput | Prisma.WithdrawWhereInput[]
   OR?: Prisma.WithdrawWhereInput[]
   NOT?: Prisma.WithdrawWhereInput | Prisma.WithdrawWhereInput[]
-  userId?: Prisma.StringFilter<"Withdraw"> | string
-  createdAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
+  paypalItemId?: Prisma.StringFilter<"Withdraw"> | string
   amount?: Prisma.DecimalFilter<"Withdraw"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFilter<"Withdraw"> | string
   status?: Prisma.EnumWithdrawStatusFilter<"Withdraw"> | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.StringNullableFilter<"Withdraw"> | string | null
-  paypalPayoutItemId?: Prisma.StringNullableFilter<"Withdraw"> | string | null
-  processedAt?: Prisma.DateTimeNullableFilter<"Withdraw"> | Date | string | null
-  failedAt?: Prisma.DateTimeNullableFilter<"Withdraw"> | Date | string | null
-  failureReason?: Prisma.StringNullableFilter<"Withdraw"> | string | null
+  userId?: Prisma.StringFilter<"Withdraw"> | string
+  createdAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id">
+  histories?: Prisma.WithdrawHistoryListRelationFilter
+}, "id" | "payoutId" | "paypalBatchId">
 
 export type WithdrawOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  payoutId?: Prisma.SortOrder
+  paypalBatchId?: Prisma.SortOrder
+  paypalItemId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   paypalEmail?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  paypalPayoutId?: Prisma.SortOrderInput | Prisma.SortOrder
-  paypalPayoutItemId?: Prisma.SortOrderInput | Prisma.SortOrder
-  processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  failedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  failureReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.WithdrawCountOrderByAggregateInput
   _avg?: Prisma.WithdrawAvgOrderByAggregateInput
   _max?: Prisma.WithdrawMaxOrderByAggregateInput
@@ -324,113 +316,109 @@ export type WithdrawScalarWhereWithAggregatesInput = {
   OR?: Prisma.WithdrawScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WithdrawScalarWhereWithAggregatesInput | Prisma.WithdrawScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Withdraw"> | string
-  userId?: Prisma.StringWithAggregatesFilter<"Withdraw"> | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Withdraw"> | Date | string
+  payoutId?: Prisma.StringWithAggregatesFilter<"Withdraw"> | string
+  paypalBatchId?: Prisma.StringWithAggregatesFilter<"Withdraw"> | string
+  paypalItemId?: Prisma.StringWithAggregatesFilter<"Withdraw"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"Withdraw"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringWithAggregatesFilter<"Withdraw"> | string
   status?: Prisma.EnumWithdrawStatusWithAggregatesFilter<"Withdraw"> | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.StringNullableWithAggregatesFilter<"Withdraw"> | string | null
-  paypalPayoutItemId?: Prisma.StringNullableWithAggregatesFilter<"Withdraw"> | string | null
-  processedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Withdraw"> | Date | string | null
-  failedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Withdraw"> | Date | string | null
-  failureReason?: Prisma.StringNullableWithAggregatesFilter<"Withdraw"> | string | null
+  userId?: Prisma.StringWithAggregatesFilter<"Withdraw"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Withdraw"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Withdraw"> | Date | string
 }
 
 export type WithdrawCreateInput = {
   id?: string
-  createdAt?: Date | string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail: string
   status?: $Enums.WithdrawStatus
-  paypalPayoutId?: string | null
-  paypalPayoutItemId?: string | null
-  processedAt?: Date | string | null
-  failedAt?: Date | string | null
-  failureReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutWithdrawsInput
+  histories?: Prisma.WithdrawHistoryCreateNestedManyWithoutWithdrawInput
 }
 
 export type WithdrawUncheckedCreateInput = {
   id?: string
-  userId: string
-  createdAt?: Date | string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail: string
   status?: $Enums.WithdrawStatus
-  paypalPayoutId?: string | null
-  paypalPayoutItemId?: string | null
-  processedAt?: Date | string | null
-  failedAt?: Date | string | null
-  failureReason?: string | null
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  histories?: Prisma.WithdrawHistoryUncheckedCreateNestedManyWithoutWithdrawInput
 }
 
 export type WithdrawUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paypalPayoutItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutWithdrawsNestedInput
+  histories?: Prisma.WithdrawHistoryUpdateManyWithoutWithdrawNestedInput
 }
 
 export type WithdrawUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paypalPayoutItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  histories?: Prisma.WithdrawHistoryUncheckedUpdateManyWithoutWithdrawNestedInput
 }
 
 export type WithdrawCreateManyInput = {
   id?: string
-  userId: string
-  createdAt?: Date | string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail: string
   status?: $Enums.WithdrawStatus
-  paypalPayoutId?: string | null
-  paypalPayoutItemId?: string | null
-  processedAt?: Date | string | null
-  failedAt?: Date | string | null
-  failureReason?: string | null
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type WithdrawUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paypalPayoutItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WithdrawUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paypalPayoutItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WithdrawListRelationFilter = {
@@ -445,16 +433,15 @@ export type WithdrawOrderByRelationAggregateInput = {
 
 export type WithdrawCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  payoutId?: Prisma.SortOrder
+  paypalBatchId?: Prisma.SortOrder
+  paypalItemId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   paypalEmail?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  paypalPayoutId?: Prisma.SortOrder
-  paypalPayoutItemId?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrder
-  failedAt?: Prisma.SortOrder
-  failureReason?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WithdrawAvgOrderByAggregateInput = {
@@ -463,34 +450,37 @@ export type WithdrawAvgOrderByAggregateInput = {
 
 export type WithdrawMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  payoutId?: Prisma.SortOrder
+  paypalBatchId?: Prisma.SortOrder
+  paypalItemId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   paypalEmail?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  paypalPayoutId?: Prisma.SortOrder
-  paypalPayoutItemId?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrder
-  failedAt?: Prisma.SortOrder
-  failureReason?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WithdrawMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  payoutId?: Prisma.SortOrder
+  paypalBatchId?: Prisma.SortOrder
+  paypalItemId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   paypalEmail?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  paypalPayoutId?: Prisma.SortOrder
-  paypalPayoutItemId?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrder
-  failedAt?: Prisma.SortOrder
-  failureReason?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WithdrawSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+}
+
+export type WithdrawScalarRelationFilter = {
+  is?: Prisma.WithdrawWhereInput
+  isNot?: Prisma.WithdrawWhereInput
 }
 
 export type WithdrawCreateNestedManyWithoutUserInput = {
@@ -539,30 +529,44 @@ export type EnumWithdrawStatusFieldUpdateOperationsInput = {
   set?: $Enums.WithdrawStatus
 }
 
+export type WithdrawCreateNestedOneWithoutHistoriesInput = {
+  create?: Prisma.XOR<Prisma.WithdrawCreateWithoutHistoriesInput, Prisma.WithdrawUncheckedCreateWithoutHistoriesInput>
+  connectOrCreate?: Prisma.WithdrawCreateOrConnectWithoutHistoriesInput
+  connect?: Prisma.WithdrawWhereUniqueInput
+}
+
+export type WithdrawUpdateOneRequiredWithoutHistoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.WithdrawCreateWithoutHistoriesInput, Prisma.WithdrawUncheckedCreateWithoutHistoriesInput>
+  connectOrCreate?: Prisma.WithdrawCreateOrConnectWithoutHistoriesInput
+  upsert?: Prisma.WithdrawUpsertWithoutHistoriesInput
+  connect?: Prisma.WithdrawWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WithdrawUpdateToOneWithWhereWithoutHistoriesInput, Prisma.WithdrawUpdateWithoutHistoriesInput>, Prisma.WithdrawUncheckedUpdateWithoutHistoriesInput>
+}
+
 export type WithdrawCreateWithoutUserInput = {
   id?: string
-  createdAt?: Date | string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail: string
   status?: $Enums.WithdrawStatus
-  paypalPayoutId?: string | null
-  paypalPayoutItemId?: string | null
-  processedAt?: Date | string | null
-  failedAt?: Date | string | null
-  failureReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  histories?: Prisma.WithdrawHistoryCreateNestedManyWithoutWithdrawInput
 }
 
 export type WithdrawUncheckedCreateWithoutUserInput = {
   id?: string
-  createdAt?: Date | string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail: string
   status?: $Enums.WithdrawStatus
-  paypalPayoutId?: string | null
-  paypalPayoutItemId?: string | null
-  processedAt?: Date | string | null
-  failedAt?: Date | string | null
-  failureReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  histories?: Prisma.WithdrawHistoryUncheckedCreateNestedManyWithoutWithdrawInput
 }
 
 export type WithdrawCreateOrConnectWithoutUserInput = {
@@ -596,134 +600,228 @@ export type WithdrawScalarWhereInput = {
   OR?: Prisma.WithdrawScalarWhereInput[]
   NOT?: Prisma.WithdrawScalarWhereInput | Prisma.WithdrawScalarWhereInput[]
   id?: Prisma.StringFilter<"Withdraw"> | string
-  userId?: Prisma.StringFilter<"Withdraw"> | string
-  createdAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
+  payoutId?: Prisma.StringFilter<"Withdraw"> | string
+  paypalBatchId?: Prisma.StringFilter<"Withdraw"> | string
+  paypalItemId?: Prisma.StringFilter<"Withdraw"> | string
   amount?: Prisma.DecimalFilter<"Withdraw"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFilter<"Withdraw"> | string
   status?: Prisma.EnumWithdrawStatusFilter<"Withdraw"> | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.StringNullableFilter<"Withdraw"> | string | null
-  paypalPayoutItemId?: Prisma.StringNullableFilter<"Withdraw"> | string | null
-  processedAt?: Prisma.DateTimeNullableFilter<"Withdraw"> | Date | string | null
-  failedAt?: Prisma.DateTimeNullableFilter<"Withdraw"> | Date | string | null
-  failureReason?: Prisma.StringNullableFilter<"Withdraw"> | string | null
+  userId?: Prisma.StringFilter<"Withdraw"> | string
+  createdAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Withdraw"> | Date | string
+}
+
+export type WithdrawCreateWithoutHistoriesInput = {
+  id?: string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paypalEmail: string
+  status?: $Enums.WithdrawStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutWithdrawsInput
+}
+
+export type WithdrawUncheckedCreateWithoutHistoriesInput = {
+  id?: string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paypalEmail: string
+  status?: $Enums.WithdrawStatus
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WithdrawCreateOrConnectWithoutHistoriesInput = {
+  where: Prisma.WithdrawWhereUniqueInput
+  create: Prisma.XOR<Prisma.WithdrawCreateWithoutHistoriesInput, Prisma.WithdrawUncheckedCreateWithoutHistoriesInput>
+}
+
+export type WithdrawUpsertWithoutHistoriesInput = {
+  update: Prisma.XOR<Prisma.WithdrawUpdateWithoutHistoriesInput, Prisma.WithdrawUncheckedUpdateWithoutHistoriesInput>
+  create: Prisma.XOR<Prisma.WithdrawCreateWithoutHistoriesInput, Prisma.WithdrawUncheckedCreateWithoutHistoriesInput>
+  where?: Prisma.WithdrawWhereInput
+}
+
+export type WithdrawUpdateToOneWithWhereWithoutHistoriesInput = {
+  where?: Prisma.WithdrawWhereInput
+  data: Prisma.XOR<Prisma.WithdrawUpdateWithoutHistoriesInput, Prisma.WithdrawUncheckedUpdateWithoutHistoriesInput>
+}
+
+export type WithdrawUpdateWithoutHistoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutWithdrawsNestedInput
+}
+
+export type WithdrawUncheckedUpdateWithoutHistoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WithdrawCreateManyUserInput = {
   id?: string
-  createdAt?: Date | string
+  payoutId: string
+  paypalBatchId: string
+  paypalItemId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail: string
   status?: $Enums.WithdrawStatus
-  paypalPayoutId?: string | null
-  paypalPayoutItemId?: string | null
-  processedAt?: Date | string | null
-  failedAt?: Date | string | null
-  failureReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type WithdrawUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paypalPayoutItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  histories?: Prisma.WithdrawHistoryUpdateManyWithoutWithdrawNestedInput
 }
 
 export type WithdrawUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paypalPayoutItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  histories?: Prisma.WithdrawHistoryUncheckedUpdateManyWithoutWithdrawNestedInput
 }
 
 export type WithdrawUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payoutId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalBatchId?: Prisma.StringFieldUpdateOperationsInput | string
+  paypalItemId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paypalEmail?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumWithdrawStatusFieldUpdateOperationsInput | $Enums.WithdrawStatus
-  paypalPayoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paypalPayoutItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type WithdrawCountOutputType
+ */
+
+export type WithdrawCountOutputType = {
+  histories: number
+}
+
+export type WithdrawCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  histories?: boolean | WithdrawCountOutputTypeCountHistoriesArgs
+}
+
+/**
+ * WithdrawCountOutputType without action
+ */
+export type WithdrawCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WithdrawCountOutputType
+   */
+  select?: Prisma.WithdrawCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * WithdrawCountOutputType without action
+ */
+export type WithdrawCountOutputTypeCountHistoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WithdrawHistoryWhereInput
+}
 
 
 export type WithdrawSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userId?: boolean
-  createdAt?: boolean
+  payoutId?: boolean
+  paypalBatchId?: boolean
+  paypalItemId?: boolean
   amount?: boolean
   paypalEmail?: boolean
   status?: boolean
-  paypalPayoutId?: boolean
-  paypalPayoutItemId?: boolean
-  processedAt?: boolean
-  failedAt?: boolean
-  failureReason?: boolean
+  userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  histories?: boolean | Prisma.Withdraw$historiesArgs<ExtArgs>
+  _count?: boolean | Prisma.WithdrawCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["withdraw"]>
 
 export type WithdrawSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userId?: boolean
-  createdAt?: boolean
+  payoutId?: boolean
+  paypalBatchId?: boolean
+  paypalItemId?: boolean
   amount?: boolean
   paypalEmail?: boolean
   status?: boolean
-  paypalPayoutId?: boolean
-  paypalPayoutItemId?: boolean
-  processedAt?: boolean
-  failedAt?: boolean
-  failureReason?: boolean
+  userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["withdraw"]>
 
 export type WithdrawSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userId?: boolean
-  createdAt?: boolean
+  payoutId?: boolean
+  paypalBatchId?: boolean
+  paypalItemId?: boolean
   amount?: boolean
   paypalEmail?: boolean
   status?: boolean
-  paypalPayoutId?: boolean
-  paypalPayoutItemId?: boolean
-  processedAt?: boolean
-  failedAt?: boolean
-  failureReason?: boolean
+  userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["withdraw"]>
 
 export type WithdrawSelectScalar = {
   id?: boolean
-  userId?: boolean
-  createdAt?: boolean
+  payoutId?: boolean
+  paypalBatchId?: boolean
+  paypalItemId?: boolean
   amount?: boolean
   paypalEmail?: boolean
   status?: boolean
-  paypalPayoutId?: boolean
-  paypalPayoutItemId?: boolean
-  processedAt?: boolean
-  failedAt?: boolean
-  failureReason?: boolean
+  userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type WithdrawOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "createdAt" | "amount" | "paypalEmail" | "status" | "paypalPayoutId" | "paypalPayoutItemId" | "processedAt" | "failedAt" | "failureReason", ExtArgs["result"]["withdraw"]>
+export type WithdrawOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "payoutId" | "paypalBatchId" | "paypalItemId" | "amount" | "paypalEmail" | "status" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["withdraw"]>
 export type WithdrawInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  histories?: boolean | Prisma.Withdraw$historiesArgs<ExtArgs>
+  _count?: boolean | Prisma.WithdrawCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WithdrawIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -736,19 +834,19 @@ export type $WithdrawPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Withdraw"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    histories: Prisma.$WithdrawHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    userId: string
-    createdAt: Date
+    payoutId: string
+    paypalBatchId: string
+    paypalItemId: string
     amount: runtime.Decimal
     paypalEmail: string
     status: $Enums.WithdrawStatus
-    paypalPayoutId: string | null
-    paypalPayoutItemId: string | null
-    processedAt: Date | null
-    failedAt: Date | null
-    failureReason: string | null
+    userId: string
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["withdraw"]>
   composites: {}
 }
@@ -1144,6 +1242,7 @@ readonly fields: WithdrawFieldRefs;
 export interface Prisma__WithdrawClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  histories<T extends Prisma.Withdraw$historiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Withdraw$historiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WithdrawHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1174,16 +1273,15 @@ export interface Prisma__WithdrawClient<T, Null = never, ExtArgs extends runtime
  */
 export interface WithdrawFieldRefs {
   readonly id: Prisma.FieldRef<"Withdraw", 'String'>
-  readonly userId: Prisma.FieldRef<"Withdraw", 'String'>
-  readonly createdAt: Prisma.FieldRef<"Withdraw", 'DateTime'>
+  readonly payoutId: Prisma.FieldRef<"Withdraw", 'String'>
+  readonly paypalBatchId: Prisma.FieldRef<"Withdraw", 'String'>
+  readonly paypalItemId: Prisma.FieldRef<"Withdraw", 'String'>
   readonly amount: Prisma.FieldRef<"Withdraw", 'Decimal'>
   readonly paypalEmail: Prisma.FieldRef<"Withdraw", 'String'>
   readonly status: Prisma.FieldRef<"Withdraw", 'WithdrawStatus'>
-  readonly paypalPayoutId: Prisma.FieldRef<"Withdraw", 'String'>
-  readonly paypalPayoutItemId: Prisma.FieldRef<"Withdraw", 'String'>
-  readonly processedAt: Prisma.FieldRef<"Withdraw", 'DateTime'>
-  readonly failedAt: Prisma.FieldRef<"Withdraw", 'DateTime'>
-  readonly failureReason: Prisma.FieldRef<"Withdraw", 'String'>
+  readonly userId: Prisma.FieldRef<"Withdraw", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Withdraw", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Withdraw", 'DateTime'>
 }
     
 
@@ -1577,6 +1675,30 @@ export type WithdrawDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Withdraws to delete.
    */
   limit?: number
+}
+
+/**
+ * Withdraw.histories
+ */
+export type Withdraw$historiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WithdrawHistory
+   */
+  select?: Prisma.WithdrawHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WithdrawHistory
+   */
+  omit?: Prisma.WithdrawHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WithdrawHistoryInclude<ExtArgs> | null
+  where?: Prisma.WithdrawHistoryWhereInput
+  orderBy?: Prisma.WithdrawHistoryOrderByWithRelationInput | Prisma.WithdrawHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.WithdrawHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WithdrawHistoryScalarFieldEnum | Prisma.WithdrawHistoryScalarFieldEnum[]
 }
 
 /**

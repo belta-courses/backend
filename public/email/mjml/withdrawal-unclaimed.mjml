@@ -127,9 +127,8 @@
     </mj-section>
     <mj-section
       background-color="#fff3cd"
-      padding="15px 25px"
+      padding="35px 25px 15px 25px"
       border="1px solid #ffc107"
-      style="margin-top: 20px"
     >
       <mj-column>
         <mj-text padding="0px">

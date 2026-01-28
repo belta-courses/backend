@@ -133,13 +133,11 @@ export class WalletController {
 
     const withdrawal = await this.walletService.requestWithdrawal(userId, dto);
 
-    return plainToInstance(
-      WithdrawResponseDto,
-      getNoDecimalWithdraw(withdrawal),
-      {
-        excludeExtraneousValues: true,
-      },
-    );
+    return withdrawal
+      ? plainToInstance(WithdrawResponseDto, getNoDecimalWithdraw(withdrawal), {
+          excludeExtraneousValues: true,
+        })
+      : null;
   }
 
   @Get(Router.Wallet.MyWithdraws)

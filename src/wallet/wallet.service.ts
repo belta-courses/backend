@@ -8,7 +8,12 @@ import { PrismaService } from 'src/prisma.service';
 import { FindWalletsQueryDto } from './dto/request/find-wallets-query.dto';
 import { Decimal } from '@prisma/client/runtime/client';
 import { UsersService } from 'src/users/users.service';
-import { Role, Withdraw, WithdrawStatus } from 'src/generated/prisma/client';
+import {
+  Role,
+  User,
+  Withdraw,
+  WithdrawStatus,
+} from 'src/generated/prisma/client';
 import { PayPalService } from 'src/paypal/paypal.service';
 import { CreateWithdrawDto } from './dto/request/create-withdraw.dto';
 import { FindWithdrawsQueryDto } from './dto/request/find-withdraws-query.dto';
@@ -107,6 +112,12 @@ export class WalletService {
     };
   }
 
+  private generatePublicPayoutId() {
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const timeLetters = new Date().getTime().toString(36).toUpperCase();
+    return `PAYOUT-${timeLetters}-${random}`;
+  }
+
   async requestWithdrawal(userId: string, dto: CreateWithdrawDto) {
     await this.ensureTeacher(userId);
 
@@ -120,45 +131,50 @@ export class WalletService {
       );
     }
 
-    // User can only withdraw the full wallet balance
-    const amountDecimal = wallet.amount;
+    if (wallet.amount.lessThan(dto.amount)) {
+      throw new BadRequestException(
+        `Your current balance is $${wallet.amount.toString()}. You cannot withdraw more than your balance.`,
+      );
+    }
+
+    const initialAmmount = wallet.amount;
+    const amountDecimal = new Decimal(dto.amount);
+
+    let withdrawalId: string;
 
     // Create withdrawal and process PayPal payout in a transaction
     return await this.prisma.$transaction(async (tx) => {
-      // Create withdrawal record
-      const withdrawal = await tx.withdraw.create({
-        data: {
-          userId,
-          amount: amountDecimal,
-          paypalEmail: dto.paypalEmail,
-          status: WithdrawStatus.pending,
-        },
-      });
-
       try {
-        // Create PayPal payout with full wallet balance
+        const payoutId = this.generatePublicPayoutId();
         const payoutResult = await this.paypalService.createPayout({
           email: dto.paypalEmail,
           amount: amountDecimal.toNumber(),
-          senderBatchId: `withdraw_${withdrawal.id}`,
-          note: `Withdrawal from wallet - ${withdrawal.id}`,
+          senderBatchId: payoutId,
+          note: `Withdrawal from wallet - ${payoutId}`,
         });
 
-        // Update withdrawal with PayPal IDs
-        const updatedWithdrawal = await tx.withdraw.update({
-          where: { id: withdrawal.id },
+        const withdrawal = await tx.withdraw.create({
           data: {
-            paypalPayoutId: payoutResult.batchId,
-            paypalPayoutItemId: payoutResult.payoutItemId,
-            processedAt: new Date(),
-            status:
-              payoutResult.payoutItemStatus === 'SUCCESS'
-                ? WithdrawStatus.completed
-                : WithdrawStatus.pending,
+            userId,
+            amount: amountDecimal,
+            paypalEmail: dto.paypalEmail,
+            status: WithdrawStatus.pending,
+            payoutId,
+            paypalBatchId: payoutResult.batchId,
+            paypalItemId: payoutResult.payoutItemId,
           },
         });
 
-        // Deduct amount from wallet only if payout was created successfully
+        withdrawalId = withdrawal.id;
+
+        const withdrawHistory = await tx.withdrawHistory.create({
+          data: {
+            withdrawId: withdrawal.id,
+            status: withdrawal.status,
+          },
+        });
+
+        // Deduct amount from wallet
         await tx.wallet.update({
           where: { id: wallet.id },
           data: {
@@ -168,24 +184,29 @@ export class WalletService {
           },
         });
 
-        return updatedWithdrawal;
-      } catch (error) {
-        // If PayPal payout fails, mark withdrawal as failed
-        await tx.withdraw.update({
-          where: { id: withdrawal.id },
+        return { ...withdrawal, histories: [withdrawHistory] };
+      } catch (ignore) {
+        if (withdrawalId) {
+          await tx.withdraw.update({
+            where: { id: withdrawalId },
+            data: {
+              status: WithdrawStatus.failed,
+            },
+          });
+          await tx.withdrawHistory.create({
+            data: {
+              withdrawId: withdrawalId,
+              status: WithdrawStatus.failed,
+              note: `Withdrawal failed`,
+            },
+          });
+        }
+        await tx.wallet.update({
+          where: { id: wallet.id },
           data: {
-            status: WithdrawStatus.failed,
-            failedAt: new Date(),
-            failureReason:
-              error instanceof Error ? error.message : 'PayPal payout failed',
+            amount: initialAmmount,
           },
         });
-
-        throw new BadRequestException(
-          `Failed to process PayPal payout: ${
-            error instanceof Error ? error.message : 'Unknown error'
-          }`,
-        );
       }
     });
   }
@@ -212,6 +233,11 @@ export class WalletService {
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { createdAt: 'desc' },
+        include: {
+          histories: {
+            orderBy: { createdAt: 'desc' },
+          },
+        },
       }),
       this.prisma.withdraw.count({ where }),
     ]);
@@ -230,6 +256,11 @@ export class WalletService {
   async getWithdrawalById(withdrawalId: string) {
     const withdrawal = await this.prisma.withdraw.findUnique({
       where: { id: withdrawalId },
+      include: {
+        histories: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
     });
 
     if (!withdrawal) {
@@ -240,160 +271,66 @@ export class WalletService {
   }
 
   async updateWithdrawalStatus(
-    payoutItemId: string,
+    paypalBatchId: string,
     status: WithdrawStatus,
-    failureReason?: string,
-    paypalErrorName?: string,
+    error?: { name: string; message: string },
   ) {
-    return await this.prisma.$transaction(async (tx) => {
-      const withdrawal = await tx.withdraw.findFirst({
-        where: { paypalPayoutItemId: payoutItemId },
-      });
-
-      if (!withdrawal) {
-        console.warn(
-          `Withdrawal not found for payout item ID: ${payoutItemId}`,
-        );
-        return null;
-      }
-
-      if (!withdrawal) {
-        console.warn(
-          `Withdrawal not found for payout item ID: ${payoutItemId}`,
-        );
-        return null;
-      }
-
-      // If status hasn't changed, no need to update
-      if (withdrawal.status === status) {
-        console.log(
-          `Withdrawal ${withdrawal.id} already has status ${status}, skipping update`,
-        );
-        return withdrawal;
-      }
-
-      const updateData: {
-        status: WithdrawStatus;
-        processedAt?: Date;
-        failedAt?: Date;
-        failureReason?: string;
-      } = {
-        status,
-      };
-
-      // Handle status-specific updates
-      if (status === WithdrawStatus.completed) {
-        updateData.processedAt = new Date();
-      } else if (status === ('processing' as WithdrawStatus)) {
-        // Processing status - no special handling needed
-        // Just update the status
-      } else if (status === ('unclaimed' as WithdrawStatus)) {
-        // Store error message for unclaimed status
-        if (paypalErrorName) {
-          updateData.failureReason = getPayPalErrorMessage(
-            paypalErrorName,
-            failureReason,
-          );
-        } else if (failureReason) {
-          updateData.failureReason = failureReason;
-        }
-      } else if (status === WithdrawStatus.failed) {
-        updateData.failedAt = new Date();
-        if (failureReason) {
-          updateData.failureReason = failureReason;
-        }
-
-        // Refund money back to wallet if payout failed
-        // Only refund if withdrawal was previously pending, processing, unclaimed, or completed
-        // (not if it was already failed to avoid double refunds)
-        if (
-          withdrawal.status === WithdrawStatus.pending ||
-          withdrawal.status === ('processing' as WithdrawStatus) ||
-          withdrawal.status === ('unclaimed' as WithdrawStatus) ||
-          withdrawal.status === WithdrawStatus.completed
-        ) {
-          const wallet = await this.getOrCreateWallet(withdrawal.userId);
-          await tx.wallet.update({
-            where: { id: wallet.id },
-            data: {
-              amount: {
-                increment: withdrawal.amount,
-              },
-            },
-          });
-          console.log(
-            `Refunded ${withdrawal.amount.toString()} back to wallet for failed withdrawal ${withdrawal.id}`,
-          );
-        }
-
-        const updatedWithdrawal = await tx.withdraw.update({
-          where: { id: withdrawal.id },
-          data: updateData,
-        });
-
-        // Get user for email
-        const user = await this.usersService.findOne(withdrawal.userId);
-
-        // Send email notification based on status
-        try {
-          await this.sendWithdrawalEmail(
-            updatedWithdrawal,
-            user,
-            status,
-            paypalErrorName,
-          );
-        } catch (error) {
-          console.error(
-            `Failed to send withdrawal email for ${withdrawal.id}:`,
-            error,
-          );
-          // Don't throw - email failure shouldn't break the status update
-        }
-
-        return updatedWithdrawal;
-      }
+    const withdrawal = await this.prisma.withdraw.findUnique({
+      where: { paypalBatchId },
+      include: { user: true },
     });
+
+    if (!withdrawal) {
+      throw new NotFoundException('Withdrawal not found');
+    }
+
+    await this.prisma.withdraw.update({
+      where: { id: withdrawal.id },
+      data: {
+        status,
+      },
+    });
+
+    const errorMessage = error
+      ? getPayPalErrorMessage(error.name, error.message)
+      : undefined;
+
+    await this.prisma.withdrawHistory.create({
+      data: {
+        withdrawId: withdrawal.id,
+        status,
+        note: errorMessage,
+      },
+    });
+
+    await this.sendWithdrawalEmail(withdrawal, status, error);
   }
 
   private async sendWithdrawalEmail(
-    withdrawal: Withdraw,
-    user: { name: string; email: string },
+    withdrawal: Withdraw & { user: User },
     status: WithdrawStatus,
-    paypalErrorName?: string,
+    error?: { name: string; message: string },
   ) {
-    const teacherName = user.name || 'Teacher';
+    const teacherName = withdrawal.user.name || 'Teacher';
     const amount = withdrawal.amount.toString();
-    const withdrawalId = withdrawal.id;
+    const withdrawalId = withdrawal.payoutId;
+
+    const errorMessage = error
+      ? getPayPalErrorMessage(error.name, error.message)
+      : '';
 
     switch (status) {
-      case 'processing' as WithdrawStatus:
-        await this.mailService.sendTemplate({
-          name: 'withdrawal-processing',
-          to: user.email,
-          data: {
-            teacherName,
-            amount,
-            paypalEmail: withdrawal.paypalEmail,
-            withdrawalId,
-          },
-        });
-        break;
-
-      case 'unclaimed' as WithdrawStatus: {
-        const errorMessage = getPayPalErrorMessage(
-          paypalErrorName,
-          withdrawal.failureReason || undefined,
-        );
-        const instructions = getUnclaimedInstructions(paypalErrorName);
+      case WithdrawStatus.unclaimed: {
+        const instructions = getUnclaimedInstructions(error?.name);
         await this.mailService.sendTemplate({
           name: 'withdrawal-unclaimed',
-          to: user.email,
+          to: withdrawal.user.email,
           data: {
             teacherName,
             amount,
             paypalEmail: withdrawal.paypalEmail,
             withdrawalId,
-            errorMessage,
+            errorMessage: errorMessage,
             instructions,
           },
         });
@@ -403,15 +340,13 @@ export class WalletService {
       case WithdrawStatus.completed:
         await this.mailService.sendTemplate({
           name: 'withdrawal-completed',
-          to: user.email,
+          to: withdrawal.user.email,
           data: {
             teacherName,
             amount,
             paypalEmail: withdrawal.paypalEmail,
             withdrawalId,
-            processedAt: withdrawal.processedAt
-              ? withdrawal.processedAt.toLocaleString()
-              : new Date().toLocaleString(),
+            processedAt: withdrawal.updatedAt.toLocaleString(),
           },
         });
         break;
@@ -419,21 +354,15 @@ export class WalletService {
       case WithdrawStatus.failed:
         await this.mailService.sendTemplate({
           name: 'withdrawal-failed',
-          to: user.email,
+          to: withdrawal.user.email,
           data: {
             teacherName,
             amount,
             paypalEmail: withdrawal.paypalEmail,
             withdrawalId,
-            failureReason:
-              withdrawal.failureReason ||
-              'The withdrawal failed. Funds have been refunded to your wallet.',
+            failureReason: errorMessage,
           },
         });
-        break;
-
-      default:
-        // No email for pending status
         break;
     }
   }

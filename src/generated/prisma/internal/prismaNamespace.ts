@@ -400,6 +400,7 @@ export const ModelName = {
   Permission: 'Permission',
   Wallet: 'Wallet',
   Withdraw: 'Withdraw',
+  WithdrawHistory: 'WithdrawHistory',
   Transaction: 'Transaction',
   Refund: 'Refund'
 } as const
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "course" | "module" | "lecture" | "mentorship" | "file" | "offer" | "coupon" | "setting" | "saveList" | "ownedList" | "completedLecture" | "user" | "accessGroup" | "permission" | "wallet" | "withdraw" | "transaction" | "refund"
+    modelProps: "course" | "module" | "lecture" | "mentorship" | "file" | "offer" | "coupon" | "setting" | "saveList" | "ownedList" | "completedLecture" | "user" | "accessGroup" | "permission" | "wallet" | "withdraw" | "withdrawHistory" | "transaction" | "refund"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1605,6 +1606,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WithdrawHistory: {
+      payload: Prisma.$WithdrawHistoryPayload<ExtArgs>
+      fields: Prisma.WithdrawHistoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WithdrawHistoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WithdrawHistoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>
+        }
+        findFirst: {
+          args: Prisma.WithdrawHistoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WithdrawHistoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>
+        }
+        findMany: {
+          args: Prisma.WithdrawHistoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>[]
+        }
+        create: {
+          args: Prisma.WithdrawHistoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>
+        }
+        createMany: {
+          args: Prisma.WithdrawHistoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WithdrawHistoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>[]
+        }
+        delete: {
+          args: Prisma.WithdrawHistoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>
+        }
+        update: {
+          args: Prisma.WithdrawHistoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.WithdrawHistoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WithdrawHistoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WithdrawHistoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.WithdrawHistoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawHistoryPayload>
+        }
+        aggregate: {
+          args: Prisma.WithdrawHistoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWithdrawHistory>
+        }
+        groupBy: {
+          args: Prisma.WithdrawHistoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WithdrawHistoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WithdrawHistoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WithdrawHistoryCountAggregateOutputType> | number
+        }
+      }
+    }
     Transaction: {
       payload: Prisma.$TransactionPayload<ExtArgs>
       fields: Prisma.TransactionFieldRefs
@@ -1992,19 +2067,29 @@ export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof 
 
 export const WithdrawScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  createdAt: 'createdAt',
+  payoutId: 'payoutId',
+  paypalBatchId: 'paypalBatchId',
+  paypalItemId: 'paypalItemId',
   amount: 'amount',
   paypalEmail: 'paypalEmail',
   status: 'status',
-  paypalPayoutId: 'paypalPayoutId',
-  paypalPayoutItemId: 'paypalPayoutItemId',
-  processedAt: 'processedAt',
-  failedAt: 'failedAt',
-  failureReason: 'failureReason'
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type WithdrawScalarFieldEnum = (typeof WithdrawScalarFieldEnum)[keyof typeof WithdrawScalarFieldEnum]
+
+
+export const WithdrawHistoryScalarFieldEnum = {
+  id: 'id',
+  withdrawId: 'withdrawId',
+  status: 'status',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type WithdrawHistoryScalarFieldEnum = (typeof WithdrawHistoryScalarFieldEnum)[keyof typeof WithdrawHistoryScalarFieldEnum]
 
 
 export const TransactionScalarFieldEnum = {
@@ -2344,6 +2429,7 @@ export type GlobalOmitConfig = {
   permission?: Prisma.PermissionOmit
   wallet?: Prisma.WalletOmit
   withdraw?: Prisma.WithdrawOmit
+  withdrawHistory?: Prisma.WithdrawHistoryOmit
   transaction?: Prisma.TransactionOmit
   refund?: Prisma.RefundOmit
 }

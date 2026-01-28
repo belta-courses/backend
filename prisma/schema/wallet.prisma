@@ -9,30 +9,47 @@ model Wallet {
 }
 
 model Withdraw {
-  id                String         @id @default(uuid())
-  userId            String
-  user              User           @relation(fields: [userId], references: [id])
-  createdAt         DateTime       @default(now())
-  amount            Decimal
-  paypalEmail       String
-  status            WithdrawStatus @default(pending)
-  paypalPayoutId    String?
-  paypalPayoutItemId String?
-  processedAt       DateTime?
-  failedAt          DateTime?
-  failureReason     String?
+  id            String @id @default(uuid())
+  payoutId      String @unique
+  paypalBatchId String @unique
+  paypalItemId  String
+
+  amount      Decimal
+  paypalEmail String
+  status      WithdrawStatus @default(pending)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  histories WithdrawHistory[]
 
   @@index([userId])
   @@index([status])
+  @@index([payoutId])
+  @@index([paypalBatchId])
   @@map("withdraws")
 }
 
+model WithdrawHistory {
+  id         String         @id @default(uuid())
+  withdrawId String
+  withdraw   Withdraw       @relation(fields: [withdrawId], references: [id])
+  status     WithdrawStatus
+  note       String?
+  createdAt  DateTime       @default(now())
+
+  @@map("withdraw_histories")
+}
+
 enum WithdrawStatus {
-  pending      // When withdrawal is created
-  processing   // When batch is processing
-  unclaimed    // When payout is unclaimed
-  completed    // When payout succeeded
-  failed       // When payout failed/denied/returned
+  pending // When withdrawal is created
+  processing // When batch is processing
+  unclaimed // When payout is unclaimed
+  completed // When payout succeeded
+  failed // When payout failed/denied/returned
 }
 
 model Transaction {
@@ -53,7 +70,7 @@ model Transaction {
   courseId             String?
   course               Course?           @relation(fields: [courseId], references: [id])
   sessionId            String?
-  session              Mentorship?        @relation(fields: [sessionId], references: [id])
+  session              Mentorship?       @relation(fields: [sessionId], references: [id])
   offerId              String?
   offer                Offer?            @relation(fields: [offerId], references: [id])
   ownedLists           OwnedList[]

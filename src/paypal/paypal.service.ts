@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as paypal from '@paypal/payouts-sdk';
-import {
-  CreateBatchPayoutResponse,
-  GetBatchPayoutResponse,
-  GetPayoutsItemResponse,
-} from '@paypal/payouts-sdk';
+import { GetBatchPayoutResponse } from '@paypal/payouts-sdk';
 import { AllConfig } from 'src/core/config/config.type';
 
 @Injectable()
@@ -52,12 +48,7 @@ export class PayPalService {
     currency?: string;
     senderBatchId?: string;
     note?: string;
-  }): Promise<{
-    batchId: string;
-    batchStatus: string;
-    payoutItemId: string;
-    payoutItemStatus: string;
-  }> {
+  }) {
     const request = new paypal.payouts.PayoutsPostRequest();
     request.requestBody({
       sender_batch_header: {
@@ -80,27 +71,28 @@ export class PayPalService {
     });
 
     try {
-      const response = await this.client.execute(request);
-      const result = response.result as CreateBatchPayoutResponse & {
-        items: { payout_item_id: string; transaction_status: string }[];
-      };
-
-      if (result.batch_header && result.batch_header.payout_batch_id) {
-        const payoutItemId =
-          result.items && result.items[0] ? result.items[0].payout_item_id : '';
-
-        return {
-          batchId: result.batch_header.payout_batch_id,
-          batchStatus: result.batch_header.batch_status || 'PENDING',
-          payoutItemId: payoutItemId,
-          payoutItemStatus:
-            result.items && result.items[0]
-              ? result.items[0].transaction_status || 'PENDING'
-              : 'PENDING',
-        };
+      const { result } = await this.client.execute(request);
+      if (
+        !result ||
+        !result.batch_header ||
+        !result.batch_header.payout_batch_id
+      ) {
+        throw new Error(
+          'Failed to create payout: Invalid response from PayPal',
+        );
       }
 
-      throw new Error('Failed to create payout: Invalid response from PayPal');
+      const getPayoutStatus = await this.getPayoutStatus(
+        result.batch_header.payout_batch_id,
+      );
+
+      if ((getPayoutStatus.items || []).length === 0) {
+        throw new Error('Failed to create payout: No items in payout');
+      }
+
+      const payoutItemId = getPayoutStatus.items![0].payoutItemId;
+
+      return { batchId: result.batch_header.payout_batch_id, payoutItemId };
     } catch (error) {
       const errorDetails =
         error instanceof Error ? error.message : 'Unknown error';
@@ -137,29 +129,6 @@ export class PayPalService {
       }
 
       throw new Error('Failed to retrieve payout status: Invalid response');
-    } catch (error) {
-      const errorDetails =
-        error instanceof Error ? error.message : 'Unknown error';
-      throw new Error(`PayPal API Error: ${errorDetails}`);
-    }
-  }
-
-  async getPayoutItemStatus(payoutItemId: string): Promise<{
-    transactionStatus: string;
-    payoutItemFee?: string;
-    payoutBatchId?: string;
-  }> {
-    const request = new paypal.payouts.PayoutsItemGetRequest(payoutItemId);
-
-    try {
-      const response = await this.client.execute(request);
-      const result = response.result as GetPayoutsItemResponse;
-
-      return {
-        transactionStatus: result.transaction_status || 'UNKNOWN',
-        payoutItemFee: result.payout_item_fee?.value,
-        payoutBatchId: result.payout_batch_id,
-      };
     } catch (error) {
       const errorDetails =
         error instanceof Error ? error.message : 'Unknown error';
