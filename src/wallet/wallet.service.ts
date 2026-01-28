@@ -186,6 +186,12 @@ export class WalletService {
 
         return { ...withdrawal, histories: [withdrawHistory] };
       } catch (ignore) {
+        await tx.wallet.update({
+          where: { id: wallet.id },
+          data: {
+            amount: initialAmmount,
+          },
+        });
         if (withdrawalId) {
           await tx.withdraw.update({
             where: { id: withdrawalId },
@@ -201,12 +207,6 @@ export class WalletService {
             },
           });
         }
-        await tx.wallet.update({
-          where: { id: wallet.id },
-          data: {
-            amount: initialAmmount,
-          },
-        });
       }
     });
   }
@@ -282,6 +282,11 @@ export class WalletService {
 
     if (!withdrawal) {
       throw new NotFoundException('Withdrawal not found');
+    }
+
+    // Refund Money to wallet
+    if (status === WithdrawStatus.failed) {
+      await this.addToWallet(withdrawal.userId, withdrawal.amount);
     }
 
     await this.prisma.withdraw.update({
