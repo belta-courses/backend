@@ -232,6 +232,60 @@ export class CoursesService {
     };
   }
 
+  async findAllCoursesForStudent(query: FindCoursesQueryDto, userId: string) {
+    const { page = 1, limit = 10, search, teacherId } = query;
+
+    const where: Prisma.CourseWhereInput = {
+      status: query.status ?? undefined,
+      AND: [
+        teacherId ? { teacherId } : {},
+        search
+          ? {
+              OR: [
+                { name: { contains: search, mode: 'insensitive' } },
+                {
+                  teacher: {
+                    name: { contains: search, mode: 'insensitive' },
+                  },
+                },
+              ],
+            }
+          : {},
+      ],
+    };
+
+    const [courses, total] = await this.prisma.$transaction([
+      this.prisma.course.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          teacher: true,
+          saveLists: {
+            where: { studentId: userId },
+            select: { id: true },
+          },
+          ownedLists: {
+            where: { studentId: userId },
+            select: { id: true },
+          },
+        },
+      }),
+      this.prisma.course.count({ where }),
+    ]);
+
+    return {
+      data: courses,
+      meta: {
+        page,
+        limit,
+        count: courses.length,
+        total,
+      },
+    };
+  }
+
   async findCourseById(courseId: string) {
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },

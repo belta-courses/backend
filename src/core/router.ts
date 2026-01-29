@@ -136,6 +136,8 @@ export abstract class Router {
     static Base = 'courses';
     /** admin */
     static Admin = 'admin';
+    /** student */
+    static Student = 'student';
     /** :courseId */
     static ById = ':courseId';
     /** :courseId/detailed */

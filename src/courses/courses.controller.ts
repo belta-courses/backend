@@ -25,6 +25,7 @@ import { CoursesService } from './courses.service';
 import { JwtPayload } from 'src/users/users.types';
 import { CourseResponseDto } from './dto/response/course-response.dto';
 import { CourseDetailedResponseDto } from './dto/response/course-detailed-response.dto';
+import { CourseStudentResponseDto } from './dto/response/course-student-response.dto';
 import { plainToInstance } from 'class-transformer';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
@@ -136,6 +137,39 @@ export class CoursesController {
       data: plainToInstance(
         CourseResponseDto,
         data.map((item) => getNoDecimalCourse(item)),
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
+      meta,
+    };
+  }
+
+  @Get(Router.Courses.Student)
+  @ApiOperation({
+    summary:
+      'Get all courses with pagination, search and teacher filter (for authenticated students with saved/owned flags)',
+  })
+  @ApiBearerAuth(Router.Integrated.ApiAuthName)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.student)
+  async findAllForStudent(
+    @Query() query: FindCoursesQueryDto,
+    @Request() req: { user: JwtPayload },
+  ) {
+    const { data, meta } = await this.coursesService.findAllCoursesForStudent(
+      query,
+      req.user.sub,
+    );
+
+    return {
+      data: plainToInstance(
+        CourseStudentResponseDto,
+        data.map((item) => ({
+          ...getNoDecimalCourse(item),
+          isSaved: item.saveLists.length > 0,
+          isOwned: item.ownedLists.length > 0,
+        })),
         {
           excludeExtraneousValues: true,
         },
