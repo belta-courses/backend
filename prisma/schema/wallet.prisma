@@ -50,6 +50,7 @@ enum WithdrawStatus {
   unclaimed // When payout is unclaimed
   completed // When payout succeeded
   failed // When payout failed/denied/returned
+  refunded // When payout is refunded
 }
 
 model Transaction {

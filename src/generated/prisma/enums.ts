@@ -41,7 +41,8 @@ export const WithdrawStatus = {
   processing: 'processing',
   unclaimed: 'unclaimed',
   completed: 'completed',
-  failed: 'failed'
+  failed: 'failed',
+  refunded: 'refunded'
 } as const
 
 export type WithdrawStatus = (typeof WithdrawStatus)[keyof typeof WithdrawStatus]

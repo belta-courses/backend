@@ -55,6 +55,9 @@ const withdrawalStatusMap: Record<
     WithdrawStatus.completed,
   [PayPalWebhookBatchEventTypes.PAYOUTS_ITEM_UNCLAIMED]:
     WithdrawStatus.unclaimed,
+  [PayPalWebhookBatchEventTypes.PAYOUTS_ITEM_REFUNDED]: WithdrawStatus.failed,
+  [PayPalWebhookBatchEventTypes.PAYOUTS_ITEM_RETURNED]: WithdrawStatus.failed,
+  [PayPalWebhookBatchEventTypes.PAYOUTS_ITEM_CANCELED]: WithdrawStatus.failed,
   [PayPalWebhookBatchEventTypes.PAYOUTS_ITEM_BLOCKED]: WithdrawStatus.failed,
   [PayPalWebhookBatchEventTypes.PAYOUTS_ITEM_FAILED]: WithdrawStatus.failed,
 };

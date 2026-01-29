@@ -308,6 +308,18 @@ export class WalletService {
       },
     });
 
+    if (status === WithdrawStatus.failed) {
+      await this.addToWallet(withdrawal.userId, withdrawal.amount);
+
+      await this.prisma.withdrawHistory.create({
+        data: {
+          withdrawId: withdrawal.id,
+          status: WithdrawStatus.refunded,
+          note: 'The amount has been refunded to wallet due to failed withdrawal',
+        },
+      });
+    }
+
     await this.sendWithdrawalEmail(withdrawal, status, error);
   }
 
