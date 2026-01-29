@@ -143,6 +143,24 @@ export abstract class Router {
   };
 
   /**
+   * Student Lists routes
+   * @static
+   * @memberof Router
+   * @example /student-lists
+   */
+  static StudentLists = class {
+    /** Student Lists */
+    static ApiTag = 'Student Lists';
+    /** student-lists */
+    static Base = 'student-lists';
+    /** owned-lists */
+    static OwnedLists = 'owned-lists';
+    /** save-lists */
+    static SaveLists = 'save-lists';
+    /** save-lists/:courseId */
+    static SaveListByCourseId = 'save-lists/:courseId';
+  };
+  /**
    * Modules routes
    * @static
    * @memberof Router

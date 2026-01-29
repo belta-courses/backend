@@ -28,6 +28,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 
 @ApiTags(Router.Lectures.ApiTag)
+@ApiBearerAuth(Router.Integrated.ApiAuthName)
 @Controller(Router.Lectures.Base)
 export class LecturesController {
   constructor(private readonly coursesService: CoursesService) {}
@@ -36,7 +37,6 @@ export class LecturesController {
   @ApiOperation({
     summary: 'Create a lecture inside a module for the authenticated teacher',
   })
-  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.teacher)
   async createMyLecture(
@@ -60,7 +60,6 @@ export class LecturesController {
   @ApiOperation({
     summary: 'Create a lecture inside any module (admin/employee)',
   })
-  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee)
   @AccessedBy(Permission.LECTURES_CREATE, Permission.LECTURES_FULL_ACCESS)
@@ -78,7 +77,6 @@ export class LecturesController {
   @ApiOperation({
     summary: 'Update a lecture (creator teacher or staff)',
   })
-  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.LECTURES_UPDATE, Permission.LECTURES_FULL_ACCESS)
@@ -104,7 +102,6 @@ export class LecturesController {
   @ApiOperation({
     summary: 'Delete a lecture (creator teacher or staff)',
   })
-  @ApiBearerAuth(Router.Integrated.ApiAuthName)
   @UseGuards(AuthGuard, RolesGuard, PermissionsGuard)
   @Roles(Role.admin, Role.employee, Role.teacher)
   @AccessedBy(Permission.LECTURES_DELETE, Permission.LECTURES_FULL_ACCESS)
@@ -124,10 +121,30 @@ export class LecturesController {
   }
 
   @Get(Router.Lectures.ById)
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @AccessedBy(Permission.LECTURES_READ, Permission.LECTURES_FULL_ACCESS)
   @ApiOperation({
-    summary: 'Get a single lecture by id (public)',
+    summary: 'Get a single lecture by id',
   })
-  async findLecture(@Param('lectureId') lectureId: string) {
+  async findLecture(
+    @Param('lectureId') lectureId: string,
+    @Request() { user }: { user: JwtPayload },
+  ) {
+    if (user.role === Role.teacher)
+      await this.coursesService.ensureOwnership({
+        id: lectureId,
+        userId: user.sub,
+        type: 'lecture',
+      });
+
+    if (user.role === Role.student) {
+      await this.coursesService.ensurePurchased({
+        id: lectureId,
+        userId: user.sub,
+        type: 'lecture',
+      });
+    }
+
     const lecture = await this.coursesService.findLectureById(lectureId);
     return plainToInstance(LectureResponseDto, lecture, {
       excludeExtraneousValues: true,

@@ -116,7 +116,11 @@ export class CoursesController {
     @Request() req: { user: JwtPayload },
   ) {
     if (req.user.role === Role.teacher)
-      await this.coursesService.ensureCourseOwnership(courseId, req.user.sub);
+      await this.coursesService.ensureOwnership({
+        id: courseId,
+        userId: req.user.sub,
+        type: 'course',
+      });
 
     await this.coursesService.deleteCourse(courseId);
   }

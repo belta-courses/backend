@@ -25,6 +25,7 @@ import { ExpressAdapter } from '@bull-board/express';
 import { ConfigService } from '@nestjs/config';
 import { Router } from './core/router';
 import { CoursesModule } from './courses/courses.module';
+import { StudentListsModule } from './student-lists/student-lists.module';
 import { WalletModule } from './wallet/wallet.module';
 import { SettingsModule } from './settings/settings.module';
 import { StripeModule } from './stripe/stripe.module';
@@ -78,6 +79,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     SettingsModule,
     StorageModule,
     CoursesModule,
+    StudentListsModule,
     PurchasesModule,
     StripeModule,
     PayPalModule,

@@ -107,6 +107,7 @@ export class CourseDetailedResponseDto {
         name: l.name,
         description: l.description,
         duration: l.duration,
+        demo: l.demo,
       })),
     })),
   )

@@ -69,6 +69,64 @@ export class CoursesService {
       throw new ForbiddenException('You are not the owner of this item');
   }
 
+  async ensurePurchased({
+    id,
+    userId,
+    type,
+  }: {
+    id: string;
+    userId: string;
+    type: 'course' | 'module' | 'lecture';
+  }) {
+    switch (type) {
+      case 'course': {
+        const course = await this.prisma.ownedList.findUnique({
+          where: { studentId_courseId: { studentId: userId, courseId: id } },
+        });
+        if (!course)
+          throw new ForbiddenException('You need to buy course first.');
+        break;
+      }
+      case 'module': {
+        const module = await this.prisma.module.findUnique({
+          where: { id },
+        });
+        if (!module)
+          throw new ForbiddenException('You need to buy course first.');
+        const course = await this.prisma.ownedList.findUnique({
+          where: {
+            studentId_courseId: {
+              studentId: userId,
+              courseId: module.courseId,
+            },
+          },
+        });
+        if (!course)
+          throw new ForbiddenException('You need to buy course first.');
+        break;
+      }
+      case 'lecture': {
+        const lecture = await this.prisma.lecture.findUnique({
+          where: { id },
+        });
+        if (!lecture)
+          throw new ForbiddenException('You need to buy course first.');
+        if (lecture.demo) break;
+        const course = await this.prisma.ownedList.findUnique({
+          where: {
+            studentId_courseId: {
+              studentId: userId,
+              courseId: lecture.courseId,
+            },
+          },
+        });
+        if (!course)
+          throw new ForbiddenException('You need to buy course first.');
+        break;
+      }
+    }
+  }
+
   // COURSES
 
   async createCourse(dto: CreateCourseDto) {
