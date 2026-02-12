@@ -37,8 +37,8 @@ export class CreateLectureDto {
       'Lecture content (text/markdown that can include links and image URLs)',
   })
   @IsString()
-  @IsNotEmpty()
-  content: string;
+  @IsOptional()
+  content?: string;
 
   @ApiPropertyOptional({
     example: '123e4567-e89b-12d3-a456-426614174000',

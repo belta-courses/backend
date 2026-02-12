@@ -28,13 +28,6 @@ export class CreateCourseBaseDto {
   @IsUUID()
   @IsOptional()
   coverId?: string;
-
-  @ApiPropertyOptional({
-    example: '',
-  })
-  @IsUUID()
-  @IsOptional()
-  introVideoId?: string;
 }
 
 export class TeacherCreateCourseDto extends CreateCourseBaseDto {}

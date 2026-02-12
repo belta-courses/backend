@@ -143,9 +143,12 @@ export class CoursesService {
         description: dto.description,
         price: new Prisma.Decimal(dto.price),
         teacherId: dto.teacherId,
+        coverId: dto.coverId ?? undefined,
       },
       include: {
-        teacher: true,
+        teacher: { include: { cover: true } },
+        cover: true,
+        introVideo: true,
       },
     });
   }
@@ -157,9 +160,12 @@ export class CoursesService {
         name: dto.name,
         description: dto.description,
         price: dto.price ? new Prisma.Decimal(dto.price) : undefined,
+        coverId: dto.coverId ?? undefined,
       },
       include: {
-        teacher: true,
+        teacher: { include: { cover: true } },
+        cover: true,
+        introVideo: true,
       },
     });
   }
@@ -213,7 +219,11 @@ export class CoursesService {
     const [courses, total] = await this.prisma.$transaction([
       this.prisma.course.findMany({
         where,
-        include: { teacher: true },
+        include: {
+          teacher: { include: { cover: true } },
+          cover: true,
+          introVideo: true,
+        },
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { createdAt: 'desc' },
@@ -261,7 +271,9 @@ export class CoursesService {
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
-          teacher: true,
+          teacher: { include: { cover: true } },
+          cover: true,
+          introVideo: true,
           saveLists: {
             where: { studentId: userId },
             select: { id: true },
@@ -289,7 +301,11 @@ export class CoursesService {
   async findCourseById(courseId: string) {
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
-      include: { teacher: true },
+      include: {
+        teacher: { include: { cover: true } },
+        cover: true,
+        introVideo: true,
+      },
     });
     if (!course) throw new NotFoundException('Course not found');
     return course;
@@ -299,7 +315,9 @@ export class CoursesService {
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
       include: {
-        teacher: true,
+        teacher: { include: { cover: true } },
+        cover: true,
+        introVideo: true,
         modules: {
           orderBy: { order: 'asc' },
           include: {
@@ -387,12 +405,15 @@ export class CoursesService {
         name: dto.name,
         description: dto.description,
         duration: dto.duration,
-        content: dto.content,
+        content: dto.content ?? '',
         videoId: dto.videoId,
         demo: dto.demo ?? false,
         order,
         moduleId,
         courseId: module.courseId,
+      },
+      include: {
+        video: true,
       },
     });
   }
@@ -408,6 +429,9 @@ export class CoursesService {
         videoId: dto.videoId,
         demo: dto.demo,
         order: dto.order,
+      },
+      include: {
+        video: true,
       },
     });
   }
@@ -432,6 +456,9 @@ export class CoursesService {
   async findLectureById(lectureId: string) {
     const lecture = await this.prisma.lecture.findUnique({
       where: { id: lectureId },
+      include: {
+        video: true,
+      },
     });
     if (!lecture) throw new NotFoundException('Lecture not found');
     return lecture;

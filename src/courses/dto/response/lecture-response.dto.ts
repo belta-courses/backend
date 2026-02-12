@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class LectureResponseDto {
   @ApiProperty()
@@ -22,9 +22,13 @@ export class LectureResponseDto {
   @Expose()
   content: string;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty()
   @Expose()
-  videoId: string | null;
+  @Transform(
+    ({ value }: { value: { url: string } | null }) => value?.url ?? null,
+  )
+  @Expose()
+  video: string | null;
 
   @ApiProperty()
   @Expose()

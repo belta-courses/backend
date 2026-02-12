@@ -1,15 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Prisma, Role } from 'src/generated/prisma/client';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { CourseStatus, Prisma } from 'src/generated/prisma/client';
 import { Expose, Transform } from 'class-transformer';
 
 type DetailedCourse = Prisma.CourseGetPayload<{
   include: {
-    teacher: true;
+    teacher: {
+      include: { cover: true };
+    };
     modules: {
       include: {
         lectures: true;
       };
     };
+    cover: true;
+    introVideo: true;
   };
 }>;
 
@@ -74,8 +78,16 @@ export class CourseDetailedResponseDto {
   @Transform(({ value }: { value: Prisma.Decimal }) => value.toString())
   price: string;
 
+  @ApiProperty({ enum: CourseStatus })
+  @Expose()
+  status: CourseStatus;
+
+  @ApiPropertyOptional({ nullable: true })
+  @Expose()
+  publishedAt: Date | null;
+
   @ApiProperty({
-    description: 'Basic teacher info (id, name, role, bio)',
+    description: 'Basic teacher info (id, name, email, cover)',
   })
   @Expose()
   @Transform(({ obj }: { obj: DetailedCourse }) => {
@@ -83,16 +95,36 @@ export class CourseDetailedResponseDto {
     return {
       id: obj.teacher.id,
       name: obj.teacher.name,
-      role: obj.teacher.role,
-      bio: obj.teacher.bio,
+      email: obj.teacher.email,
+      cover: obj.teacher.cover?.url ?? null,
     };
   })
   teacher: {
     id: string;
     name: string;
-    role: Role;
-    bio?: string | null;
+    email: string;
+    cover: string | null;
   } | null;
+
+  @ApiProperty({
+    description: 'Thumbnail of the course',
+    example: 'https://example.com/cover.jpg',
+  })
+  @Expose()
+  @Transform(
+    ({ value }: { value: { url: string } | null }) => value?.url ?? null,
+  )
+  cover: string | null;
+
+  @ApiProperty({
+    description: 'Intro video of the course',
+    example: 'https://example.com/intro.jpg',
+  })
+  @Expose()
+  @Transform(
+    ({ value }: { value: { url: string } | null }) => value?.url ?? null,
+  )
+  introVideo: string | null;
 
   @ApiProperty({ type: () => [ModuleSummaryDto] })
   @Expose()
@@ -102,12 +134,14 @@ export class CourseDetailedResponseDto {
       name: m.name,
       description: m.description,
       duration: m.duration,
+      order: m.order,
       lectures: m.lectures.map((l) => ({
         id: l.id,
         name: l.name,
         description: l.description,
         duration: l.duration,
         demo: l.demo,
+        order: l.order,
       })),
     })),
   )
