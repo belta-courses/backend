@@ -22,6 +22,7 @@ async function main() {
   await prisma.completedLecture.deleteMany();
   await prisma.saveList.deleteMany();
   await prisma.ownedList.deleteMany();
+  await prisma.withdrawHistory.deleteMany();
   await prisma.withdraw.deleteMany();
   await prisma.refund.deleteMany();
   await prisma.transaction.deleteMany();
