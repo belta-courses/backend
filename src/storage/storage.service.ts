@@ -76,6 +76,10 @@ export class StorageService implements OnModuleInit {
     }
   }
 
+  async uploadMultipleFiles(files: Express.Multer.File[]): Promise<File[]> {
+    return Promise.all(files.map((file) => this.uploadFile(file)));
+  }
+
   async s3Upload(key: string, file: Express.Multer.File) {
     const command = new PutObjectCommand({
       Key: key,
@@ -111,11 +115,21 @@ export class StorageService implements OnModuleInit {
     return metadata;
   }
 
-  async deleteFile(id: string) {
-    await this.prisma.file.update({
+  async deleteFile(id: string): Promise<File> {
+    console.log(id);
+    const file = await this.prisma.file.update({
       where: { id },
       data: { deleted_at: new Date() },
     });
+    return file;
+  }
+
+  async deleteMultipleFiles(ids: string[]): Promise<File[]> {
+    const files = await this.prisma.file.updateManyAndReturn({
+      where: { id: { in: ids } },
+      data: { deleted_at: new Date() },
+    });
+    return files;
   }
 
   async hardDelete(id: string, key: string) {

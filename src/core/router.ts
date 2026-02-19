@@ -96,6 +96,12 @@ export abstract class Router {
     static Base = 'storage';
     /** upload-file */
     static UploadFile = 'upload-file';
+    /** upload-multiple-files */
+    static UploadMultipleFiles = 'upload-multiple-files';
+    /** delete-file */
+    static DeleteFile = 'delete-file';
+    /** delete-multiple-files */
+    static DeleteMultipleFiles = 'delete-multiple-files';
   };
 
   /**
