@@ -56,6 +56,8 @@ export const ModelName = {
   Lecture: 'Lecture',
   Mentorship: 'Mentorship',
   File: 'File',
+  MultiPartUpload: 'MultiPartUpload',
+  UploadedPart: 'UploadedPart',
   Offer: 'Offer',
   Coupon: 'Coupon',
   Setting: 'Setting',
@@ -168,6 +170,30 @@ export const FileScalarFieldEnum = {
 } as const
 
 export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
+export const MultiPartUploadScalarFieldEnum = {
+  id: 'id',
+  uploadId: 'uploadId',
+  fileSize: 'fileSize',
+  partsCount: 'partsCount',
+  partsCompleted: 'partsCompleted',
+  retries: 'retries',
+  fileId: 'fileId'
+} as const
+
+export type MultiPartUploadScalarFieldEnum = (typeof MultiPartUploadScalarFieldEnum)[keyof typeof MultiPartUploadScalarFieldEnum]
+
+
+export const UploadedPartScalarFieldEnum = {
+  id: 'id',
+  partNumber: 'partNumber',
+  etag: 'etag',
+  createdAt: 'createdAt',
+  uploadRecordId: 'uploadRecordId'
+} as const
+
+export type UploadedPartScalarFieldEnum = (typeof UploadedPartScalarFieldEnum)[keyof typeof UploadedPartScalarFieldEnum]
 
 
 export const OfferScalarFieldEnum = {

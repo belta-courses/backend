@@ -43,6 +43,16 @@ export type Mentorship = Prisma.MentorshipModel
  */
 export type File = Prisma.FileModel
 /**
+ * Model MultiPartUpload
+ * 
+ */
+export type MultiPartUpload = Prisma.MultiPartUploadModel
+/**
+ * Model UploadedPart
+ * 
+ */
+export type UploadedPart = Prisma.UploadedPartModel
+/**
  * Model Offer
  * 
  */

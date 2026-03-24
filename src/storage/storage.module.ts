@@ -7,6 +7,7 @@ import StorageProcessor from './storage.processor';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { STORAGE_QUEUE } from 'src/core/constants/queues.constants';
+import { VideoController } from './video.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { STORAGE_QUEUE } from 'src/core/constants/queues.constants';
       adapter: BullMQAdapter, //or use BullAdapter if you're using bull instead of bullMQ
     }),
   ],
-  controllers: [StorageController],
+  controllers: [StorageController, VideoController],
   providers: [PrismaService, StorageService, StorageProcessor],
   exports: [BullModule],
 })

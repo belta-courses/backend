@@ -252,6 +252,7 @@ export type FileWhereInput = {
   coverCourses?: Prisma.CourseListRelationFilter
   introVideoCourses?: Prisma.CourseListRelationFilter
   lectures?: Prisma.LectureListRelationFilter
+  multiPartUpload?: Prisma.XOR<Prisma.MultiPartUploadNullableScalarRelationFilter, Prisma.MultiPartUploadWhereInput> | null
 }
 
 export type FileOrderByWithRelationInput = {
@@ -268,6 +269,7 @@ export type FileOrderByWithRelationInput = {
   coverCourses?: Prisma.CourseOrderByRelationAggregateInput
   introVideoCourses?: Prisma.CourseOrderByRelationAggregateInput
   lectures?: Prisma.LectureOrderByRelationAggregateInput
+  multiPartUpload?: Prisma.MultiPartUploadOrderByWithRelationInput
 }
 
 export type FileWhereUniqueInput = Prisma.AtLeast<{
@@ -287,6 +289,7 @@ export type FileWhereUniqueInput = Prisma.AtLeast<{
   coverCourses?: Prisma.CourseListRelationFilter
   introVideoCourses?: Prisma.CourseListRelationFilter
   lectures?: Prisma.LectureListRelationFilter
+  multiPartUpload?: Prisma.XOR<Prisma.MultiPartUploadNullableScalarRelationFilter, Prisma.MultiPartUploadWhereInput> | null
 }, "id">
 
 export type FileOrderByWithAggregationInput = {
@@ -335,6 +338,7 @@ export type FileCreateInput = {
   coverCourses?: Prisma.CourseCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseCreateNestedManyWithoutIntroVideoInput
   lectures?: Prisma.LectureCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadCreateNestedOneWithoutFileInput
 }
 
 export type FileUncheckedCreateInput = {
@@ -351,6 +355,7 @@ export type FileUncheckedCreateInput = {
   coverCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutIntroVideoInput
   lectures?: Prisma.LectureUncheckedCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedCreateNestedOneWithoutFileInput
 }
 
 export type FileUpdateInput = {
@@ -367,6 +372,7 @@ export type FileUpdateInput = {
   coverCourses?: Prisma.CourseUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUpdateManyWithoutIntroVideoNestedInput
   lectures?: Prisma.LectureUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUpdateOneWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateInput = {
@@ -383,6 +389,7 @@ export type FileUncheckedUpdateInput = {
   coverCourses?: Prisma.CourseUncheckedUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUncheckedUpdateManyWithoutIntroVideoNestedInput
   lectures?: Prisma.LectureUncheckedUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedUpdateOneWithoutFileNestedInput
 }
 
 export type FileCreateManyInput = {
@@ -470,6 +477,11 @@ export type FileSumOrderByAggregateInput = {
   size?: Prisma.SortOrder
 }
 
+export type FileScalarRelationFilter = {
+  is?: Prisma.FileWhereInput
+  isNot?: Prisma.FileWhereInput
+}
+
 export type FileCreateNestedOneWithoutCoverCoursesInput = {
   create?: Prisma.XOR<Prisma.FileCreateWithoutCoverCoursesInput, Prisma.FileUncheckedCreateWithoutCoverCoursesInput>
   connectOrCreate?: Prisma.FileCreateOrConnectWithoutCoverCoursesInput
@@ -518,6 +530,20 @@ export type FileUpdateOneWithoutLecturesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FileUpdateToOneWithWhereWithoutLecturesInput, Prisma.FileUpdateWithoutLecturesInput>, Prisma.FileUncheckedUpdateWithoutLecturesInput>
 }
 
+export type FileCreateNestedOneWithoutMultiPartUploadInput = {
+  create?: Prisma.XOR<Prisma.FileCreateWithoutMultiPartUploadInput, Prisma.FileUncheckedCreateWithoutMultiPartUploadInput>
+  connectOrCreate?: Prisma.FileCreateOrConnectWithoutMultiPartUploadInput
+  connect?: Prisma.FileWhereUniqueInput
+}
+
+export type FileUpdateOneRequiredWithoutMultiPartUploadNestedInput = {
+  create?: Prisma.XOR<Prisma.FileCreateWithoutMultiPartUploadInput, Prisma.FileUncheckedCreateWithoutMultiPartUploadInput>
+  connectOrCreate?: Prisma.FileCreateOrConnectWithoutMultiPartUploadInput
+  upsert?: Prisma.FileUpsertWithoutMultiPartUploadInput
+  connect?: Prisma.FileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FileUpdateToOneWithWhereWithoutMultiPartUploadInput, Prisma.FileUpdateWithoutMultiPartUploadInput>, Prisma.FileUncheckedUpdateWithoutMultiPartUploadInput>
+}
+
 export type FileCreateNestedOneWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.FileCreateWithoutUsersInput, Prisma.FileUncheckedCreateWithoutUsersInput>
   connectOrCreate?: Prisma.FileCreateOrConnectWithoutUsersInput
@@ -547,6 +573,7 @@ export type FileCreateWithoutCoverCoursesInput = {
   users?: Prisma.UserCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseCreateNestedManyWithoutIntroVideoInput
   lectures?: Prisma.LectureCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadCreateNestedOneWithoutFileInput
 }
 
 export type FileUncheckedCreateWithoutCoverCoursesInput = {
@@ -562,6 +589,7 @@ export type FileUncheckedCreateWithoutCoverCoursesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutIntroVideoInput
   lectures?: Prisma.LectureUncheckedCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedCreateNestedOneWithoutFileInput
 }
 
 export type FileCreateOrConnectWithoutCoverCoursesInput = {
@@ -582,6 +610,7 @@ export type FileCreateWithoutIntroVideoCoursesInput = {
   users?: Prisma.UserCreateNestedManyWithoutCoverInput
   coverCourses?: Prisma.CourseCreateNestedManyWithoutCoverInput
   lectures?: Prisma.LectureCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadCreateNestedOneWithoutFileInput
 }
 
 export type FileUncheckedCreateWithoutIntroVideoCoursesInput = {
@@ -597,6 +626,7 @@ export type FileUncheckedCreateWithoutIntroVideoCoursesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutCoverInput
   coverCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCoverInput
   lectures?: Prisma.LectureUncheckedCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedCreateNestedOneWithoutFileInput
 }
 
 export type FileCreateOrConnectWithoutIntroVideoCoursesInput = {
@@ -628,6 +658,7 @@ export type FileUpdateWithoutCoverCoursesInput = {
   users?: Prisma.UserUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUpdateManyWithoutIntroVideoNestedInput
   lectures?: Prisma.LectureUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUpdateOneWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateWithoutCoverCoursesInput = {
@@ -643,6 +674,7 @@ export type FileUncheckedUpdateWithoutCoverCoursesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUncheckedUpdateManyWithoutIntroVideoNestedInput
   lectures?: Prisma.LectureUncheckedUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedUpdateOneWithoutFileNestedInput
 }
 
 export type FileUpsertWithoutIntroVideoCoursesInput = {
@@ -669,6 +701,7 @@ export type FileUpdateWithoutIntroVideoCoursesInput = {
   users?: Prisma.UserUpdateManyWithoutCoverNestedInput
   coverCourses?: Prisma.CourseUpdateManyWithoutCoverNestedInput
   lectures?: Prisma.LectureUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUpdateOneWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateWithoutIntroVideoCoursesInput = {
@@ -684,6 +717,7 @@ export type FileUncheckedUpdateWithoutIntroVideoCoursesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutCoverNestedInput
   coverCourses?: Prisma.CourseUncheckedUpdateManyWithoutCoverNestedInput
   lectures?: Prisma.LectureUncheckedUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedUpdateOneWithoutFileNestedInput
 }
 
 export type FileCreateWithoutLecturesInput = {
@@ -699,6 +733,7 @@ export type FileCreateWithoutLecturesInput = {
   users?: Prisma.UserCreateNestedManyWithoutCoverInput
   coverCourses?: Prisma.CourseCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseCreateNestedManyWithoutIntroVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadCreateNestedOneWithoutFileInput
 }
 
 export type FileUncheckedCreateWithoutLecturesInput = {
@@ -714,6 +749,7 @@ export type FileUncheckedCreateWithoutLecturesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutCoverInput
   coverCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutIntroVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedCreateNestedOneWithoutFileInput
 }
 
 export type FileCreateOrConnectWithoutLecturesInput = {
@@ -745,6 +781,7 @@ export type FileUpdateWithoutLecturesInput = {
   users?: Prisma.UserUpdateManyWithoutCoverNestedInput
   coverCourses?: Prisma.CourseUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUpdateManyWithoutIntroVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUpdateOneWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateWithoutLecturesInput = {
@@ -760,6 +797,87 @@ export type FileUncheckedUpdateWithoutLecturesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutCoverNestedInput
   coverCourses?: Prisma.CourseUncheckedUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUncheckedUpdateManyWithoutIntroVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedUpdateOneWithoutFileNestedInput
+}
+
+export type FileCreateWithoutMultiPartUploadInput = {
+  id?: string
+  key: string
+  url: string
+  name: string
+  size: number
+  mime_type: string
+  bucket: string
+  created_at?: Date | string
+  deleted_at?: Date | string | null
+  users?: Prisma.UserCreateNestedManyWithoutCoverInput
+  coverCourses?: Prisma.CourseCreateNestedManyWithoutCoverInput
+  introVideoCourses?: Prisma.CourseCreateNestedManyWithoutIntroVideoInput
+  lectures?: Prisma.LectureCreateNestedManyWithoutVideoInput
+}
+
+export type FileUncheckedCreateWithoutMultiPartUploadInput = {
+  id?: string
+  key: string
+  url: string
+  name: string
+  size: number
+  mime_type: string
+  bucket: string
+  created_at?: Date | string
+  deleted_at?: Date | string | null
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCoverInput
+  coverCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCoverInput
+  introVideoCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutIntroVideoInput
+  lectures?: Prisma.LectureUncheckedCreateNestedManyWithoutVideoInput
+}
+
+export type FileCreateOrConnectWithoutMultiPartUploadInput = {
+  where: Prisma.FileWhereUniqueInput
+  create: Prisma.XOR<Prisma.FileCreateWithoutMultiPartUploadInput, Prisma.FileUncheckedCreateWithoutMultiPartUploadInput>
+}
+
+export type FileUpsertWithoutMultiPartUploadInput = {
+  update: Prisma.XOR<Prisma.FileUpdateWithoutMultiPartUploadInput, Prisma.FileUncheckedUpdateWithoutMultiPartUploadInput>
+  create: Prisma.XOR<Prisma.FileCreateWithoutMultiPartUploadInput, Prisma.FileUncheckedCreateWithoutMultiPartUploadInput>
+  where?: Prisma.FileWhereInput
+}
+
+export type FileUpdateToOneWithWhereWithoutMultiPartUploadInput = {
+  where?: Prisma.FileWhereInput
+  data: Prisma.XOR<Prisma.FileUpdateWithoutMultiPartUploadInput, Prisma.FileUncheckedUpdateWithoutMultiPartUploadInput>
+}
+
+export type FileUpdateWithoutMultiPartUploadInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  mime_type?: Prisma.StringFieldUpdateOperationsInput | string
+  bucket?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  users?: Prisma.UserUpdateManyWithoutCoverNestedInput
+  coverCourses?: Prisma.CourseUpdateManyWithoutCoverNestedInput
+  introVideoCourses?: Prisma.CourseUpdateManyWithoutIntroVideoNestedInput
+  lectures?: Prisma.LectureUpdateManyWithoutVideoNestedInput
+}
+
+export type FileUncheckedUpdateWithoutMultiPartUploadInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.IntFieldUpdateOperationsInput | number
+  mime_type?: Prisma.StringFieldUpdateOperationsInput | string
+  bucket?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  users?: Prisma.UserUncheckedUpdateManyWithoutCoverNestedInput
+  coverCourses?: Prisma.CourseUncheckedUpdateManyWithoutCoverNestedInput
+  introVideoCourses?: Prisma.CourseUncheckedUpdateManyWithoutIntroVideoNestedInput
+  lectures?: Prisma.LectureUncheckedUpdateManyWithoutVideoNestedInput
 }
 
 export type FileCreateWithoutUsersInput = {
@@ -775,6 +893,7 @@ export type FileCreateWithoutUsersInput = {
   coverCourses?: Prisma.CourseCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseCreateNestedManyWithoutIntroVideoInput
   lectures?: Prisma.LectureCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadCreateNestedOneWithoutFileInput
 }
 
 export type FileUncheckedCreateWithoutUsersInput = {
@@ -790,6 +909,7 @@ export type FileUncheckedCreateWithoutUsersInput = {
   coverCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutCoverInput
   introVideoCourses?: Prisma.CourseUncheckedCreateNestedManyWithoutIntroVideoInput
   lectures?: Prisma.LectureUncheckedCreateNestedManyWithoutVideoInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedCreateNestedOneWithoutFileInput
 }
 
 export type FileCreateOrConnectWithoutUsersInput = {
@@ -821,6 +941,7 @@ export type FileUpdateWithoutUsersInput = {
   coverCourses?: Prisma.CourseUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUpdateManyWithoutIntroVideoNestedInput
   lectures?: Prisma.LectureUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUpdateOneWithoutFileNestedInput
 }
 
 export type FileUncheckedUpdateWithoutUsersInput = {
@@ -836,6 +957,7 @@ export type FileUncheckedUpdateWithoutUsersInput = {
   coverCourses?: Prisma.CourseUncheckedUpdateManyWithoutCoverNestedInput
   introVideoCourses?: Prisma.CourseUncheckedUpdateManyWithoutIntroVideoNestedInput
   lectures?: Prisma.LectureUncheckedUpdateManyWithoutVideoNestedInput
+  multiPartUpload?: Prisma.MultiPartUploadUncheckedUpdateOneWithoutFileNestedInput
 }
 
 
@@ -910,6 +1032,7 @@ export type FileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   coverCourses?: boolean | Prisma.File$coverCoursesArgs<ExtArgs>
   introVideoCourses?: boolean | Prisma.File$introVideoCoursesArgs<ExtArgs>
   lectures?: boolean | Prisma.File$lecturesArgs<ExtArgs>
+  multiPartUpload?: boolean | Prisma.File$multiPartUploadArgs<ExtArgs>
   _count?: boolean | Prisma.FileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["file"]>
 
@@ -955,6 +1078,7 @@ export type FileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   coverCourses?: boolean | Prisma.File$coverCoursesArgs<ExtArgs>
   introVideoCourses?: boolean | Prisma.File$introVideoCoursesArgs<ExtArgs>
   lectures?: boolean | Prisma.File$lecturesArgs<ExtArgs>
+  multiPartUpload?: boolean | Prisma.File$multiPartUploadArgs<ExtArgs>
   _count?: boolean | Prisma.FileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -967,6 +1091,7 @@ export type $FilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     coverCourses: Prisma.$CoursePayload<ExtArgs>[]
     introVideoCourses: Prisma.$CoursePayload<ExtArgs>[]
     lectures: Prisma.$LecturePayload<ExtArgs>[]
+    multiPartUpload: Prisma.$MultiPartUploadPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1376,6 +1501,7 @@ export interface Prisma__FileClient<T, Null = never, ExtArgs extends runtime.Typ
   coverCourses<T extends Prisma.File$coverCoursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.File$coverCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   introVideoCourses<T extends Prisma.File$introVideoCoursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.File$introVideoCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lectures<T extends Prisma.File$lecturesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.File$lecturesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LecturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  multiPartUpload<T extends Prisma.File$multiPartUploadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.File$multiPartUploadArgs<ExtArgs>>): Prisma.Prisma__MultiPartUploadClient<runtime.Types.Result.GetResult<Prisma.$MultiPartUploadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1895,6 +2021,25 @@ export type File$lecturesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.LectureScalarFieldEnum | Prisma.LectureScalarFieldEnum[]
+}
+
+/**
+ * File.multiPartUpload
+ */
+export type File$multiPartUploadArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MultiPartUpload
+   */
+  select?: Prisma.MultiPartUploadSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MultiPartUpload
+   */
+  omit?: Prisma.MultiPartUploadOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MultiPartUploadInclude<ExtArgs> | null
+  where?: Prisma.MultiPartUploadWhereInput
 }
 
 /**

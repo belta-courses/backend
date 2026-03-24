@@ -105,6 +105,27 @@ export abstract class Router {
   };
 
   /**
+   * Video routes
+  /**
+   * Video routes
+   * @static
+   * @memberof Router
+   * @example /videos
+   */
+  static Video = class {
+    /** Video */
+    static ApiTag = 'Video';
+    /** videos */
+    static Base = 'videos';
+    /** upload-video */
+    static InitUpload = 'init-upload';
+    /** upload-video-part */
+    static UploadVideoPart = 'upload-video-part';
+    /** abort-upload */
+    static AbortUpload = 'abort-upload';
+  };
+
+  /**
    * Wallet routes
    * @static
    * @memberof Router
