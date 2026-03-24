@@ -44,13 +44,13 @@ export class LecturesController {
     @Body() dto: CreateLectureDto,
     @Request() req: { user: JwtPayload },
   ) {
-    await this.coursesService.ensureOwnership({
-      id: moduleId,
-      userId: req.user.sub,
-      type: 'module',
-    });
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
 
-    const lecture = await this.coursesService.createLecture(moduleId, dto);
+    const lecture = await this.coursesService.createLecture(
+      moduleId,
+      dto,
+      teacherId,
+    );
     return plainToInstance(LectureResponseDto, lecture, {
       excludeExtraneousValues: true,
     });
@@ -85,14 +85,13 @@ export class LecturesController {
     @Body() dto: UpdateLectureDto,
     @Request() req: { user: JwtPayload },
   ) {
-    if (req.user.role === Role.teacher)
-      await this.coursesService.ensureOwnership({
-        id: lectureId,
-        userId: req.user.sub,
-        type: 'lecture',
-      });
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
 
-    const lecture = await this.coursesService.updateLecture(lectureId, dto);
+    const lecture = await this.coursesService.updateLecture(
+      lectureId,
+      dto,
+      teacherId,
+    );
     return plainToInstance(LectureResponseDto, lecture, {
       excludeExtraneousValues: true,
     });
@@ -110,14 +109,9 @@ export class LecturesController {
     @Param('lectureId') lectureId: string,
     @Request() req: { user: JwtPayload },
   ) {
-    if (req.user.role === Role.teacher)
-      await this.coursesService.ensureOwnership({
-        id: lectureId,
-        userId: req.user.sub,
-        type: 'lecture',
-      });
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
 
-    await this.coursesService.deleteLecture(lectureId);
+    await this.coursesService.deleteLecture(lectureId, teacherId);
   }
 
   @Get(Router.Lectures.ById)
@@ -130,22 +124,14 @@ export class LecturesController {
     @Param('lectureId') lectureId: string,
     @Request() { user }: { user: JwtPayload },
   ) {
-    if (user.role === Role.teacher)
-      await this.coursesService.ensureOwnership({
-        id: lectureId,
-        userId: user.sub,
-        type: 'lecture',
-      });
+    const teacherId = user.role === Role.teacher ? user.sub : undefined;
+    const studentId = user.role === Role.student ? user.sub : undefined;
 
-    if (user.role === Role.student) {
-      await this.coursesService.ensurePurchased({
-        id: lectureId,
-        userId: user.sub,
-        type: 'lecture',
-      });
-    }
-
-    const lecture = await this.coursesService.findLectureById(lectureId);
+    const lecture = await this.coursesService.findLectureByIdWithPermissions(
+      lectureId,
+      teacherId,
+      studentId,
+    );
     return plainToInstance(LectureResponseDto, lecture, {
       excludeExtraneousValues: true,
     });

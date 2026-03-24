@@ -135,7 +135,6 @@ export class StorageService implements OnModuleInit {
   }
 
   async deleteFile(id: string): Promise<File> {
-    console.log(id);
     const file = await this.prisma.file.update({
       where: { id },
       data: { deleted_at: new Date() },
@@ -202,6 +201,7 @@ export class StorageService implements OnModuleInit {
       uploadId: upload.id,
       partsCount: partsCount,
       partSize: VIDEO_PART_SIZE,
+      file: file,
     };
   }
 

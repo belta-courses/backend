@@ -46,7 +46,7 @@ export class CreateLectureDto {
   })
   @IsUUID()
   @IsOptional()
-  videoId?: string;
+  videoId?: string | null;
 
   @ApiPropertyOptional({
     example: false,

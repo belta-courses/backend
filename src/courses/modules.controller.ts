@@ -42,13 +42,13 @@ export class ModulesController {
     @Body() dto: CreateModuleDto,
     @Request() req: { user: JwtPayload },
   ) {
-    await this.coursesService.ensureOwnership({
-      id: courseId,
-      userId: req.user.sub,
-      type: 'course',
-    });
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
 
-    const module = await this.coursesService.createModule(courseId, dto);
+    const module = await this.coursesService.createModule(
+      courseId,
+      dto,
+      teacherId,
+    );
     return module;
   }
 
@@ -79,14 +79,13 @@ export class ModulesController {
     @Body() dto: UpdateModuleDto,
     @Request() req: { user: JwtPayload },
   ) {
-    if (req.user.role === Role.teacher)
-      await this.coursesService.ensureOwnership({
-        id: moduleId,
-        userId: req.user.sub,
-        type: 'module',
-      });
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
 
-    const module = await this.coursesService.updateModule(moduleId, dto);
+    const module = await this.coursesService.updateModule(
+      moduleId,
+      dto,
+      teacherId,
+    );
     return module;
   }
 
@@ -102,13 +101,7 @@ export class ModulesController {
     @Param('moduleId') moduleId: string,
     @Request() req: { user: JwtPayload },
   ) {
-    if (req.user.role === Role.teacher)
-      await this.coursesService.ensureOwnership({
-        id: moduleId,
-        userId: req.user.sub,
-        type: 'module',
-      });
-
-    await this.coursesService.deleteModule(moduleId);
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
+    await this.coursesService.deleteModule(moduleId, teacherId);
   }
 }

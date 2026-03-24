@@ -86,14 +86,13 @@ export class CoursesController {
     @Body() dto: UpdateCourseDto,
     @Request() req: { user: JwtPayload },
   ) {
-    if (req.user.role === Role.teacher)
-      await this.coursesService.ensureOwnership({
-        id: courseId,
-        userId: req.user.sub,
-        type: 'course',
-      });
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
 
-    const updatedCourse = await this.coursesService.updateCourse(courseId, dto);
+    const updatedCourse = await this.coursesService.updateCourse(
+      courseId,
+      dto,
+      teacherId,
+    );
     return plainToInstance(
       CourseResponseDto,
       getNoDecimalCourse(updatedCourse),
@@ -116,14 +115,8 @@ export class CoursesController {
     @Param('courseId') courseId: string,
     @Request() req: { user: JwtPayload },
   ) {
-    if (req.user.role === Role.teacher)
-      await this.coursesService.ensureOwnership({
-        id: courseId,
-        userId: req.user.sub,
-        type: 'course',
-      });
-
-    await this.coursesService.deleteCourse(courseId);
+    const teacherId = req.user.role === Role.teacher ? req.user.sub : undefined;
+    await this.coursesService.deleteCourse(courseId, teacherId);
   }
 
   @Get()

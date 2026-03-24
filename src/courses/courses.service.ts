@@ -13,61 +13,14 @@ import { CreateModuleDto } from './dto/request/create-module.dto';
 import { UpdateModuleDto } from './dto/request/update-module.dto';
 import { CreateLectureDto } from './dto/request/create-lecture.dto';
 import { UpdateLectureDto } from './dto/request/update-lecture.dto';
+import { StorageService } from 'src/storage/storage.service';
 
 @Injectable()
 export class CoursesService {
-  constructor(private readonly prisma: PrismaService) {}
-
-  async ensureCourseOwnership(courseId: string, userId: string) {
-    const course = await this.prisma.course.findUnique({
-      where: { id: courseId },
-    });
-    if (!course) throw new NotFoundException('Course not found');
-    if (course.teacherId !== userId)
-      throw new ForbiddenException('You are not the owner of this course');
-  }
-
-  async ensureOwnership({
-    id,
-    userId,
-    type,
-  }: {
-    id: string;
-    userId: string;
-    type: 'course' | 'module' | 'lecture';
-  }) {
-    let ownerId: string | undefined;
-
-    switch (type) {
-      case 'course': {
-        const course = await this.prisma.course.findUnique({
-          where: { id },
-        });
-        ownerId = course?.teacherId;
-        break;
-      }
-      case 'module': {
-        const module = await this.prisma.module.findUnique({
-          where: { id },
-          include: { course: true },
-        });
-        ownerId = module?.course?.teacherId;
-        break;
-      }
-      case 'lecture': {
-        const lecture = await this.prisma.lecture.findUnique({
-          where: { id },
-          include: { module: { include: { course: true } } },
-        });
-        ownerId = lecture?.module?.course?.teacherId;
-        break;
-      }
-    }
-
-    if (!ownerId) throw new NotFoundException('Item not found');
-    if (ownerId !== userId)
-      throw new ForbiddenException('You are not the owner of this item');
-  }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storageService: StorageService,
+  ) {}
 
   async ensurePurchased({
     id,
@@ -153,7 +106,32 @@ export class CoursesService {
     });
   }
 
-  async updateCourse(courseId: string, dto: UpdateCourseDto) {
+  async updateCourse(
+    courseId: string,
+    dto: UpdateCourseDto,
+    teacherId?: string,
+  ) {
+    const course = await this.findCourseById(courseId);
+
+    if (teacherId && course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this course');
+
+    if (
+      course.coverId &&
+      dto.coverId !== undefined &&
+      dto.coverId !== course.coverId
+    ) {
+      await this.storageService.deleteFile(course.coverId);
+    }
+
+    if (
+      dto.introVideoId &&
+      course.introVideoId &&
+      dto.introVideoId !== course.introVideoId
+    ) {
+      await this.storageService.deleteFile(course.introVideoId);
+    }
+
     return this.prisma.course.update({
       where: { id: courseId },
       data: {
@@ -161,6 +139,7 @@ export class CoursesService {
         description: dto.description,
         price: dto.price ? new Prisma.Decimal(dto.price) : undefined,
         coverId: dto.coverId ?? undefined,
+        introVideoId: dto.introVideoId,
       },
       include: {
         teacher: { include: { cover: true } },
@@ -170,17 +149,17 @@ export class CoursesService {
     });
   }
 
-  async deleteCourse(courseId: string) {
-    const course = await this.prisma.course.findUnique({
-      where: { id: courseId },
-    });
-    if (!course) throw new NotFoundException('Course not found');
+  async deleteCourse(courseId: string, teacherId?: string) {
+    const course = await this.findCourseById(courseId);
+
+    if (teacherId && course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this course');
+
     if (course.status !== CourseStatus.draft) {
       throw new BadRequestException(
         'Course cannot be deleted because it has already been published',
       );
     }
-
     await this.prisma.lecture.deleteMany({
       where: { courseId },
     });
@@ -192,6 +171,15 @@ export class CoursesService {
     await this.prisma.course.delete({
       where: { id: courseId },
     });
+
+    // Soft delte Files
+    if (course.coverId) {
+      await this.storageService.deleteFile(course.coverId);
+    }
+
+    if (course.introVideoId) {
+      await this.storageService.deleteFile(course.introVideoId);
+    }
   }
 
   async findAllCourses(query: FindCoursesQueryDto) {
@@ -334,7 +322,11 @@ export class CoursesService {
 
   // MODULES
 
-  async createModule(courseId: string, dto: CreateModuleDto) {
+  async createModule(
+    courseId: string,
+    dto: CreateModuleDto,
+    teacherId?: string,
+  ) {
     let order = dto.order;
     if (!order) {
       const max = await this.prisma.module.aggregate({
@@ -343,6 +335,10 @@ export class CoursesService {
       });
       order = (max._max.order ?? 0) + 1;
     }
+
+    const course = await this.findCourseById(courseId);
+    if (teacherId && course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this course');
 
     return this.prisma.module.create({
       data: {
@@ -355,7 +351,15 @@ export class CoursesService {
     });
   }
 
-  async updateModule(moduleId: string, dto: UpdateModuleDto) {
+  async updateModule(
+    moduleId: string,
+    dto: UpdateModuleDto,
+    teacherId?: string,
+  ) {
+    const module = await this.findModuleById(moduleId);
+    if (teacherId && module.course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this module');
+
     return this.prisma.module.update({
       where: { id: moduleId },
       data: {
@@ -367,12 +371,11 @@ export class CoursesService {
     });
   }
 
-  async deleteModule(moduleId: string) {
-    const module = await this.prisma.module.findUnique({
-      where: { id: moduleId },
-    });
+  async deleteModule(moduleId: string, teacherId?: string) {
+    const module = await this.findModuleById(moduleId);
 
-    if (!module) throw new NotFoundException('Module not found');
+    if (teacherId && module.course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this module');
 
     await this.prisma.lecture.deleteMany({
       where: { moduleId },
@@ -383,9 +386,22 @@ export class CoursesService {
     });
   }
 
+  async findModuleById(moduleId: string) {
+    const module = await this.prisma.module.findUnique({
+      where: { id: moduleId },
+      include: { course: true },
+    });
+    if (!module) throw new NotFoundException('Module not found');
+    return module;
+  }
+
   // LECTURES
 
-  async createLecture(moduleId: string, dto: CreateLectureDto) {
+  async createLecture(
+    moduleId: string,
+    dto: CreateLectureDto,
+    teacherId?: string,
+  ) {
     let order = dto.order;
     if (!order) {
       const max = await this.prisma.lecture.aggregate({
@@ -395,10 +411,9 @@ export class CoursesService {
       order = (max._max.order ?? 0) + 1;
     }
 
-    const module = await this.prisma.module.findUnique({
-      where: { id: moduleId },
-    });
-    if (!module) throw new NotFoundException('Module not found');
+    const module = await this.findModuleById(moduleId);
+    if (teacherId && module.course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this module');
 
     return this.prisma.lecture.create({
       data: {
@@ -418,7 +433,23 @@ export class CoursesService {
     });
   }
 
-  async updateLecture(lectureId: string, dto: UpdateLectureDto) {
+  async updateLecture(
+    lectureId: string,
+    dto: UpdateLectureDto,
+    teacherId?: string,
+  ) {
+    const lecture = await this.findLectureById(lectureId);
+    if (teacherId && lecture.module.course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this lecture');
+
+    if (
+      lecture.videoId &&
+      dto.videoId !== undefined &&
+      dto.videoId !== lecture.videoId
+    ) {
+      await this.storageService.deleteFile(lecture.videoId);
+    }
+
     return this.prisma.lecture.update({
       where: { id: lectureId },
       data: {
@@ -436,11 +467,15 @@ export class CoursesService {
     });
   }
 
-  async deleteLecture(lectureId: string) {
-    const lecture = await this.prisma.lecture.findUnique({
-      where: { id: lectureId },
-    });
-    if (!lecture) throw new NotFoundException('Lecture not found');
+  async deleteLecture(lectureId: string, teacherId?: string) {
+    const lecture = await this.findLectureById(lectureId);
+    if (teacherId && lecture.module.course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this lecture');
+
+    // Soft delete video
+    if (lecture.videoId) {
+      await this.storageService.deleteFile(lecture.videoId);
+    }
 
     // delete completed Status
     await this.prisma.completedLecture.deleteMany({
@@ -458,9 +493,28 @@ export class CoursesService {
       where: { id: lectureId },
       include: {
         video: true,
+        module: { include: { course: true } },
       },
     });
     if (!lecture) throw new NotFoundException('Lecture not found');
+    return lecture;
+  }
+
+  async findLectureByIdWithPermissions(
+    lectureId: string,
+    teacherId?: string,
+    studentId?: string,
+  ) {
+    const lecture = await this.findLectureById(lectureId);
+    if (teacherId && lecture.module.course.teacherId !== teacherId)
+      throw new ForbiddenException('You are not the owner of this lecture');
+    if (studentId && !lecture.demo) {
+      await this.ensurePurchased({
+        id: lectureId,
+        userId: studentId,
+        type: 'lecture',
+      });
+    }
     return lecture;
   }
 }
