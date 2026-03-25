@@ -1,9 +1,9 @@
 model SaveList {
   id        String   @id @default(uuid())
   studentId String
-  student   User     @relation(fields: [studentId], references: [id])
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   courseId  String
-  course    Course   @relation(fields: [courseId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@unique([studentId, courseId])
@@ -30,9 +30,9 @@ model OwnedList {
 model CompletedLecture {
   id        String   @id @default(uuid())
   studentId String
-  student   User     @relation(fields: [studentId], references: [id])
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   lectureId String
-  lecture   Lecture  @relation(fields: [lectureId], references: [id])
+  lecture   Lecture  @relation(fields: [lectureId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@unique([studentId, lectureId])

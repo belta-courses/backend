@@ -160,26 +160,23 @@ export class CoursesService {
         'Course cannot be deleted because it has already been published',
       );
     }
-    await this.prisma.lecture.deleteMany({
-      where: { courseId },
-    });
+
+    await this.fastDeleteLecturesByCourseId(courseId);
 
     await this.prisma.module.deleteMany({
       where: { courseId },
     });
 
-    await this.prisma.course.delete({
-      where: { id: courseId },
-    });
-
-    // Soft delte Files
     if (course.coverId) {
       await this.storageService.deleteFile(course.coverId);
     }
-
     if (course.introVideoId) {
       await this.storageService.deleteFile(course.introVideoId);
     }
+
+    await this.prisma.course.delete({
+      where: { id: courseId },
+    });
   }
 
   async findAllCourses(query: FindCoursesQueryDto) {
@@ -377,9 +374,19 @@ export class CoursesService {
     if (teacherId && module.course.teacherId !== teacherId)
       throw new ForbiddenException('You are not the owner of this module');
 
-    await this.prisma.lecture.deleteMany({
+    if (module.course.status !== CourseStatus.draft) {
+      throw new BadRequestException(
+        'Module cannot be deleted because it has already been published',
+      );
+    }
+
+    const lectures = await this.prisma.lecture.findMany({
       where: { moduleId },
     });
+
+    for (const lecture of lectures) {
+      await this.fastDeleteLecture(lecture.id);
+    }
 
     await this.prisma.module.delete({
       where: { id: moduleId },
@@ -472,20 +479,59 @@ export class CoursesService {
     if (teacherId && lecture.module.course.teacherId !== teacherId)
       throw new ForbiddenException('You are not the owner of this lecture');
 
+    if (lecture.module.course.status !== CourseStatus.draft) {
+      throw new BadRequestException(
+        'Lecture cannot be deleted because it has already been published',
+      );
+    }
+
+    const ownedList = await this.prisma.ownedList.findFirst({
+      where: {
+        courseId: lecture.courseId,
+      },
+    });
+
+    if (ownedList)
+      throw new ForbiddenException(
+        'You cannot delete a lecture that has been purchased',
+      );
+
     // Soft delete video
     if (lecture.videoId) {
       await this.storageService.deleteFile(lecture.videoId);
     }
 
-    // delete completed Status
-    await this.prisma.completedLecture.deleteMany({
-      where: { lectureId },
-    });
-
     // delete lecture
     await this.prisma.lecture.delete({
       where: { id: lectureId },
     });
+  }
+
+  async fastDeleteLecture(lectureId: string) {
+    const lecture = await this.findLectureById(lectureId);
+
+    if (lecture.videoId) {
+      await this.storageService.deleteFile(lecture.videoId);
+    }
+
+    await this.prisma.lecture.delete({
+      where: { id: lectureId },
+    });
+  }
+
+  async fastDeleteLecturesByCourseId(courseId: string) {
+    const lectures = await this.prisma.lecture.findMany({
+      where: { courseId },
+    });
+    for (const lecture of lectures) {
+      if (lecture.videoId) {
+        await this.storageService.deleteFile(lecture.videoId);
+      }
+
+      await this.prisma.lecture.delete({
+        where: { id: lecture.id },
+      });
+    }
   }
 
   async findLectureById(lectureId: string) {
