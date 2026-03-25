@@ -179,6 +179,8 @@ export const MultiPartUploadScalarFieldEnum = {
   partsCount: 'partsCount',
   partsCompleted: 'partsCompleted',
   retries: 'retries',
+  updatedAt: 'updatedAt',
+  createdAt: 'createdAt',
   fileId: 'fileId'
 } as const
 

@@ -26,6 +26,9 @@ model MultiPartUpload {
   partsCompleted Int    @default(0)
   retries        Int    @default(0)
 
+  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+
   file          File           @relation(fields: [fileId], references: [id], onDelete: Cascade)
   fileId        String         @unique
   uploadedParts UploadedPart[]

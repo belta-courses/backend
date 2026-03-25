@@ -289,6 +289,7 @@ export class StorageService implements OnModuleInit {
         };
       }
 
+      // Not completeed
       await this.prisma.multiPartUpload.update({
         where: { id },
         data: { partsCompleted: upload.partsCompleted + 1 },

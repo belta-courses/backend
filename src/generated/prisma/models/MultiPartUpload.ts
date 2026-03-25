@@ -47,6 +47,8 @@ export type MultiPartUploadMinAggregateOutputType = {
   partsCount: number | null
   partsCompleted: number | null
   retries: number | null
+  updatedAt: Date | null
+  createdAt: Date | null
   fileId: string | null
 }
 
@@ -57,6 +59,8 @@ export type MultiPartUploadMaxAggregateOutputType = {
   partsCount: number | null
   partsCompleted: number | null
   retries: number | null
+  updatedAt: Date | null
+  createdAt: Date | null
   fileId: string | null
 }
 
@@ -67,6 +71,8 @@ export type MultiPartUploadCountAggregateOutputType = {
   partsCount: number
   partsCompleted: number
   retries: number
+  updatedAt: number
+  createdAt: number
   fileId: number
   _all: number
 }
@@ -93,6 +99,8 @@ export type MultiPartUploadMinAggregateInputType = {
   partsCount?: true
   partsCompleted?: true
   retries?: true
+  updatedAt?: true
+  createdAt?: true
   fileId?: true
 }
 
@@ -103,6 +111,8 @@ export type MultiPartUploadMaxAggregateInputType = {
   partsCount?: true
   partsCompleted?: true
   retries?: true
+  updatedAt?: true
+  createdAt?: true
   fileId?: true
 }
 
@@ -113,6 +123,8 @@ export type MultiPartUploadCountAggregateInputType = {
   partsCount?: true
   partsCompleted?: true
   retries?: true
+  updatedAt?: true
+  createdAt?: true
   fileId?: true
   _all?: true
 }
@@ -210,6 +222,8 @@ export type MultiPartUploadGroupByOutputType = {
   partsCount: number
   partsCompleted: number
   retries: number
+  updatedAt: Date
+  createdAt: Date
   fileId: string
   _count: MultiPartUploadCountAggregateOutputType | null
   _avg: MultiPartUploadAvgAggregateOutputType | null
@@ -243,6 +257,8 @@ export type MultiPartUploadWhereInput = {
   partsCount?: Prisma.IntFilter<"MultiPartUpload"> | number
   partsCompleted?: Prisma.IntFilter<"MultiPartUpload"> | number
   retries?: Prisma.IntFilter<"MultiPartUpload"> | number
+  updatedAt?: Prisma.DateTimeFilter<"MultiPartUpload"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"MultiPartUpload"> | Date | string
   fileId?: Prisma.StringFilter<"MultiPartUpload"> | string
   file?: Prisma.XOR<Prisma.FileScalarRelationFilter, Prisma.FileWhereInput>
   uploadedParts?: Prisma.UploadedPartListRelationFilter
@@ -255,6 +271,8 @@ export type MultiPartUploadOrderByWithRelationInput = {
   partsCount?: Prisma.SortOrder
   partsCompleted?: Prisma.SortOrder
   retries?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   fileId?: Prisma.SortOrder
   file?: Prisma.FileOrderByWithRelationInput
   uploadedParts?: Prisma.UploadedPartOrderByRelationAggregateInput
@@ -271,6 +289,8 @@ export type MultiPartUploadWhereUniqueInput = Prisma.AtLeast<{
   partsCount?: Prisma.IntFilter<"MultiPartUpload"> | number
   partsCompleted?: Prisma.IntFilter<"MultiPartUpload"> | number
   retries?: Prisma.IntFilter<"MultiPartUpload"> | number
+  updatedAt?: Prisma.DateTimeFilter<"MultiPartUpload"> | Date | string
+  createdAt?: Prisma.DateTimeFilter<"MultiPartUpload"> | Date | string
   file?: Prisma.XOR<Prisma.FileScalarRelationFilter, Prisma.FileWhereInput>
   uploadedParts?: Prisma.UploadedPartListRelationFilter
 }, "id" | "fileId">
@@ -282,6 +302,8 @@ export type MultiPartUploadOrderByWithAggregationInput = {
   partsCount?: Prisma.SortOrder
   partsCompleted?: Prisma.SortOrder
   retries?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   fileId?: Prisma.SortOrder
   _count?: Prisma.MultiPartUploadCountOrderByAggregateInput
   _avg?: Prisma.MultiPartUploadAvgOrderByAggregateInput
@@ -300,6 +322,8 @@ export type MultiPartUploadScalarWhereWithAggregatesInput = {
   partsCount?: Prisma.IntWithAggregatesFilter<"MultiPartUpload"> | number
   partsCompleted?: Prisma.IntWithAggregatesFilter<"MultiPartUpload"> | number
   retries?: Prisma.IntWithAggregatesFilter<"MultiPartUpload"> | number
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MultiPartUpload"> | Date | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"MultiPartUpload"> | Date | string
   fileId?: Prisma.StringWithAggregatesFilter<"MultiPartUpload"> | string
 }
 
@@ -310,6 +334,8 @@ export type MultiPartUploadCreateInput = {
   partsCount: number
   partsCompleted?: number
   retries?: number
+  updatedAt?: Date | string
+  createdAt?: Date | string
   file: Prisma.FileCreateNestedOneWithoutMultiPartUploadInput
   uploadedParts?: Prisma.UploadedPartCreateNestedManyWithoutUploadRecordInput
 }
@@ -321,6 +347,8 @@ export type MultiPartUploadUncheckedCreateInput = {
   partsCount: number
   partsCompleted?: number
   retries?: number
+  updatedAt?: Date | string
+  createdAt?: Date | string
   fileId: string
   uploadedParts?: Prisma.UploadedPartUncheckedCreateNestedManyWithoutUploadRecordInput
 }
@@ -332,6 +360,8 @@ export type MultiPartUploadUpdateInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   file?: Prisma.FileUpdateOneRequiredWithoutMultiPartUploadNestedInput
   uploadedParts?: Prisma.UploadedPartUpdateManyWithoutUploadRecordNestedInput
 }
@@ -343,6 +373,8 @@ export type MultiPartUploadUncheckedUpdateInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileId?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedParts?: Prisma.UploadedPartUncheckedUpdateManyWithoutUploadRecordNestedInput
 }
@@ -354,6 +386,8 @@ export type MultiPartUploadCreateManyInput = {
   partsCount: number
   partsCompleted?: number
   retries?: number
+  updatedAt?: Date | string
+  createdAt?: Date | string
   fileId: string
 }
 
@@ -364,6 +398,8 @@ export type MultiPartUploadUpdateManyMutationInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type MultiPartUploadUncheckedUpdateManyInput = {
@@ -373,6 +409,8 @@ export type MultiPartUploadUncheckedUpdateManyInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -388,6 +426,8 @@ export type MultiPartUploadCountOrderByAggregateInput = {
   partsCount?: Prisma.SortOrder
   partsCompleted?: Prisma.SortOrder
   retries?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   fileId?: Prisma.SortOrder
 }
 
@@ -405,6 +445,8 @@ export type MultiPartUploadMaxOrderByAggregateInput = {
   partsCount?: Prisma.SortOrder
   partsCompleted?: Prisma.SortOrder
   retries?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   fileId?: Prisma.SortOrder
 }
 
@@ -415,6 +457,8 @@ export type MultiPartUploadMinOrderByAggregateInput = {
   partsCount?: Prisma.SortOrder
   partsCompleted?: Prisma.SortOrder
   retries?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   fileId?: Prisma.SortOrder
 }
 
@@ -483,6 +527,8 @@ export type MultiPartUploadCreateWithoutFileInput = {
   partsCount: number
   partsCompleted?: number
   retries?: number
+  updatedAt?: Date | string
+  createdAt?: Date | string
   uploadedParts?: Prisma.UploadedPartCreateNestedManyWithoutUploadRecordInput
 }
 
@@ -493,6 +539,8 @@ export type MultiPartUploadUncheckedCreateWithoutFileInput = {
   partsCount: number
   partsCompleted?: number
   retries?: number
+  updatedAt?: Date | string
+  createdAt?: Date | string
   uploadedParts?: Prisma.UploadedPartUncheckedCreateNestedManyWithoutUploadRecordInput
 }
 
@@ -519,6 +567,8 @@ export type MultiPartUploadUpdateWithoutFileInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedParts?: Prisma.UploadedPartUpdateManyWithoutUploadRecordNestedInput
 }
 
@@ -529,6 +579,8 @@ export type MultiPartUploadUncheckedUpdateWithoutFileInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedParts?: Prisma.UploadedPartUncheckedUpdateManyWithoutUploadRecordNestedInput
 }
 
@@ -539,6 +591,8 @@ export type MultiPartUploadCreateWithoutUploadedPartsInput = {
   partsCount: number
   partsCompleted?: number
   retries?: number
+  updatedAt?: Date | string
+  createdAt?: Date | string
   file: Prisma.FileCreateNestedOneWithoutMultiPartUploadInput
 }
 
@@ -549,6 +603,8 @@ export type MultiPartUploadUncheckedCreateWithoutUploadedPartsInput = {
   partsCount: number
   partsCompleted?: number
   retries?: number
+  updatedAt?: Date | string
+  createdAt?: Date | string
   fileId: string
 }
 
@@ -575,6 +631,8 @@ export type MultiPartUploadUpdateWithoutUploadedPartsInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   file?: Prisma.FileUpdateOneRequiredWithoutMultiPartUploadNestedInput
 }
 
@@ -585,6 +643,8 @@ export type MultiPartUploadUncheckedUpdateWithoutUploadedPartsInput = {
   partsCount?: Prisma.IntFieldUpdateOperationsInput | number
   partsCompleted?: Prisma.IntFieldUpdateOperationsInput | number
   retries?: Prisma.IntFieldUpdateOperationsInput | number
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   fileId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -626,6 +686,8 @@ export type MultiPartUploadSelect<ExtArgs extends runtime.Types.Extensions.Inter
   partsCount?: boolean
   partsCompleted?: boolean
   retries?: boolean
+  updatedAt?: boolean
+  createdAt?: boolean
   fileId?: boolean
   file?: boolean | Prisma.FileDefaultArgs<ExtArgs>
   uploadedParts?: boolean | Prisma.MultiPartUpload$uploadedPartsArgs<ExtArgs>
@@ -639,6 +701,8 @@ export type MultiPartUploadSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   partsCount?: boolean
   partsCompleted?: boolean
   retries?: boolean
+  updatedAt?: boolean
+  createdAt?: boolean
   fileId?: boolean
   file?: boolean | Prisma.FileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["multiPartUpload"]>
@@ -650,6 +714,8 @@ export type MultiPartUploadSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   partsCount?: boolean
   partsCompleted?: boolean
   retries?: boolean
+  updatedAt?: boolean
+  createdAt?: boolean
   fileId?: boolean
   file?: boolean | Prisma.FileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["multiPartUpload"]>
@@ -661,10 +727,12 @@ export type MultiPartUploadSelectScalar = {
   partsCount?: boolean
   partsCompleted?: boolean
   retries?: boolean
+  updatedAt?: boolean
+  createdAt?: boolean
   fileId?: boolean
 }
 
-export type MultiPartUploadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uploadId" | "fileSize" | "partsCount" | "partsCompleted" | "retries" | "fileId", ExtArgs["result"]["multiPartUpload"]>
+export type MultiPartUploadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uploadId" | "fileSize" | "partsCount" | "partsCompleted" | "retries" | "updatedAt" | "createdAt" | "fileId", ExtArgs["result"]["multiPartUpload"]>
 export type MultiPartUploadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   file?: boolean | Prisma.FileDefaultArgs<ExtArgs>
   uploadedParts?: boolean | Prisma.MultiPartUpload$uploadedPartsArgs<ExtArgs>
@@ -690,6 +758,8 @@ export type $MultiPartUploadPayload<ExtArgs extends runtime.Types.Extensions.Int
     partsCount: number
     partsCompleted: number
     retries: number
+    updatedAt: Date
+    createdAt: Date
     fileId: string
   }, ExtArgs["result"]["multiPartUpload"]>
   composites: {}
@@ -1122,6 +1192,8 @@ export interface MultiPartUploadFieldRefs {
   readonly partsCount: Prisma.FieldRef<"MultiPartUpload", 'Int'>
   readonly partsCompleted: Prisma.FieldRef<"MultiPartUpload", 'Int'>
   readonly retries: Prisma.FieldRef<"MultiPartUpload", 'Int'>
+  readonly updatedAt: Prisma.FieldRef<"MultiPartUpload", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"MultiPartUpload", 'DateTime'>
   readonly fileId: Prisma.FieldRef<"MultiPartUpload", 'String'>
 }
     
