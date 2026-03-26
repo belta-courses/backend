@@ -45,6 +45,7 @@ export interface RedisConfig {
   password?: string;
   db?: number;
   tls?: object;
+  keyPrefix: string;
 }
 
 export interface AllConfig {

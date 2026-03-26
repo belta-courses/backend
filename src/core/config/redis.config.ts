@@ -8,4 +8,5 @@ export default registerAs<RedisConfig>('redis', () => ({
   password: process.env.REDIS_PASSWORD,
   db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB, 10) : undefined,
   tls: process.env.REDIS_TLS === 'true' ? {} : undefined,
+  keyPrefix: process.env.REDIS_KEY_PREFIX ?? 'beltacourses',
 }));
