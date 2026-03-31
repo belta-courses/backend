@@ -65,8 +65,8 @@ import { TransactionsModule } from './transactions/transactions.module';
             ...(redis.password && { password: redis.password }),
             ...(redis.db !== undefined && { db: redis.db }),
             ...(redis.tls && { tls: redis.tls }),
-            keyPrefix: redis.keyPrefix,
           },
+          prefix: redis.keyPrefix,
         };
       },
     }),
